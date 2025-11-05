@@ -2,18 +2,20 @@ import React, { useState } from "react";
 
 function Login() {
     const [emailOrUsername, setEmailOrUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('');   
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const isEmail = emailOrUsername.includes("@");
 
-        if (isEmail) {
-            console.log("Login with email: ", emailOrUsername);
-        } else {
-            console.log("Login with username: ", emailOrUsername);
-        }
+        console.log(
+            isEmail
+                ? "Logging in with email: " + emailOrUsername
+                : "Logging in with username: " + emailOrUsername
+        );
+
+        console.log("Password: ", password);
     };
 
     return (
@@ -28,7 +30,7 @@ function Login() {
                     <div className="formGroup">
                         <label>Email/Username</label>
                         <div className="inputBox">
-                            <input type="texts" name="emailOrUsername" value={emailOrUsername} onChange={(e) => setEmailOrUsername(e.target.value)} required className="formControl" placeholder="Enter email or username"/>
+                            <input type="text" name="emailOrUsername" value={emailOrUsername} onChange={(e) => setEmailOrUsername(e.target.value)} required className="formControl" placeholder="Enter email or username"/>
                         </div>
                     </div>
 
