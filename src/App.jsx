@@ -9,9 +9,9 @@ import "./App.css";
 export default function App() {
   return (
     <ScreenFrame>
-       {/*<Login /> */}
-      {/*<StarmuCreation /> */}
-      <Register />
+      {/*<Login /> */}
+      <StarmuCreation />
+      {/*<Register />*/}
     </ScreenFrame>
   );
 }
