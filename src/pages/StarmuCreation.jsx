@@ -5,9 +5,13 @@
 
 import React, { useState, useEffect } from "react";
 import "../css/StarmuCreation.css"; // external CSS
+import { useNavigate } from "react-router-dom";
+
 
 function StarmuCreation() {
   // the Starmu Creation page is divided into multiple phases
+  
+  const navigate = useNavigate();
   const [phase, setPhase] = useState("cutscene"); // "cutscene" | "colorpick" | "naming" | "greeting"
   const [showComet, setShowComet] = useState(false);
   const [showText, setShowText] = useState(false);
@@ -180,13 +184,12 @@ if (phase === "greeting") {
 
         <button
           className="takecare-button"
-          onClick={() => setPhase("home")}
+          onClick={() => navigate("/starmu-page")}
         >
           Take care of {starmuName || "Starmu"}
         </button>
       </div>
     </div>
-    // logic wherein it will redirect to home page after clicking the button to be added later
   );
 }
 

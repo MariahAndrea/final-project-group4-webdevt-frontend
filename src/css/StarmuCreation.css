@@ -20,7 +20,7 @@
 .starmu-bg {
   position: absolute;
   inset: 0;
-  background: url("./images/bg_StarmuCreation.jpg") center/cover no-repeat;
+  background: url("/images/bg_StarmuCreation.jpg") center/cover no-repeat;
   z-index: 0;
 }
 
@@ -59,9 +59,9 @@
   background-color: #d9d9d9;
   border-radius: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  animation: fadeIn 1.5s ease-in forwards;
-  animation-delay: 0.8s; /* fade in after text */
+  /*opacity: 0;
+  /*animation: fadeIn 1.5s ease-in forwards;*/
+  /*animation-delay: 0.8s; /* fade in after text */
   position:relative;
   top: 1.55rem;
 
@@ -113,7 +113,6 @@
 
 /* Adjust only in the colorpick phase */
 .phase-colorpick .starmu-placeholder {
-  position:relative;
   top: 2rem;
 }
 
@@ -224,7 +223,7 @@
 
 .phase-naming .starmu-placeholder {
   position:relative;
-  top: 5.55rem;
+  top: 5.50rem;
 }
 
 .starmu-name-input:focus {

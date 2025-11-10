@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom"; // import useNavigate
 
 function Register () {
     const [username, setUsername ] = useState('');
@@ -6,6 +7,8 @@ function Register () {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+
+    const navigate = useNavigate(); // initialize navigate
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -81,8 +84,12 @@ function Register () {
                             <p>{error}</p>
                         )}
                     </div>
-
-                    <button type="submit" className="submitButton">Sign Up</button>
+                        <button
+                        className="submitButton"
+                        onClick={() => navigate("/", { replace: true })}
+                        >
+                        Sign Up
+                        </button>
                 </form>
             </div>
         </div>

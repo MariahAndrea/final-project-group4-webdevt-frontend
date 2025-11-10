@@ -1,0 +1,124 @@
+/*StarmuPage.css*/
+
+.starmupage-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+}
+
+.starmupage-container .starmu-bg {
+  position: absolute;
+  inset: 0;
+  background: url("/images/bg_StarmuHome.png") center/cover no-repeat;
+  z-index: 0;
+}
+
+.starmu-home-buttons {
+  display: grid;
+  grid-template-columns: 1.3fr 2fr 1fr; /* Three flexible columns */
+  gap: 3px;
+
+  align-items: end;
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  transform: translate(-50%); /* Centers horizontally & vertically */
+
+  width: 95%;
+  height: 30%;
+  z-index: 1; /* ensures it's above the background */
+}
+
+.left-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  grid-column: 1;
+}
+
+.right-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  grid-column: 3;
+  justify-content: flex-end; /* push buttons to the right end */
+}
+
+.starmu-btn { /*adjust this to fit icons instead of text later*/
+  flex: 1;                  /* all buttons take equal width */
+  max-width: 100px;         /* ensures buttons don’t get too wide */
+  aspect-ratio: 1 / 1;      /* keeps them square */
+  background-color: #afafaf;
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;       /* prevent text from wrapping */
+  overflow: hidden;          /* clip text if it’s too long */
+  text-overflow: ellipsis;   /* add "..." if text is too long */
+}
+
+.starmupage-container .starmu-placeholder {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.starmu-top-panel {
+  display: grid;
+  grid-template-columns: 1.0fr 1.7fr .25fr; 
+  position: absolute;
+  gap: 18px;
+  left: 50%;
+  transform: translate(-50%); /* Centers horizontally & vertically */
+  width: 95%;
+  height: 10%;
+  z-index: 1; /* ensures it's above the background */
+  margin-top: 2.1%;
+}
+
+.starmu-status{
+  grid-column: 2;
+  background-color: #cccccc;
+  height: 100%;
+}
+
+.starmu-name {
+  grid-column: 1;
+  background-color: #cccccc;
+}
+
+.starmu-status-panel {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: .04fr 1fr;
+  gap: 11px;
+  
+}
+
+.starmu-status-icon.health {
+  grid-column: 1;
+  grid-row: 1;
+  background-color: #cccccc;
+}
+
+.starmu-status-icon.hunger {
+  grid-column: 1;
+  grid-row: 2;
+  background-color: #cccccc;
+}
+
+.starmu-status-icon.happiness {
+  grid-column: 1;
+  grid-row: 3;
+  background-color: #cccccc;
+}
+
+.starmu-profile{
+  grid-column: 3;
+  text-align: center;
+  background-color: #cccccc;
+}
