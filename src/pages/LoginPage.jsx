@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 
 function Login() {
     const [emailOrUsername, setEmailOrUsername] = useState('');
     const [password, setPassword] = useState('');   
+
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -16,6 +19,7 @@ function Login() {
         );
 
         console.log("Password: ", password);
+        navigate("/starmu-creation", { replace: true })
     };
 
     return (
@@ -51,7 +55,7 @@ function Login() {
                     <button type="submit" className="submitButton">Sign In</button>
                 </form>
 
-                <p>No account? <a href="#">Register</a> </p>
+                <p>No account? <Link to="/register">Register</Link></p>
             </div>
         </div>
     );

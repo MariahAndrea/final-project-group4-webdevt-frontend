@@ -5,13 +5,20 @@ import StarmuCreation from "./pages/StarmuCreation";
 import Register from "./pages/RegisterPage";
 import ScreenFrame from "./pages/ScreenFrame";
 import "./App.css";
+import StarmuPage from "./pages/StarmuPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export default function App() {
   return (
-    <ScreenFrame>
-      {/*<Login /> */}
-      <StarmuCreation />
-      {/*<Register />*/}
-    </ScreenFrame>
+    <Router>
+      <ScreenFrame>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/starmu-creation" element={<StarmuCreation />} />
+          <Route path="/starmu-page" element={<StarmuPage />} />
+        </Routes>
+      </ScreenFrame>
+    </Router>
   );
 }
