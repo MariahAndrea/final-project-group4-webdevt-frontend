@@ -1,0 +1,213 @@
+/* ShopButton.module.css */
+
+/* --- 1. Base Layout and Overlay --- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center; /* Center the popup horizontally */
+  align-items: center; /* Center the popup vertically */
+  z-index: 1000;
+}
+
+.popup {
+  position: relative; /* IMPORTANT: for absolute positioning of children */
+  background-color: #dcdcdc; /* Very light grey border/frame */
+  border: 5px solid #808080; /* Darker grey border for the main box */
+  padding: 20px; /* Internal spacing for content */
+  width: 90%; 
+  max-width: 650px; 
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  display: flex; /* Flexbox for the inner layout (title, content, money) */
+  flex-direction: column;
+  /* NO GAP HERE, as money and title are now absolute */
+  /* min-height: 400px; /* Example: ensure some height for visibility */
+}
+
+.titleContainer {
+  position: absolute; /* Relative to .popup */
+  top: -40px; /* Move it up above the popup */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  z-index: 1002; /* Ensure it's above everything */
+  background-color: #dcdcdc; /* Match popup background for the base */
+   /* Some padding around the title */
+  border-left: 5px solid #808080; /* Match popup border */
+  border-right: 5px solid #808080; /* Match popup border */
+  border-top: 5px solid #808080; /* Match popup border */
+  border-bottom: 5px solid #808080; /* No bottom border, it blends with popup */
+}
+
+/* --- 2. Title Bar --- */
+.title {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  padding: 10px 30px; /* More padding left/right to make it wider */
+  background-color: #6a6a6a; /* Dark grey bar for "STORE" */
+  /* Remove margins and border-radius here, container handles positioning */
+  white-space: nowrap; /* Prevent "STORE" from wrapping */
+}
+
+.contentWrapper {
+  flex-grow: 1; /* Allows it to take available height */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Spacing between tabs and grid */
+  padding-top: 40px; /* Push content down to account for the overlapping title */
+}
+
+/* --- A. Positioning the Money Display (Top Left) --- */
+.moneyDisplay {
+  position: absolute; /* Relative to .popup */
+  top: -80px; /* Adjust to move it slightly outside/above the top border */
+  left: -5px; /* Adjust to move it slightly outside/left of the border */
+  background-color: #6a6a6a; /* Dark grey background */
+  color: white;
+  padding: 8px 12px;
+  border: 4px solid #333333; /* Darker border */
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  z-index: 1001;
+}
+
+.currencyIcon {
+  font-size: 1.5em; /* Large '$' symbol */
+  margin-right: 5px;
+}
+
+.coinAmount {
+  /* Using fixed-width font is helpful for numbers */
+  font-family: monospace, sans-serif; 
+}
+
+/* --- 3. Tabs (Food, Toys, Consumables) --- */
+.tabRow {
+  display: flex;
+  justify-content: space-around;
+  gap: 5px;
+}
+
+.tabRow button {
+  flex: 1;
+  padding: 12px 10px;
+  border: none;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  text-align: center;
+  transition: background-color 0.1s;
+}
+
+.tabActive { /* Matches the darkest tab in the picture */
+  background-color: #555555; 
+  color: white; 
+}
+
+.tabInactive { /* Matches the medium grey tabs */
+  background-color: #999999;
+  color: #333;
+}
+
+/* --- 4. Item Grid --- */
+.grid {
+  background-color: #cccccc; /* Slightly darker background for the grid area */
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* THREE columns as per the image */
+  gap: 15px; 
+  flex-grow: 1; 
+  /* max-height: 400px; Remove max-height for now unless content overflows */
+}
+
+/* --- 5. Individual Item Card --- */
+.card {
+  background-color: #cccccc; /* Cards blend into the grid background */
+  border: 4px solid #808080; /* Dark grey border around each card */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 5px; 
+}
+
+.imagePlaceholder {
+  width: 100%; 
+  aspect-ratio: 1 / 1; /* Makes it a perfect square */
+  max-width: 100px; 
+  background-color: #6a6a6a; /* Dark grey for placeholder */
+  margin-bottom: 8px;
+}
+
+.itemName {
+  font-weight: bold;
+  color: #333;
+  font-size: 1em;
+  text-align: center;
+}
+
+.itemPrice {
+  color: #333;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.buyButton {
+  background-color: #808080; 
+  color: white;
+  padding: 8px 15px;
+  width: 90%;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.buyButton:disabled {
+  background-color: #a0a0a0; /* Lighter grey when disabled */
+  cursor: not-allowed;
+}
+
+/* --- 6. Footer and Close Button --- */
+.closeButton {
+  position: absolute; /* Relative to the full-screen .overlay */
+  /* Calculate the position to center it at the bottom */
+  bottom: 70px; 
+  left: 50%;
+  transform: translateX(-50%); /* Centers the element horizontally */
+  
+  /* Styling from the wireframe */
+  background-color: #555555; 
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton:hover {
+  background-color: #444444;
+}
+
+.noItemsMessage {
+  grid-column: 1 / -1; /* Center the message across all columns */
+  text-align: center;
+  color: #555;
+  padding: 20px;
+}

@@ -1,11 +1,22 @@
 //StarmuPage.jsx
 
 // home page after starmu creation
-import React from "react";
+import React, { useState } from "react";
+import ShopPopup from "../components/ShopButton";
 import "../css/StarmuPage.css";
 
 
 function StarmuPage() {
+    const [isShopOpen, setIsShopOpen] = useState(false);
+
+    
+    const handleOpenShop = () => {
+        setIsShopOpen(true);
+    };
+
+    const handleCloseShop = () => {
+        setIsShopOpen(false);
+    };
 
     return (
         <div className="starmupage-container">
@@ -15,7 +26,7 @@ function StarmuPage() {
             <div className="left-buttons">
                 <button className="starmu-btn">?</button>
                 <button className="starmu-btn">Daily Login</button>
-                <button className="starmu-btn">Store</button>
+                <button className="starmu-btn"onClick={handleOpenShop}>Store</button>
                 <button className="starmu-btn">Inventory</button>
             </div>
              <div className="right-buttons">
@@ -40,9 +51,15 @@ function StarmuPage() {
             </div>
 
             <div className="starmu-placeholder"></div>
+
+            <ShopPopup 
+                isOpen={isShopOpen} 
+                onClose={handleCloseShop} />
+            
         </div>
       
     );
+    
   }
     
 export default StarmuPage;
