@@ -1,6 +1,11 @@
-import React, { createContext, useContext, useState, useMemo } from "react";
+import React, { createContext, useContext, useState, useMemo, useEffect } from "react"; // 1. Added useEffect
 
 const GameContext = createContext(null);
+
+// Utility function to ensure stats stay between 0 and 100
+const clamp = (value) => {
+  return Math.max(0, Math.min(100, value));
+};
 
 export const GameProvider = ({ children }) => {
 //pet stats
@@ -46,7 +51,7 @@ export const GameProvider = ({ children }) => {
   };
 
   // Offline decay on initial load
-  useEffect(() => {
+  useEffect(() => { // 2. useEffect is now available
     const last = localStorage.getItem("lastUpdated");
     if (!last) return;
     const elapsedMinutes = Math.floor((Date.now() - Number(last)) / 60000);
@@ -60,7 +65,7 @@ export const GameProvider = ({ children }) => {
   }, []);
 
 // Save to localStorage on stat changes
-  useEffect(() => {
+  useEffect(() => { // 2. useEffect is now available
     localStorage.setItem("hunger", JSON.stringify(hunger));
     localStorage.setItem("energy", JSON.stringify(energy));
     localStorage.setItem("happiness", JSON.stringify(happiness));
