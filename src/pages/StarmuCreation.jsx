@@ -17,6 +17,7 @@ function StarmuCreation() {
   const [showText, setShowText] = useState(false);
   const [starmuColor, setStarmuColor] = useState("");
   const [starmuName, setStarmuName] = useState("");
+  const [blockClicks, setBlockClicks] = useState(true);
 
   useEffect(() => {
     if (phase === "cutscene") {
@@ -31,7 +32,7 @@ function StarmuCreation() {
 
   // handle cutscene click to proceed to colorpick phase
   const handleCutsceneClick = () => {
-    if (phase === "cutscene") setPhase("colorpick");
+    if (phase === "cutscene" && !blockClicks) setPhase("colorpick");
   };
 
   // handle color selection
@@ -56,7 +57,9 @@ function StarmuCreation() {
   // --- CUTSCENE PHASE ---
   if (phase === "cutscene") {
     return (
-      <div className="starmu-container" onClick={handleCutsceneClick}>
+      <div className={`starmu-container ${blockClicks ? "block-clicks" : ""}`}
+      onClick={handleCutsceneClick}
+      >
         <div className="starmu-bg"></div>
 
         {showText && (
@@ -71,8 +74,9 @@ function StarmuCreation() {
           </div>
         )}
 
-        {showComet && <div className="comet"></div>}
+        {showComet && <div className="comet" onAnimationEnd={() => setBlockClicks(false)}></div>}
       </div>
+
     );
   }
 
