@@ -1,22 +1,35 @@
 //StarmuPage.jsx
 
 // home page after starmu creation
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ShopPopup from "../components/ShopButton";
+import InventoryPopup from "../components/InventoryButton";
+import LoadingScreen from "../components/LoadingScreen";
 import "../css/StarmuPage.css";
 
 
 function StarmuPage() {
     const [isShopOpen, setIsShopOpen] = useState(false);
+    const [isInventoryOpen, setIsInventoryOpen] = useState(false);
+    const [loading, setLoading] = useState(true); 
 
+    useEffect(() => {
+        // Simulate API load or setup delay
+        const timer = setTimeout(() => setLoading(false), 1200);
+        return () => clearTimeout(timer);
+    }, []);
     
-    const handleOpenShop = () => {
-        setIsShopOpen(true);
-    };
+    const handleOpenShop = () => setIsShopOpen(true);
+    const handleCloseShop = () => setIsShopOpen(false);
 
-    const handleCloseShop = () => {
-        setIsShopOpen(false);
-    };
+    const handleOpenInventory = () => setIsInventoryOpen(true); 
+    const handleCloseInventory = () => setIsInventoryOpen(false);
+
+    if (loading) {
+        // LoadingScreen hides itself by default (show = false). Pass show={true}
+        // so the overlay is rendered while we're in the loading state.
+        return <LoadingScreen show={true} />;
+    }
 
     return (
         <div className="starmupage-container">
@@ -27,7 +40,7 @@ function StarmuPage() {
                 <button className="starmu-btn">?</button>
                 <button className="starmu-btn">Daily Login</button>
                 <button className="starmu-btn"onClick={handleOpenShop}>Store</button>
-                <button className="starmu-btn">Inventory</button>
+                <button className="starmu-btn" onClick={handleOpenInventory}>Inventory</button>
             </div>
              <div className="right-buttons">
                 <button className="starmu-btn">Gacha</button>
@@ -52,9 +65,13 @@ function StarmuPage() {
 
             <div className="starmu-placeholder"></div>
 
+             {/* Popups */}
             <ShopPopup 
                 isOpen={isShopOpen} 
                 onClose={handleCloseShop} />
+            <InventoryPopup 
+                isOpen={isInventoryOpen} 
+                onClose={handleCloseInventory} />
             
         </div>
       

@@ -1,3 +1,5 @@
+//GameContext.jsx
+
 import React, { createContext, useContext, useState, useMemo, useEffect } from "react"; // 1. Added useEffect
 
 const GameContext = createContext(null);
@@ -19,6 +21,26 @@ export const GameProvider = ({ children }) => {
   const [level, setLevel] = useState(() => JSON.parse(localStorage.getItem("level")) ?? 1);
   const [isGameOver, setIsGameOver] = useState(false);
 
+const [inventoryItems, setInventoryItems] = useState(() => {
+  const saved = localStorage.getItem("inventoryItems");
+  if (saved) return JSON.parse(saved);
+
+  // temporary test items (only if nothing in localStorage) - remove when done testing
+  return [
+    { id: 1, name: "Apple", type: "food", quantity: 3 },
+    { id: 2, name: "Soap", type: "clean", quantity: 1 },
+    { id: 3, name: "Ball", type: "toys", quantity: 2 },
+    { id: 4, name: "Ball", type: "toys", quantity: 2 },
+    { id: 5, name: "Ball", type: "toys", quantity: 2 },
+    { id: 6, name: "Ball", type: "consumables", quantity: 2 },
+    { id: 7, name: "Ball", type: "consumables", quantity: 2 },
+    { id: 8, name: "Apple", type: "food", quantity: 2 },
+    { id: 9, name: "Apple", type: "food", quantity: 2 },
+  ];
+});
+
+  
+
 // Shop (editable)
   const shopItems = [
     { id: 1, name: "Apple", type: "food", effect: 10, price: 3 },
@@ -31,6 +53,8 @@ export const GameProvider = ({ children }) => {
   const buyItem = (item) => {
     if (coins < item.price) return false;
     setCoins((c) => c - item.price);
+
+    // Apply item effect
     switch (item.type) {
       case "food":
         setHunger((h) => clamp(h + item.effect));
@@ -47,6 +71,19 @@ export const GameProvider = ({ children }) => {
       default:
         break;
     }
+ 
+      // Add to inventory
+    setInventoryItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id);
+      if (existing) {
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      } else {
+        return [...prev, { ...item, quantity: 1 }];
+      }
+    });
+
     return true;
   };
 
@@ -75,6 +112,7 @@ export const GameProvider = ({ children }) => {
     localStorage.setItem("lastUpdated", Date.now());
   }, [hunger, energy, happiness, cleanliness, coins, level]);
 
+  //provide context values
   const value = useMemo(() => ({
     name,
     hunger,
@@ -86,6 +124,8 @@ export const GameProvider = ({ children }) => {
     isGameOver,
     shopItems,
     buyItem,
+    inventoryItems,
+    setInventoryItems,
   }), [name, hunger, energy, happiness, cleanliness, coins, level, isGameOver]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
