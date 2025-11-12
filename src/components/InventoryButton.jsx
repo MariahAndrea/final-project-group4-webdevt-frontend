@@ -1,0 +1,83 @@
+// InventoryButton.jsx
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import styles from "../css/InventoryButton.module.css";
+import { useGame } from "../store/GameContext"; // Adjusted path as per your code
+
+export default function InventoryPopup({ isOpen, onClose }) {
+    // Destructure inventory items from the context
+    const { inventoryItems } = useGame();
+    const [category, setCategory] = useState("All");
+
+
+    const filteredItems = category === "All"
+        ? inventoryItems
+        : inventoryItems.filter(item => item.type === category.toLowerCase());
+
+    if (!isOpen) return null;
+
+    // closing inventory when clicking outside the popup
+    const handleOverlayClick = (e) => {
+        if (e.target === e.currentTarget) {
+        onClose();
+        }
+    };
+
+    console.log(filteredItems);
+    return (
+        <motion.div
+            className={styles.overlay}
+            onClick={handleOverlayClick}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
+            {/* Sliding container from bottom */}
+            <motion.div
+                className={styles.popup}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", stiffness: 70, damping: 12 }}
+            >
+
+                {/* Tabs */}
+                <div className={styles.tabRow}>
+                    {["All", "Food", "Toys", "Consumables"].map(tab => (
+                        <button
+                            key={tab}
+                            className={category === tab ? styles.tabActive : styles.tabInactive}
+                            onClick={() => setCategory(tab)}
+                        >
+                            {tab}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Horizontal scrollable grid */}
+                <div className={styles.inventoryGrid}>
+                <div className={styles.horizontalScroll}>
+                    {filteredItems.length > 0 ? (
+                        filteredItems.map(item => (
+                            <div key={item.id} className={styles.itemCard}>
+                                <div className={styles.imagePlaceholder} />
+                                <p className={styles.itemName}>{item.name}</p>
+                                <p className={styles.itemCount}>x{item.quantity}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className={styles.noItemsMessage}>No items yet.</p>
+                    )}
+                </div>
+                
+                {/* Close button */}
+                <button className={styles.closeButton} onClick={onClose}>
+                    Close
+                </button>
+
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+}    

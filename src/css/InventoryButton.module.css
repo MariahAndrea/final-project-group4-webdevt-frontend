@@ -1,0 +1,43 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  transition: opacity 0.5s ease;
+  z-index: 9999;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: min(10vmin, 3rem);
+  height: min(10vmin, 3rem);
+  border: 0.5vmin solid #d1d5db; /* light gray */
+  border-top-color: #374151; /* darker gray */
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.text {
+  margin-top: 1.5vmin;
+  color: #4b5563;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  text-align: center;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
