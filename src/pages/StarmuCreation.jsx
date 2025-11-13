@@ -12,7 +12,7 @@ import usePreloadAssets from "../hooks/usePreloadAssets";
 function StarmuCreation() {
   // the Starmu Creation page is divided into multiple phases
   const navigate = useNavigate();
-  const [phase, setPhase] = useState("cutscene"); // "cutscene" | "colorpick" | "naming" | "greeting"
+  const [phase, setPhase] = useState("cutscene");
   const [showComet, setShowComet] = useState(false);
   const [showText, setShowText] = useState(false);
   const [starmuColor, setStarmuColor] = useState("");
