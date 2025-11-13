@@ -33,10 +33,7 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem; /* space between text and placeholder */
-  animation: fadeIn 1.5s ease-in forwards;
 }
-
-
 
 /* ===== Text ===== */
 .cutscene-text {
@@ -61,12 +58,25 @@
   background-color: #d9d9d9;
   border-radius: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  /*opacity: 0;
-  /*animation: fadeIn 1.5s ease-in forwards;*/
-  /*animation-delay: 0.8s; /* fade in after text */
-  position:relative;
+  position: relative;
   top: 1.55rem;
+  /* removed default opacity/animation for all phases */
+}
 
+/* One-time animation only for cutscene phase */
+.starmu-placeholder.cutscene-animate {
+  animation: starmuAppear 1.2s ease-out forwards; /* runs only once */
+}
+
+@keyframes starmuAppear {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ===== Comet ===== */
@@ -116,6 +126,7 @@
 /* Adjust only in the colorpick phase */
 .phase-colorpick .starmu-placeholder {
   top: 2rem;
+  animation: none; /* no animation in colorpick */
 }
 
 .color-container {
@@ -224,8 +235,9 @@
 }
 
 .phase-naming .starmu-placeholder {
-  position:relative;
+  position: relative;
   top: 5.50rem;
+  animation: none; /* no animation in naming phase */
 }
 
 .starmu-name-input:focus {
@@ -236,7 +248,6 @@
   color: #666;
   font-style: italic;
 }
-
 
 /* Input styling */
 .starmu-name-input {
