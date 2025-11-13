@@ -1,7 +1,7 @@
 //StarmuPage.jsx
 
 // home page after starmu creation
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import ShopPopup from "../components/ShopButton";
 import InventoryPopup from "../components/InventoryButton";
 import LoadingScreen from "../components/LoadingScreen";
@@ -13,12 +13,10 @@ function StarmuPage() {
     const [isInventoryOpen, setIsInventoryOpen] = useState(false);
     const [loading, setLoading] = useState(true); 
 
-    useEffect(() => {
-        // Simulate API load or setup delay
-        const timer = setTimeout(() => setLoading(false), 1200);
-        return () => clearTimeout(timer);
+    useLayoutEffect(() => {
+    requestAnimationFrame(() => setLoading(false));
     }, []);
-    
+
     const handleOpenShop = () => setIsShopOpen(true);
     const handleCloseShop = () => setIsShopOpen(false);
 

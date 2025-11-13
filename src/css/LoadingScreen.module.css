@@ -9,6 +9,11 @@
   align-items: center;
   z-index: 2000;
   backdrop-filter: blur(6px);
+  transition: opacity 0.5s ease; /* added fade transition */
+}
+
+.fadeOut {
+  opacity: 0; /* fade out when applied */
 }
 
 .loadingBox {
