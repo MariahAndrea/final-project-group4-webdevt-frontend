@@ -4,4 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-})
+  preview: {
+    allowedHosts: ['*'], // allow requests from any host - for dev, for final add : final-project-group4-webdevt-frontend-bf96.onrender.com
+  },
+});
