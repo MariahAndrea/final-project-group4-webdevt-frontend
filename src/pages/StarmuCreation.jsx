@@ -1,33 +1,42 @@
-// StarmuCreation.jsx
-// where the creation of a starmu happens
-// note: will add API calls to each phase later 
-// note: do we use react-router-dom to the whole project?
-
-import React, { useState, useEffect } from "react";
-import LoadingScreen from "../components/LoadingScreen";
-import "../css/StarmuCreation.css"; // external CSS
+// /pages/StarmuCreation.jsx
+// /pages/StarmuCreation.jsx
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import LoadingScreen from "../components/LoadingScreen";
+import CutscenePhase from "../components/CutscenePhase";
+import ColorPickPhase from "../components/ColorPickPhase";
+import NamingPhase from "../components/NamingPhase";
+import GreetingPhase from "../components/GreetingPhase";
+
 import usePreloadAssets from "../hooks/usePreloadAssets";
+import { useGame } from "../store/GameContext";
+import "../css/StarmuCreation.css";
 
 function StarmuCreation() {
-  // the Starmu Creation page is divided into multiple phases
   const navigate = useNavigate();
-  const [phase, setPhase] = useState("cutscene");
+  const {
+    starmuPhase,
+    setStarmuPhase,
+    starmuData,
+    setStarmuData
+  } = useGame();
+
+  const [blockClicks, setBlockClicks] = useState(true);
   const [showComet, setShowComet] = useState(false);
   const [showText, setShowText] = useState(false);
-  const [starmuColor, setStarmuColor] = useState("");
-  const [starmuName, setStarmuName] = useState("");
-  const [blockClicks, setBlockClicks] = useState(true);
 
-  // preload important assets for this page
-  const loading = usePreloadAssets([
+  const assets = [
     "/images/bg_StarmuCreation.jpg",
-    "/images/comet.png"
-    // add more images if needed
-  ]);
+    "/images/comet.png",
+  ];
+  const loading = usePreloadAssets(assets);
 
+  // ==========================
+  // Cutscene timers
+  // ==========================
   useEffect(() => {
-    if (phase === "cutscene") {
+    if (starmuPhase === "cutscene") {
       const cometTimer = setTimeout(() => setShowComet(true), 1000);
       const textTimer = setTimeout(() => setShowText(true), 4000);
       return () => {
@@ -35,175 +44,72 @@ function StarmuCreation() {
         clearTimeout(textTimer);
       };
     }
-  }, [phase]);
+  }, [starmuPhase]);
 
-  // handle cutscene click to proceed to colorpick phase
-  const handleCutsceneClick = () => {
-    if (phase === "cutscene" && !blockClicks) setPhase("colorpick");
-  };
-
-  // handle color selection
+  // ==========================
+  // Phase handlers
+  // ==========================
   const handleColorSelect = (color) => {
-    setStarmuColor(color);
-    setPhase("naming");
+    setStarmuData({ ...starmuData, color });
+    setStarmuPhase("naming");
   };
 
-  const handleNameInput = (e) => {
-    if (e.key === "Enter" && starmuName.trim() !== "") {
-      setPhase("greeting");
-      // TODO: Save to MongoDB here (via API call)
-      // Example:
-      // fetch("/api/starmu", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ name: starmuName }),
-      // });
-    }
+  const handleNameConfirm = (name) => {
+    setStarmuData({ ...starmuData, name });
+    setStarmuPhase("greeting");
+    // TODO: Save to DB here if needed
   };
 
-  if (loading) return <LoadingScreen show={true} />;
+  const handleGreeting = () => {
+    navigate("/starmu-page");
 
-  return (
-    <>
-      {/* --- CUTSCENE PHASE --- */}
-      {phase === "cutscene" && (
-        <div
-          className={`starmu-container ${blockClicks ? "block-clicks" : ""}`}
-          onClick={handleCutsceneClick}
-        >
-          <div className="starmu-bg"></div>
+    // Reset creation for testing (does not allow backtracking)
+    setStarmuPhase("cutscene");
+    setStarmuData({ color: "", name: "" });
+    setShowComet(false);
+    setShowText(false);
+    setBlockClicks(true);
 
-          {showText && (
-            <div className="cutscene-content">
-              <div className="cutscene-text">
-                A comet has fallen
-                <br />A Starmu has emerged.
-                <br />
-              </div>
-              {/* Apply animation class only in cutscene */}
-              <div className="starmu-placeholder cutscene-animate"></div>
-              <div className="continue-text">Click to continue</div>
-            </div>
-          )}
+    console.log("Starmu creation reset for testing.");
+  };
 
-          {showComet && (
-            <div
-              className="comet"
-              onAnimationEnd={() => setBlockClicks(false)}
-            ></div>
-          )}
-        </div>
-      )}
+  if (loading) return <LoadingScreen show />;
 
-      {/* --- COLOR PICKING PHASE --- */}
-      {phase === "colorpick" && (
-        <div className="starmu-container phase-colorpick">
-          <div className="starmu-bg"></div>
+  // ==========================
+  // Phase components
+  // ==========================
+  const phaseComponents = {
+    cutscene: (
+      <CutscenePhase
+        showComet={showComet}
+        showText={showText}
+        blockClicks={blockClicks}
+        onCutsceneClick={() => !blockClicks && setStarmuPhase("colorpick")}
+        onCometEnd={() => setBlockClicks(false)}
+      />
+    ),
+    colorpick: (
+      <ColorPickPhase
+        selectedColor={starmuData.color}
+        onColorSelect={handleColorSelect}
+        onConfirm={() => setStarmuPhase("naming")}
+      />
+    ),
+    naming: (
+      <NamingPhase
+        starmuName={starmuData.name}
+        onNameConfirm={handleNameConfirm}
+      />
+    ),
+    greeting: (
+      <GreetingPhase
+        starmuData={starmuData}
+        onTakeCare={handleGreeting}
+      />
+    ),
+  };
 
-          {showText && (
-            <div className="cutscene-content">
-              <div className="cutscene-text">pick a color for your starmu.</div>
-              <div className="starmu-placeholder"></div>
-            </div>
-          )}
-
-          {/* === Color selection and confirm button === */}
-          <div className="color-container">
-            <div className="color-options">
-              <div
-                className={`color-option color-purple ${
-                  starmuColor === "purple" ? "selected" : ""
-                }`}
-                onClick={() => setStarmuColor("purple")}
-              ></div>
-              <div
-                className={`color-option color-pink ${
-                  starmuColor === "pink" ? "selected" : ""
-                }`}
-                onClick={() => setStarmuColor("pink")}
-              ></div>
-              <div
-                className={`color-option color-mintGreen ${
-                  starmuColor === "mintGreen" ? "selected" : ""
-                }`}
-                onClick={() => setStarmuColor("mintGreen")}
-              ></div>
-              <div
-                className={`color-option color-babyBlue ${
-                  starmuColor === "babyBlue" ? "selected" : ""
-                }`}
-                onClick={() => setStarmuColor("babyBlue")}
-              ></div>
-              <div
-                className={`color-option color-beige ${
-                  starmuColor === "beige" ? "selected" : ""
-                }`}
-                onClick={() => setStarmuColor("beige")}
-              ></div>
-            </div>
-
-            <button
-              className="confirm-button"
-              onClick={() => starmuColor && setPhase("naming")}
-              disabled={!starmuColor}
-            >
-              Confirm
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* --- NAMING PHASE --- */}
-      {phase === "naming" && (
-        <div className="starmu-container phase-naming">
-          <div className="starmu-bg"></div>
-
-          {/* Main content (text + Starmu placeholder) */}
-          <div className="cutscene-content">
-            <div className="cutscene-text">What will you name your Starmu?</div>
-            <div className="starmu-placeholder"></div>
-          </div>
-
-          {/* Name input container (separate section) */}
-          <div className="name-container">
-            <input
-              type="text"
-              className="starmu-name-input"
-              placeholder="Enter name..."
-              value={starmuName}
-              onChange={(e) => setStarmuName(e.target.value)}
-              onKeyDown={handleNameInput}
-            />
-            <div className="continue-text">Press Enter to confirm</div>
-          </div>
-        </div>
-      )}
-
-      {/* --- GREETING PHASE --- */}
-      {phase === "greeting" && (
-        <div className="starmu-container phase-greeting">
-          <div className="starmu-bg"></div>
-
-          <div className="cutscene-content">
-            <div className="cutscene-text">
-              Say hello to
-              <br />
-              <span className="starmu-name-display">{starmuName || "Starmu"}</span>!
-            </div>
-
-            <div className="starmu-placeholder"></div>
-
-            <button
-              className="takecare-button"
-              onClick={() => navigate("/starmu-page")}
-            >
-              Take care of {starmuName || "Starmu"}
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
+  return phaseComponents[starmuPhase];
 }
 
 export default StarmuCreation;

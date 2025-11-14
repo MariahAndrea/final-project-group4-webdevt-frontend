@@ -1,60 +1,53 @@
-//GameContext.jsx
-
-import React, { createContext, useContext, useState, useMemo, useEffect } from "react"; // 1. Added useEffect
+// GameContext.jsx
+import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
 
 const GameContext = createContext(null);
 
-// Utility function to ensure stats stay between 0 and 100
-const clamp = (value) => {
-  return Math.max(0, Math.min(100, value));
-};
+const clamp = (value) => Math.max(0, Math.min(100, value));
 
 export const GameProvider = ({ children }) => {
-//pet stats
+  // ==========================
+  // Pet stats
+  // ==========================
   const [name, setName] = useState("My Pet");
-  const [hunger, setHunger] = useState(() => JSON.parse(localStorage.getItem("hunger")) ?? 50); // 0 = starving, 100 = full
-  const [energy, setEnergy] = useState(() => JSON.parse(localStorage.getItem("energy")) ?? 50); // 0 = exhausted, 100 = energized
-  const [happiness, setHappiness] = useState(() => JSON.parse(localStorage.getItem("happiness")) ?? 50); // 0 = sad, 100 = happy
-  const [cleanliness, setCleanliness] = useState(() => JSON.parse(localStorage.getItem("cleanliness")) ?? 50); // 0 = dirty, 100 = clean
+  const [hunger, setHunger] = useState(() => JSON.parse(localStorage.getItem("hunger")) ?? 50);
+  const [energy, setEnergy] = useState(() => JSON.parse(localStorage.getItem("energy")) ?? 50);
+  const [happiness, setHappiness] = useState(() => JSON.parse(localStorage.getItem("happiness")) ?? 50);
+  const [cleanliness, setCleanliness] = useState(() => JSON.parse(localStorage.getItem("cleanliness")) ?? 50);
 
+  // ==========================
+  // Currency / level
+  // ==========================
   const [coins, setCoins] = useState(() => JSON.parse(localStorage.getItem("coins")) ?? 0);
+  const [stargleams, setStargleams] = useState(() => JSON.parse(localStorage.getItem("stargleams")) ?? 0);
   const [level, setLevel] = useState(() => JSON.parse(localStorage.getItem("level")) ?? 1);
   const [isGameOver, setIsGameOver] = useState(false);
 
-const [inventoryItems, setInventoryItems] = useState(() => {
-  const saved = localStorage.getItem("inventoryItems");
-  if (saved) return JSON.parse(saved);
+  // ==========================
+  // Inventory
+  // ==========================
+  const [inventoryItems, setInventoryItems] = useState(() => {
+    const saved = localStorage.getItem("inventoryItems");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // temporary test items (only if nothing in localStorage) - remove when done testing
-  return [
-    { id: 1, name: "Apple", type: "food", quantity: 3 },
-    { id: 2, name: "Soap", type: "clean", quantity: 1 },
-    { id: 3, name: "Ball", type: "toys", quantity: 2 },
-    { id: 4, name: "Ball", type: "toys", quantity: 2 },
-    { id: 5, name: "Ball", type: "toys", quantity: 2 },
-    { id: 6, name: "Ball", type: "consumables", quantity: 2 },
-    { id: 7, name: "Ball", type: "consumables", quantity: 2 },
-    { id: 8, name: "Apple", type: "food", quantity: 2 },
-    { id: 9, name: "Apple", type: "food", quantity: 2 },
-  ];
-});
-
-  
-
-// Shop (editable)
+  // ==========================
+  // Shop items
+  // ==========================
   const shopItems = [
     { id: 1, name: "Apple", type: "food", effect: 10, price: 3 },
     { id: 2, name: "Soap", type: "clean", effect: 20, price: 5 },
-    { id: 3, name: "Ball", type: "play", effect: 15, price: 7 },
+    { id: 3, name: "Ball", type: "toys", effect: 15, price: 7 },
     { id: 4, name: "Bed", type: "sleep", effect: 25, price: 10 },
   ];
-  
-//effects
+
+  // ==========================
+  // Buy an item
+  // ==========================
   const buyItem = (item) => {
     if (coins < item.price) return false;
     setCoins((c) => c - item.price);
 
-    // Apply item effect
     switch (item.type) {
       case "food":
         setHunger((h) => clamp(h + item.effect));
@@ -71,8 +64,7 @@ const [inventoryItems, setInventoryItems] = useState(() => {
       default:
         break;
     }
- 
-      // Add to inventory
+
     setInventoryItems((prev) => {
       const existing = prev.find((i) => i.id === item.id);
       if (existing) {
@@ -87,32 +79,61 @@ const [inventoryItems, setInventoryItems] = useState(() => {
     return true;
   };
 
-  // Offline decay on initial load
-  useEffect(() => { // 2. useEffect is now available
+  // ==========================
+  // Helper functions for currency
+  // ==========================
+  const addCoins = (amount) => setCoins((c) => c + amount);
+  const addStargleams = (amount) => setStargleams((s) => s + amount);
+  const spendStargleams = (amount) => setStargleams((s) => Math.max(0, s - amount));
+  const exchangeCoins = (amount) => setCoins((c) => Math.max(0, c - amount));
+
+  // ==========================
+  // Offline decay
+  // ==========================
+  useEffect(() => {
     const last = localStorage.getItem("lastUpdated");
     if (!last) return;
     const elapsedMinutes = Math.floor((Date.now() - Number(last)) / 60000);
     if (elapsedMinutes > 0) {
-      const decayAmount = elapsedMinutes; // 1 per min
-      setHunger((h) => clamp(h - decayAmount));
-      setEnergy((e) => clamp(e - decayAmount));
-      setHappiness((h) => clamp(h - decayAmount));
-      setCleanliness((c) => clamp(c - decayAmount));
+      const decay = elapsedMinutes;
+      setHunger((h) => clamp(h - decay));
+      setEnergy((e) => clamp(e - decay));
+      setHappiness((h) => clamp(h - decay));
+      setCleanliness((c) => clamp(c - decay));
     }
   }, []);
 
-// Save to localStorage on stat changes
-  useEffect(() => { // 2. useEffect is now available
+  // ==========================
+  // Starmu creation state
+  // ==========================
+  const [starmuPhase, setStarmuPhase] = useState(
+    () => JSON.parse(localStorage.getItem("starmuPhase")) ?? "cutscene"
+  );
+  const [starmuData, setStarmuData] = useState(
+    () => JSON.parse(localStorage.getItem("starmuData")) ?? { color: "", name: "" }
+  );
+
+  // ==========================
+  // Save to localStorage
+  // ==========================
+  useEffect(() => {
     localStorage.setItem("hunger", JSON.stringify(hunger));
     localStorage.setItem("energy", JSON.stringify(energy));
     localStorage.setItem("happiness", JSON.stringify(happiness));
     localStorage.setItem("cleanliness", JSON.stringify(cleanliness));
     localStorage.setItem("coins", JSON.stringify(coins));
     localStorage.setItem("level", JSON.stringify(level));
+    localStorage.setItem("stargleams", JSON.stringify(stargleams));
     localStorage.setItem("lastUpdated", Date.now());
-  }, [hunger, energy, happiness, cleanliness, coins, level]);
 
-  //provide context values
+    // Save starmu creation
+    localStorage.setItem("starmuPhase", JSON.stringify(starmuPhase));
+    localStorage.setItem("starmuData", JSON.stringify(starmuData));
+  }, [hunger, energy, happiness, cleanliness, coins, level, stargleams, starmuPhase, starmuData]);
+
+  // ==========================
+  // Context values
+  // ==========================
   const value = useMemo(() => ({
     name,
     hunger,
@@ -126,7 +147,17 @@ const [inventoryItems, setInventoryItems] = useState(() => {
     buyItem,
     inventoryItems,
     setInventoryItems,
-  }), [name, hunger, energy, happiness, cleanliness, coins, level, isGameOver]);
+    stargleams,
+    addCoins,
+    addStargleams,
+    spendStargleams,
+    exchangeCoins,
+    // Starmu creation
+    starmuPhase,
+    setStarmuPhase,
+    starmuData,
+    setStarmuData,
+  }), [name, hunger, energy, happiness, cleanliness, coins, level, isGameOver, stargleams, starmuPhase, starmuData]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

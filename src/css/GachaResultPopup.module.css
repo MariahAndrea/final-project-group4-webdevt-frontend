@@ -1,0 +1,134 @@
+/*GachaResultPopup.module.css*/
+
+/* ==============================
+   Overlay
+============================== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  overflow-y: auto;
+}
+
+/* ==============================
+   Popup
+============================== */
+.popup {
+  background-color: #dcdcdc;
+  border: 5px solid #808080;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  position: relative;
+  animation: popupFade 0.3s ease-out;
+}
+
+@keyframes popupFade {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==============================
+   Rolling State (SPINNER)
+============================== */
+.rollingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* Spinner Animation */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid rgba(255, 255, 255, 0.3);
+  border-top: 6px solid gray;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rollingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rollingText {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #555;
+}
+
+/* ==============================
+   Title (after rolling)
+============================== */
+.title {
+  margin-bottom: 15px;
+  color: #6a6a6a;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+/* ==============================
+   Result Grid
+============================== */
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+  justify-items: center;
+}
+
+.resultCard {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0.5rem;
+  padding: 8px;
+  width: 100%;           /* full width within the grid cell */
+  max-width: 120px;      /* limit maximum size */
+  aspect-ratio: 1 / 1;   /* ensures square shape */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* ==============================
+   Close Button
+============================== */
+.confirmButton {
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.confirmButton:hover {
+  background-color: #6b84f9;
+}

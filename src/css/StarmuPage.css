@@ -67,6 +67,11 @@
   z-index: 2;
 }
 
+.starmu-placeholder {
+  z-index: 1000; /* ensures it’s above other elements */
+  cursor: pointer; 
+}
+
 .starmu-top-panel {
   display: grid;
   grid-template-columns: 1.0fr 1.7fr .25fr; 
@@ -121,4 +126,63 @@
   grid-column: 3;
   text-align: center;
   background-color: #cccccc;
+}
+
+/* ================= Money / Stargleams Display ================= */
+.starmu-currency-panel {
+  position: relative;
+  top: 20%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 20px;
+  z-index: 1;
+}
+
+.currency-display {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.coins .currency-icon {
+  color: gold;
+}
+
+.stargleams .currency-icon {
+  color: #5af;
+}
+
+/* Reward popup for clickable placeholder */
+.reward-popup {
+  position: fixed;
+
+  /* Pull the click coordinates from data attributes */
+  left: var(--x);
+  top: var(--y);
+  pointer-events: none;
+  transform: translate(-50%, -50%); /* Center exactly at cursor */
+
+  font-weight: bold;
+  font-size: 20px;
+  color: yellow;
+  text-shadow: 1px 1px 2px black;
+
+  animation: floatUp 1.5s ease-out forwards;
+  z-index: 1002;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -20px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -70px);
+  }
 }

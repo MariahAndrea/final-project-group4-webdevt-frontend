@@ -1,0 +1,15 @@
+{
+  "cutscene": [
+    "A comet has fallen",
+    "A Starmu has emerged."
+  ],
+  "colorpick": [
+    "Pick a color for your Starmu."
+  ],
+  "naming": [
+    "What will you name your Starmu?"
+  ],
+  "greeting": [
+    "Say hello to your new Starmu!"
+  ]
+}
