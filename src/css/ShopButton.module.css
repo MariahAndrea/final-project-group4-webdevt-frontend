@@ -1,4 +1,15 @@
-/* ShopButton.module.css */
+/*TO FIX:
+  - CURRENCY CONTAINER DIMENSIONS
+  - COLORS
+  - TITLE DIMENSIONS
+*/
+:root{
+  --color1: #EDE2E0;
+  --color2: #DEC2DB; /*Light Pink*/
+  --color3: #5B62B3; /*Dark purple*/
+  --color4: #2E80E4;
+  --color5: #6DA0E1;
+}
 
 /* --- 1. Base Layout and Overlay --- */
 .overlay {
@@ -16,14 +27,15 @@
 
 .popup {
   position: relative; /* IMPORTANT: for absolute positioning of children */
-  background-color: #dcdcdc; /* Very light grey border/frame */
-  border: 5px solid #808080; /* Darker grey border for the main box */
+  background-color: var(--color1); /* Very light grey border/frame */
+  border: 5px solid var(--color3); /* Darker grey border for the main box */
   padding: 20px; /* Internal spacing for content */
   width: 90%; 
   max-width: 650px; 
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
   display: flex; /* Flexbox for the inner layout (title, content, money) */
   flex-direction: column;
+  border-radius: 10px;
   /* NO GAP HERE, as money and title are now absolute */
   /* min-height: 400px; /* Example: ensure some height for visibility */
 }
@@ -34,12 +46,13 @@
   left: 50%;
   transform: translateX(-50%); /* Center horizontally */
   z-index: 1002; /* Ensure it's above everything */
-  background-color: #dcdcdc; /* Match popup background for the base */
+  background-color: var(--color3); /* Match popup background for the base */
    /* Some padding around the title */
-  border-left: 5px solid #808080; /* Match popup border */
-  border-right: 5px solid #808080; /* Match popup border */
-  border-top: 5px solid #808080; /* Match popup border */
-  border-bottom: 5px solid #808080; /* No bottom border, it blends with popup */
+  border-left: 5px solid var(--color3); /* Match popup border */
+  border-right: 5px solid var(--color3); /* Match popup border */
+  border-top: 5px solid var(--color3); /* Match popup border */
+  border-bottom: 5px solid var(--color3); /* No bottom border, it blends with popup */
+  border-radius: 10px;
 }
 
 /* --- 2. Title Bar --- */
@@ -49,9 +62,10 @@
   color: white;
   text-align: center;
   padding: 10px 30px; /* More padding left/right to make it wider */
-  background-color: #6a6a6a; /* Dark grey bar for "STORE" */
+  background-color: var(--color3); /* Dark grey bar for "STORE" */
   /* Remove margins and border-radius here, container handles positioning */
   white-space: nowrap; /* Prevent "STORE" from wrapping */
+
 }
 
 .contentWrapper {
@@ -67,20 +81,23 @@
   position: absolute; /* Relative to .popup */
   top: -80px; /* Adjust to move it slightly outside/above the top border */
   left: -5px; /* Adjust to move it slightly outside/left of the border */
-  background-color: #6a6a6a; /* Dark grey background */
-  color: white;
+  background-color: var(--color1); /* Dark grey background */
+  color: var(--color3);
   padding: 8px 12px;
-  border: 4px solid #333333; /* Darker border */
+  border: 4px solid var(--color3); /* Darker border */
   display: flex;
   align-items: center;
   font-weight: bold;
   font-size: 1.2em;
   z-index: 1001;
+  border-radius: 10px;
+  max-height: 40px;
 }
 
 .currencyIcon {
   font-size: 1.5em; /* Large '$' symbol */
   margin-right: 5px;
+  margin-bottom: 4px; /*TO BE FIXED*/
 }
 
 .coinAmount {
@@ -107,35 +124,38 @@
   transition: background-color 0.1s;
 }
 
-.tabActive { /* Matches the darkest tab in the picture */
-  background-color: #555555; 
-  color: white; 
+.tabActive { 
+  background-color: var(--color4); 
+  color: white !important; 
+  border: var(--color3) solid 3px !important;
 }
-
-.tabInactive { /* Matches the medium grey tabs */
-  background-color: #999999;
-  color: #333;
+.tabInactive { 
+  background-color: var(--color5); 
+  color: #333; 
+  border: var(--color3) solid 3px !important;
 }
 
 /* --- 4. Item Grid --- */
 .grid {
-  background-color: #cccccc; /* Slightly darker background for the grid area */
+  background-color: var(--color2); /* Slightly darker background for the grid area */
   padding: 15px;
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* THREE columns as per the image */
   gap: 15px; 
   flex-grow: 1; 
+  border-radius: 10px;
   /* max-height: 400px; Remove max-height for now unless content overflows */
 }
 
 /* --- 5. Individual Item Card --- */
 .card {
-  background-color: #cccccc; /* Cards blend into the grid background */
-  border: 4px solid #808080; /* Dark grey border around each card */
+  background-color: var(--color1); /* Cards blend into the grid background */
+  border: 3px solid var(--color3); /* Dark grey border around each card */
   padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 10px;
 }
 
 .cardContent {
@@ -168,7 +188,7 @@
 }
 
 .buyButton {
-  background-color: #808080; 
+  background-color: var(--color4); 
   color: white;
   padding: 8px 15px;
   width: 90%;

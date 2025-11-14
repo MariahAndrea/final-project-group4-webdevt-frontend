@@ -12,16 +12,14 @@ import "./App.css";
 export default function App() {
   return (
     <Router>
-      <ScreenFrame>
         <GameProvider>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/starmu-creation" element={<StarmuCreation />} />
-            <Route path="/starmu-page" element={<StarmuPage />} />
+            <Route path="/starmu-creation" element={ <ScreenFrame> <StarmuCreation /> </ScreenFrame>} />
+            <Route path="/starmu-page" element={ <ScreenFrame> <StarmuPage /> </ScreenFrame> } />
           </Routes>
         </GameProvider>
-      </ScreenFrame>
     </Router>
   );
 }
