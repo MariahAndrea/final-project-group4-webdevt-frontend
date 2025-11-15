@@ -65,6 +65,7 @@ function Register () {
 
     return(
         <div className="auth-screen">
+            <div className="border-design">
             <div className="auth-container">
     
                     <div className="auth-header">
@@ -139,6 +140,7 @@ function Register () {
                         </button>
                         
                 </form>
+            </div>
             </div>
 
             <p className="auth-footer">

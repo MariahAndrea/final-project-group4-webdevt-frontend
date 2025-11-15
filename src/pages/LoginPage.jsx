@@ -46,13 +46,15 @@ function Login() {
     };
 
     return (
-        <div className="auth-screen">  
+        <div className="auth-screen">
 
+        <div className="border-design">
             <div className="auth-container"> 
 
                 <div className="auth-header">
                     Starmu Logo
-                </div>     
+                    <h1>Sign In</h1>
+                </div>      
 
                 <form onSubmit={handleSubmit} className="auth-form"> 
 
@@ -103,6 +105,7 @@ function Login() {
                     {/*Submit button*/}
                     <button type="submit" className="auth-button">Sign In</button>
                 </form>
+            </div>
             </div>
             
                 <p className= "auth-footer">

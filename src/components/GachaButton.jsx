@@ -2,6 +2,10 @@
 // GachaPopup.jsx (Optimized)
 // ==============================
 
+//TO FIX
+//Outside border
+
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "../css/GachaButton.module.css";
@@ -145,11 +149,14 @@ export default function GachaPopup({ isOpen, onClose }) {
             </div>
           </div>
 
+          {/*outside border (to be fixed)*/}
+          <div className={styles.border}> 
           {/* Title */}
           <div className={styles.titleContainer}>
             <div className={styles.title}>GACHA</div>
           </div>
 
+          
           <div className={styles.contentWrapper}>
 
             {/*Tabs*/}
@@ -174,7 +181,7 @@ export default function GachaPopup({ isOpen, onClose }) {
             ) : (
               <PullButtons onPull={handleRollGacha} />
             )}
-
+          </div>
           </div>
         </motion.div>
 
