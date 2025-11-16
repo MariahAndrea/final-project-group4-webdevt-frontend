@@ -1,0 +1,123 @@
+:root{
+    --color1: #EDE2E0; /* Background / Card */
+    --color2: #DEC2DB; /* Light Pink / Popup Frame */
+    --color3: #5B62B3; /* Dark purple / Border / Title Text */
+    --color4: #2E80E4; /* Primary Accent */
+    --color5: #6DA0E1; /* Secondary Accent */
+}
+
+/* --- 1. Base Layout and Overlay (Same as Shop) --- */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup {
+    position: relative;
+    background-color: var(--color2); 
+    border: 2px solid var(--color3);
+    padding: 5px; 
+    width: 90%; 
+    max-width: 650px; 
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    min-height: 400px;
+}
+
+.guideContainer {
+    padding: 10px;
+    background-color: var(--color1);
+    border-radius: 5px;
+    border: var(--color3) solid 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the top */
+    flex-grow: 1; /* Make sure it fills the popup */
+}
+
+/* --- Title and Close Button (Same as Shop) --- */
+.titleContainer {
+    background-color: var(--color3);
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    margin-bottom: 10px; /* Add space below the title */
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+    text-align: left;
+    background-color: var(--color3); 
+    margin-left: 10px;
+}
+
+.closeButtonTop{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    padding: 0;
+    background-color: var(--color1);
+    border-radius: 3px;
+    color: var(--color3);
+    font-size: 24px;
+}
+
+.closeIcon{
+    position: relative;
+    top: -2px;
+}
+
+/* --- Content Styling --- */
+.contentWrapper {
+    width: 100%;
+    padding: 0 10px; /* Internal padding */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between sections */
+    overflow-y: auto; /* Allow scrolling if content is too long */
+    flex-grow: 1;
+}
+
+.sectionCard {
+    background-color: var(--color2); /* Light background for the card itself */
+    border: 2px solid var(--color3);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+    color: var(--color3);
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    border-bottom: 2px dashed var(--color5);
+    padding-bottom: 5px;
+}
+
+.sectionContent {
+    color: #333;
+    font-size: 1em;
+    line-height: 1.4;
+    margin: 0;
+}

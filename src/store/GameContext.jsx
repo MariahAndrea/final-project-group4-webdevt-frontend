@@ -31,6 +31,11 @@ export const GameProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [customizationItems, setCustomizationItems] = useState(() => {
+        const saved = localStorage.getItem("customizationItems");
+        return saved ? JSON.parse(saved) : [];
+    });
+
   // ==========================
   // Shop items
   // ==========================
@@ -128,6 +133,8 @@ export const GameProvider = ({ children }) => {
     localStorage.setItem("level", JSON.stringify(level));
     localStorage.setItem("stargleams", JSON.stringify(stargleams));
     localStorage.setItem("lastUpdated", Date.now());
+    localStorage.setItem("customizationItems", JSON.stringify(customizationItems));
+    localStorage.setItem("inventoryItems", JSON.stringify(inventoryItems));
 
     // Save starmu creation
     localStorage.setItem("starmuPhase", JSON.stringify(starmuPhase));
@@ -150,6 +157,8 @@ export const GameProvider = ({ children }) => {
     buyItem,
     inventoryItems,
     setInventoryItems,
+    customizationItems,
+    setCustomizationItems,
     stargleams,
     addCoins,
     addStargleams,
@@ -160,7 +169,7 @@ export const GameProvider = ({ children }) => {
     setStarmuPhase,
     starmuData,
     setStarmuData,
-  }), [name, hunger, energy, happiness, cleanliness, coins, level, isGameOver, stargleams, starmuPhase, starmuData]);
+  }), [name, hunger, energy, happiness, cleanliness, coins, level, isGameOver, stargleams, starmuPhase, starmuData, customizationItems, inventoryItems]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

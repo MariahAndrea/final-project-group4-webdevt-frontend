@@ -5,19 +5,30 @@ import ShopPopup from "../components/ShopButton";
 import InventoryPopup from "../components/InventoryButton";
 import GachaPopup from "../components/GachaButton"; 
 import LoadingScreen from "../components/LoadingScreen";
+import HowToPlay from "../components/HowToPlay.jsx";
+import CustomizePopup from "../components/CustomizeButton.jsx";
 import useRewardGenerator from "../hooks/useRewardGenerator";
 import "../css/StarmuPage.css";
 import usePreloadAssets from "../hooks/usePreloadAssets";
-import { useGame } from "../store/GameContext"; // <-- import context
+import { useGame } from "../store/GameContext";
 
 
 function StarmuPage() {
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isInventoryOpen, setIsInventoryOpen] = useState(false);
   const [isGachaOpen, setIsGachaOpen] = useState(false);
+  const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
   const [clickRewards, setClickRewards] = useState([]); // Track reward pop-ups
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
 
-  const { coins, stargleams, addCoins, addStargleams } = useGame(); // <-- use helpers
+  const { 
+    coins, 
+    stargleams, 
+    addCoins, 
+    addStargleams,
+    starmuData
+  } = useGame();
+
   const { getRandomReward } = useRewardGenerator();
 
   // Preload images for the Starmu page
@@ -33,6 +44,13 @@ function StarmuPage() {
 
   const handleOpenGacha = () => setIsGachaOpen(true);
   const handleCloseGacha = () => setIsGachaOpen(false);
+
+  const handleOpenCustomize = () => setIsCustomizeOpen(true);
+  const handleCloseCustomize = () => setIsCustomizeOpen(false);
+
+  const handleOpenHowToPlay = () => setIsHowToPlayOpen(true);
+  const handleCloseHowToPlay = () => setIsHowToPlayOpen(false);
+
 
   // Handle placeholder click to generate rewards
   const handlePlaceholderClick = (e) => {
@@ -74,14 +92,13 @@ function StarmuPage() {
       {/* Home Buttons */}
       <div className="starmu-home-buttons">
         <div className="left-buttons">
-          <button className="starmu-btn">?</button>
-          <button className="starmu-btn">Daily Login</button>
+          <button className="starmu-btn" onClick={handleOpenHowToPlay}>?</button>
           <button className="starmu-btn" onClick={handleOpenShop}>Store</button>
           <button className="starmu-btn" onClick={handleOpenInventory}>Inventory</button>
         </div>
         <div className="right-buttons">
           <button className="starmu-btn" onClick={handleOpenGacha}>Gacha</button>
-          <button className="starmu-btn">Customize</button>
+          <button className="starmu-btn" onClick={handleOpenCustomize}>Customize</button>
         </div>
       </div>
 
@@ -91,7 +108,7 @@ function StarmuPage() {
         <div className="outside-border"> {/*Just the colored border outside*/}
           <div className="panel-container">
             <div className="starmu-details">
-              <div className="starmu-name">Starmu Name</div>
+              <div className="starmu-name">{starmuData?.name || "Starmu Name"}</div>
                 <div className="starmu-currency-panel">
                   <div className="currency-display coins">
                     <span className="currency-icon">$</span>
@@ -179,6 +196,8 @@ function StarmuPage() {
       <ShopPopup isOpen={isShopOpen} onClose={handleCloseShop} />
       <InventoryPopup isOpen={isInventoryOpen} onClose={handleCloseInventory} />
       <GachaPopup isOpen={isGachaOpen} onClose={handleCloseGacha} />
+      <CustomizePopup isOpen={isCustomizeOpen} onClose={handleCloseCustomize} />
+      <HowToPlay isOpen={isHowToPlayOpen} onClose={handleCloseHowToPlay} />
     </div>
   );
 }

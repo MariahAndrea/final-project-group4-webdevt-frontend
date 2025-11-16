@@ -1,48 +1,49 @@
-// InventoryButton.jsx
-
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Import AnimatePresence
-import styles from "../css/InventoryButton.module.css";
-import { useGame } from "../store/GameContext";
+import { motion, AnimatePresence } from "framer-motion";
+import styles from "../css/CustomizeButton.module.css"; // Corrected path to step up two levels
+import { useGame } from "../store/GameContext"; // Corrected path to step up two levels
 
-export default function InventoryPopup({ isOpen, onClose }) {
-    const { inventoryItems } = useGame();
+export default function CustomizePopup({ isOpen, onClose }) {
+    // Destructure customization items from the context
+    // Assuming 'customizationItems' and item structure similar to inventory
+    const { customizationItems } = useGame();
     const [category, setCategory] = useState("All");
 
     const filteredItems = category === "All"
-        ? inventoryItems
-        : inventoryItems.filter(item => item.type === category.toLowerCase());
+        ? customizationItems
+        : customizationItems.filter(item => item.type === category.toLowerCase());
 
-    // closing inventory when clicking outside the popup
+    // Closing popup when clicking outside the container
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
     };
 
-    console.log(filteredItems);
+    const categories = ["All", "Accessories", "Furniture"];
+
     return (
-        <AnimatePresence> {/* Wrap with AnimatePresence */}
-            {isOpen && ( // Conditionally render the popup based on isOpen
+        <AnimatePresence>
+            {isOpen && (
                 <motion.div
                     className={styles.overlay}
                     onClick={handleOverlayClick}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }} // Exit animation for the overlay
+                    exit={{ opacity: 0 }} // Overlay fade out
                 >
                     {/* Sliding container from bottom */}
                     <motion.div
                         className={styles.popup}
                         initial={{ y: "100%" }}
                         animate={{ y: 0 }}
-                        exit={{ y: "100%" }} // Exit animation for the popup
+                        exit={{ y: "100%" }} // Slide down exit animation
                         transition={{ type: "spring", stiffness: 70, damping: 12 }}
                     >
 
                         {/* Tabs */}
                         <div className={styles.tabRow}>
-                            {["All", "Food", "Toys", "Consumables"].map(tab => (
+                            {categories.map(tab => (
                                 <button
                                     key={tab}
                                     className={category === tab ? styles.tabActive : styles.tabInactive}
@@ -54,7 +55,7 @@ export default function InventoryPopup({ isOpen, onClose }) {
                         </div>
 
                         {/* Horizontal scrollable grid */}
-                        <div className={styles.inventoryGrid}>
+                        <div className={styles.customizeGrid}>
                             <div className={styles.horizontalScroll}>
                                 {filteredItems.length > 0 ? (
                                     filteredItems.map(item => (
@@ -65,10 +66,10 @@ export default function InventoryPopup({ isOpen, onClose }) {
                                         </div>
                                     ))
                                 ) : (
-                                    <p className={styles.noItemsMessage}>No items yet.</p>
+                                    <p className={styles.noItemsMessage}>No customization items yet.</p>
                                 )}
                             </div>
-
+                            
                             {/* Close button */}
                             <button className={styles.closeButton} onClick={onClose}>
                                 Close
