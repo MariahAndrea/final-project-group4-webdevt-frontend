@@ -134,55 +134,74 @@ export default function GachaPopup({ isOpen, onClose }) {
   return (
     <>
       {/* Main Gacha Popup */}
-      <motion.div className={styles.overlay}>
-        <motion.div className={styles.popup}>
+      <motion.div className={styles.overlay}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}>
+        <motion.div className={styles.popup}
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}>
 
-          {/*  Currency Display (Coins + Stargleams)*/}
-          <div className={styles.moneyPanel}>
-            <div className={styles.moneyDisplay}>
-              <span className={styles.currencyIcon}>$</span>
-              <span className={styles.coinAmount}>{coins.toString().padStart(7, "0")}</span>
-            </div>
-            <div className={styles.moneyDisplayRight}>
-              <span className={styles.currencyIcon}>✦</span>
-              <span className={styles.coinAmount}>{stargleams.toString().padStart(7, "0")}</span>
-            </div>
-          </div>
+          {/* Container for everything */}
+          <div className={styles.gachaContainer}>
 
-          {/*outside border (to be fixed)*/}
-          <div className={styles.border}> 
-          {/* Title */}
-          <div className={styles.titleContainer}>
-            <div className={styles.title}>GACHA</div>
-          </div>
-
-          
-          <div className={styles.contentWrapper}>
-
-            {/*Tabs*/}
-            <div className={styles.tabRow}>
-              {TABS.map((tab) => (
-                <button
-                  key={tab}
-                  className={category === tab ? styles.tabActive : styles.tabInactive}
-                  onClick={() => setCategory(tab)}
-                >
-                  {tab}
-                </button>
-              ))}
+            {/* Title */}
+            <div className={styles.titleContainer}>
+              <div className={styles.title}>GACHA</div>
+              <button className={styles.closeButtonTop} onClick={onClose}>
+                  <span className={styles.closeIcon}>&times;</span>
+              </button>
             </div>
 
-            {/* Banner */}
-            <GachaBanner category={category} />
+            
+            <div className={styles.contentWrapper}>
 
-            {/* Buttons depending on selected tab */}
-            {category === "Exchange" ? (
-              <ExchangeButtons onExchange={handleExchange} />
-            ) : (
-              <PullButtons onPull={handleRollGacha} />
-            )}
-          </div>
-          </div>
+              {/*Tabs*/}
+              <div className={styles.tabRow}>
+                {TABS.map((tab) => (
+                  <button
+                    key={tab}
+                    className={category === tab ? styles.tabActive : styles.tabInactive}
+                    onClick={() => setCategory(tab)}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+
+              {/* Banner */}
+              <GachaBanner category={category} />
+            
+            </div>
+
+            <div className={styles.buttonAndCurrency}>
+
+              <div className={styles.moneyPanel}>
+                <div className={styles.moneyDisplay}>
+                  <span className={styles.currencyIcon}>$</span>
+                  <span className={styles.coinAmount}>{coins.toString().padStart(7, "0")}</span>
+                </div>
+              </div>
+
+                {/* Buttons depending on selected tab */}
+                {category === "Exchange" ? (
+                  <ExchangeButtons onExchange={handleExchange} />
+                ) : (
+                  <PullButtons onPull={handleRollGacha} />
+                )}
+
+                {/*  Currency Display (Coins + Stargleams)*/}
+                <div className={styles.moneyPanel}>
+      
+                  <div className={styles.moneyDisplayRight}>
+                    <span className={styles.currencyIcon}>✦</span>
+                    <span className={styles.coinAmount}>{stargleams.toString().padStart(7, "0")}</span>
+                  </div>
+                </div>
+
+            </div>
+
+      
+          </div> {/* gachaContainer end*/}
         </motion.div>
 
         {/* Close Button */}

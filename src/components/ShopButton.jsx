@@ -1,4 +1,6 @@
-// ShopButton.jsx
+// TO FIX:
+// - REPLACE CURRENCY WITH ASSET
+// - REMOVE CLOSE BUTTON OUTSIDE OF POPUP
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -63,15 +65,14 @@ return (
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
             >
-                {/* --- NEW: Money Display (Inside, but positioned absolutely) --- */}
-                <div className={styles.moneyDisplay}>
-                    <span className={styles.currencyIcon}>$</span>
-                    <span className={styles.coinAmount}>{coins.toString().padStart(7, '0')}</span>
-                </div>
+                {/*Container for everything in shop*/}
+                <div className={styles.shopContainer}>
 
-                {/* --- NEW: STORE Title (Inside, but positioned absolutely and styled) --- */}
                 <div className={styles.titleContainer}>
                     <div className={styles.title}>STORE</div>
+                    <button className={styles.closeButtonTop} onClick={onClose}>
+                        <span className={styles.closeIcon}>&times;</span>
+                    </button>
                 </div>
 
                 {/* Content of the shop starts AFTER the title container */}
@@ -112,8 +113,16 @@ return (
                     {filteredItems.length === 0 && (
                         <p className={styles.noItemsMessage}>No items in this category yet.</p>
                     )}
+
                 </div> {/* End contentWrapper */}
                 
+                {/*Money Display*/}
+                <div className={styles.moneyDisplay}>
+                    <div className={styles.currencyIcon}>$</div>
+                    <div className={styles.coinAmount}>{coins.toString().padStart(7, '0')}</div>
+                </div>
+
+                </div>
             </motion.div>
             
             {/* Close Button is still outside the popup, at the bottom center of the screen */}

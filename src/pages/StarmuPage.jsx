@@ -87,28 +87,75 @@ function StarmuPage() {
 
       {/* Top Panel */}
       <div className="starmu-top-panel">
-        <div className="starmu-name">Starmu Name
-          <div className="starmu-currency-panel">
-            <div className="currency-display coins">
-              <span className="currency-icon">$</span>
-              <span className="currency-amount">{coins.toString().padStart(7, "0")}</span>
+
+        <div className="outside-border"> {/*Just the colored border outside*/}
+          <div className="panel-container">
+            <div className="starmu-details">
+              <div className="starmu-name">Starmu Name</div>
+                <div className="starmu-currency-panel">
+                  <div className="currency-display coins">
+                    <span className="currency-icon">$</span>
+                    <span className="currency-amount">{coins.toString().padStart(7, "0")}</span>
+                  </div>
+                  <div className="currency-display stargleams">
+                    <span className="currency-icon">✦</span>
+                    <span className="currency-amount">{stargleams.toString().padStart(7, "0")}</span>
+                  </div>
+                </div>
             </div>
-            <div className="currency-display stargleams">
-              <span className="currency-icon">✦</span>
-              <span className="currency-amount">{stargleams.toString().padStart(7, "0")}</span>
+
+            
+            <div className="starmu-status-panel">
+
+              <div className="starmu-stat-container">
+
+                {/* ---------- HEALTH STATUS ---------- */}
+                <div className="starmu-status health">
+                  <div className="stat-detail health">
+                    <div className="status-icon health"></div>
+                    <div className="status-name health">HP</div>
+                  </div>
+
+                  <div className="stat-bar health">
+                    <div className="bar-placeholder"></div>
+                  </div>
+                </div>
+
+                {/* ---------- HUNGER STATUS ---------- */}
+                <div className="starmu-status hunger">
+                  <div className="stat-detail hunger">
+                    <div className="status-icon hunger"></div>
+                    <div className="status-name hunger">Hunger</div>
+                  </div>
+
+                  <div className="stat-bar hunger">
+                    <div className="bar-placeholder"></div>
+                  </div>
+                </div>
+                
+                {/* ---------- HAPPINESS STATUS ---------- */}
+                <div className="starmu-status happiness">
+                  <div className="stat-detail happiness">
+                    <div className="status-icon happiness"></div>
+                    <div className="status-name happiness">Happiness</div>
+                  </div>
+
+                  <div className="stat-bar happiness">
+                    <div className="bar-placeholder"></div>
+                  </div>
+                </div>
+
+              </div>
+
             </div>
+
           </div>
         </div>
-        <div className="starmu-status-panel">
-          <div className="starmu-status health"></div>
-          <div className="starmu-status hunger"></div>
-          <div className="starmu-status happiness"></div>
 
-          <div className="starmu-status-icon health"></div>
-          <div className="starmu-status-icon hunger"></div>
-          <div className="starmu-status-icon happiness"></div>
+        <div className="outside-border-2">
+          <div className="starmu-profile">profile</div>
         </div>
-        <div className="starmu-profile">profile</div>
+        
       </div>
 
       {/* Clickable Placeholder */}

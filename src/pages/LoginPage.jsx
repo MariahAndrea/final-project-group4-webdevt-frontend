@@ -60,7 +60,7 @@ function Login() {
 
                     {/*Email or username input*/}
                     <div className="form-group">
-                        <label className="form-label username">Username</label>
+                        <label className="form-label username">Username/Email</label>
 
                         <input 
                             type="text" 
@@ -109,7 +109,7 @@ function Login() {
             </div>
             
                 <p className= "auth-footer">
-                    Don't have an account? <Link to="/register">Register</Link>
+                    Don't have an account? <span className="register-link"> <Link to="/register">Register</Link> </span>
                 </p>
         </div>
     );
