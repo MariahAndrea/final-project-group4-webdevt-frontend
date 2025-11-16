@@ -1,10 +1,10 @@
 /* AuthPage.css */
 :root{
-    --outsideBorder: #DEC2DB;
-    --borderLine: #5B62B3;
-    --formColor: #EDE2E0;
-    --backgroundColor: #C3DFF4;
-    --border2: #2E80E4;
+  --color1: #EDE2E0;
+  --color2: #DEC2DB; /*Light Pink*/
+  --color3: #5B62B3; /*Dark purple*/
+  --color4: #2E80E4;
+  --color5: #6DA0E1;
 }
 
 .auth-screen{
@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
     background-image: 
-        url(../../public/svgs/bg_stars.svg),
+        url(../../svgs/bg_stars.svg),
         linear-gradient(to right, #EDEFFF 1px, transparent 1px), /*grid*/
         linear-gradient(to bottom, #EDEFFF 1px, transparent 1px), /*grid*/
         linear-gradient(to bottom, #C3DFF4, #C4C2DF); /*gradient background*/
@@ -35,8 +35,8 @@
 }
 
 .border-design{
-  background-color: var(--outsideBorder);
-  border: var(--borderLine) solid 2px;
+  background-color: var(--color2);
+  border: var(--color3) solid 2px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,13 +55,13 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: var(--formColor);
-    border: var(--borderLine) solid 2px;
+    background-color: var(--color1);
+    border: var(--color3) solid 2px;
 }
 
 .auth-header{
-    margin: 20px 0 40px;
-    color: var(--borderLine);
+    margin-bottom: 40px;
+    color: var(--color3);
     justify-content: center;
     align-items: center;
     display: flex;
@@ -90,7 +90,7 @@
 }
 
 .auth-footer, .auth-footer a{
-    color: var(--borderLine);
+    color: var(--color3);
 }
 
 /*input boxes*/
@@ -105,7 +105,7 @@
     height: 2.6rem;
     padding: 2% 0px 2% 5%;
     margin: 5px 0;
-    border: var(--borderLine) solid 2px;
+    border: var(--color3) solid 2px;
     border-radius: 20px;
     box-sizing: border-box;
     background-color: white; 
@@ -113,15 +113,16 @@
 
 input {
     padding-left: .5rem;
+    color: black;
 }
 
 .form-label{
-    color: var(--borderLine);
+    color: var(--color3);
     margin-left: 5px;
 }
 
 .auth-button{
-    background-color: var(--borderLine);
+    background-color: var(--color3);
     color: white;
     padding: 1rem;
     border: none;
@@ -142,15 +143,21 @@ input {
 
 input:focus {
   outline: none;              
-  border-color: var(--border2);       
+  border-color: var(--color2); 
+  color: black !important;      
 }
 
 button:hover{
-    background-color: var(--border2);
+    background-color: var(--color5);
     transition: all 0.2s ease;
     outline: none;
 }
 
 button:focus{
     outline: none;
+}
+
+.register-link a{
+    color: var(--color4);
+    font-weight: bold;
 }

@@ -39,6 +39,9 @@ export const GameProvider = ({ children }) => {
     { id: 2, name: "Soap", type: "clean", effect: 20, price: 5 },
     { id: 3, name: "Ball", type: "toys", effect: 15, price: 7 },
     { id: 4, name: "Bed", type: "sleep", effect: 25, price: 10 },
+    { id: 5, name: "Ball", type: "toys", effect: 15, price: 7 },
+    { id: 6, name: "Ball", type: "toys", effect: 15, price: 7 },
+    { id: 7, name: "Ball", type: "toys", effect: 15, price: 7 },
   ];
 
   // ==========================

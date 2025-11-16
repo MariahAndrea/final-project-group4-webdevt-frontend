@@ -24,9 +24,9 @@ export default function LoadingScreen({ show = false, text = "Loading..." }) {
       className={`${styles.loadingOverlay} ${fadeOut ? styles.fadeOut : ""}`}
     >
       <div className={styles.loadingBox}>
-        <div className={styles.loadingSpinner}></div>
         <p className={styles.loadingText}>{text}</p>
-      </div>
+        <div className={styles.loadingSpinner}></div>
+     </div>
     </div>
   );
 }

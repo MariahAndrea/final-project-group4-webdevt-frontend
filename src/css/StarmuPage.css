@@ -1,4 +1,16 @@
-/*StarmuPage.css*/
+/*
+  TO FIX:
+  - PROFILE DIMENSION
+  - MAKE SCALABLE 
+  - STATUS-PANEL SIZE
+*/
+:root{
+  --color1: #EDE2E0;
+  --color2: #DEC2DB; /*Light Pink*/
+  --color3: #5B62B3; /*Dark purple*/
+  --color4: #2E80E4;
+  --color5: #6DA0E1;
+}
 
 .starmupage-container {
   width: 100%;
@@ -73,70 +85,87 @@
 }
 
 .starmu-top-panel {
-  display: grid;
-  grid-template-columns: 1.0fr 1.7fr .25fr; 
   position: absolute;
-  gap: 18px;
   left: 50%;
   transform: translate(-50%); /* Centers horizontally & vertically */
   width: 95%;
-  height: 10%;
+  height: 13%;
   z-index: 1; /* ensures it's above the background */
   margin-top: 2.1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.starmu-status{
-  grid-column: 2;
-  background-color: #cccccc;
-  height: 100%;
+.outside-border {
+  padding: 5px;
+  background-color: var(--color2);
+  display: flex;
+  flex-grow: 1;
+  border: var(--color3) solid 2px;
+  width: auto;
+  border-radius: 10px;
+}
+
+.outside-border-2{
+  padding: 5px;
+  background-color: var(--color2);
+  border: var(--color3) solid 2px;
+  width: 100px;
+  border-radius: 10px;
+}
+
+/*container for starmu details and stats*/
+.panel-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+  background-color: var(--color1);
+  border: var(--color3) solid 2px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+/*container for name and currency*/
+.starmu-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color3);
+  border-radius: 5px;
+  padding: 8px 10px 10px 10px;
+  width: 30%;
 }
 
 .starmu-name {
-  grid-column: 1;
-  background-color: #cccccc;
+  font-weight: bolder;
+  margin: 0;
+  display: flex;
+  font-size: 18px;
 }
 
-.starmu-status-panel {
-  grid-column: 2;
-  display: grid;
-  grid-template-columns: .04fr 1fr;
-  gap: 11px;
-  
-}
-
-.starmu-status-icon.health {
-  grid-column: 1;
-  grid-row: 1;
-  background-color: #cccccc;
-}
-
-.starmu-status-icon.hunger {
-  grid-column: 1;
-  grid-row: 2;
-  background-color: #cccccc;
-}
-
-.starmu-status-icon.happiness {
-  grid-column: 1;
-  grid-row: 3;
-  background-color: #cccccc;
+.status-panel {
+  display: flex;
 }
 
 .starmu-profile{
-  grid-column: 3;
-  text-align: center;
-  background-color: #cccccc;
+  background-color: var(--color1);
+  width: auto;
+  height: 95%;
+  border-radius: 5px;
+  border: var(--color3) solid 2px;
 }
 
 /* ================= Money / Stargleams Display ================= */
 .starmu-currency-panel {
-  position: relative;
-  top: 20%;
   align-items: center;
-  justify-content: center;
   display: flex;
-  gap: 20px;
-  z-index: 1;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
 }
 
 .currency-display {
@@ -144,9 +173,14 @@
   align-items: center;
   font-weight: bold;
   font-size: 18px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--color2);
   padding: 5px 10px;
   border-radius: 8px;
+  flex-grow: 1;
+  flex-basis: 0;
+  margin: 0;
+  height: 20px;
+  justify-content: space-between;
 }
 
 .coins .currency-icon {
@@ -156,6 +190,74 @@
 .stargleams .currency-icon {
   color: #5af;
 }
+
+.currency-amount{
+  color: var(--color3);
+  font-weight: bold;
+}
+
+/* ================= Status Display ================= */
+
+/*container for stats*/
+.starmu-status-panel {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color1);
+  width: 64.3%;
+  padding: 10px;
+  border: var(--color3) solid 2px;
+  border-radius: 5px;;
+  gap: 10px;
+}
+
+.starmu-stat-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.starmu-status{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.stat-detail{
+  display: flex;
+  flex-direction: row;
+}
+
+.status-icon{
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  position: relative;
+  bottom: 0;
+}
+
+.status-name{
+  margin-left: 5px;
+  color: var(--color3);
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.stat-bar{
+  width: 175px;
+  height: 50%;
+  background-color: var(--color1);
+  border: var(--color3) solid 2px;
+  border-radius: 5px;
+}
+
+.bar-placeholder{
+  width: 60%;
+  height: 100%;
+  background-color: var(--color3);
+}
+
 
 /* Reward popup for clickable placeholder */
 .reward-popup {

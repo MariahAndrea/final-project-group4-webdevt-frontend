@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   background-image: 
-      url(../../public/svgs/bg_stars.svg),
+      url(../../svgs/bg_stars.svg),
       linear-gradient(to right, #EDEFFF 1px, transparent 1px),    /*grid*/
       linear-gradient(to bottom, #EDEFFF 1px, transparent 1px),   /*grid*/
       linear-gradient(to bottom, #C3DFF4, #C4C2DF);             /*gradient background*/
@@ -23,7 +23,7 @@
   height: 100vh;                    /* always fill vertically */
   width: calc(100vh * (4 / 3));     /* maintain 4:3 aspect ratio */
   max-width: 100vw;                 /* prevent overflow on narrow screens */
-  
+  border: #5B62B3 solid 2px;
   background: linear-gradient(to bottom, #1f1f1f, #111);
   overflow: hidden;
   display: flex;
