@@ -125,11 +125,6 @@ return (
                 </div>
             </motion.div>
             
-            {/* Close Button is still outside the popup, at the bottom center of the screen */}
-            <button className={styles.closeButton} onClick={onClose}>
-                Close
-            </button>
-            
         </motion.div>
     );
 }

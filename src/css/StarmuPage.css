@@ -57,18 +57,43 @@
   justify-content: flex-end; /* push buttons to the right end */
 }
 
-.starmu-btn { /*adjust this to fit icons instead of text later*/
-  flex: 1;                  /* all buttons take equal width */
-  max-width: 100px;         /* ensures buttons don’t get too wide */
-  aspect-ratio: 1 / 1;      /* keeps them square */
-  background-color: #afafaf;
-  color: rgb(0, 0, 0);
-  font-size: 16px;
-  font-weight: bold;
+.starmu-btn { 
+  flex: 1;                  
+  max-width: 100px;         
+  aspect-ratio: 1 / 1;      
+
+  /* --- START: Button Styling Enhancement --- */
+  background-color: var(--color2); /* Outer Border Color */
+  border: var(--color3) solid 2px; /* Dark Primary Border */
+  padding: 5px; /* Padding creates the inner "border" effect */
+  border-radius: 10px; /* Matching the Top Panel's outside-border */
+
+  /* Inner Button Content Area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Creating the inner container look */
+  box-shadow: 0 0 0 2px var(--color3) inset; /* Simulates the inner border */
+  background-clip: padding-box; /* Ensures background only covers the padding and content */
+  background-color: var(--color1); /* Inner content color */
+  /* --- END: Button Styling Enhancement --- */
+
+  color: var(--color3); /* Dark text color */
+  font-size: 18px; /* Slightly larger text */
+  font-weight: bolder;
   cursor: pointer;
-  white-space: nowrap;       /* prevent text from wrapping */
-  overflow: hidden;          /* clip text if it’s too long */
-  text-overflow: ellipsis;   /* add "..." if text is too long */
+  white-space: nowrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;   
+}
+
+/* Add a hover effect for better user experience */
+.starmu-btn:hover {
+    background-color: var(--color2); /* Change inner background on hover */
+    box-shadow: 0 0 0 2px var(--color4) inset; /* Change inner border color on hover */
+    border-color: var(--color4); /* Change outer border color on hover */
+    color: var(--color4); /* Change text color on hover */
 }
 
 .starmupage-container .starmu-placeholder {

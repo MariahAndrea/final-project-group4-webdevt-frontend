@@ -1,5 +1,5 @@
 // ==============================
-// GachaPopup.jsx (Optimized)
+// GachaButton.jsx (Optimized)
 // ==============================
 
 //TO FIX
@@ -79,7 +79,15 @@ export default function GachaPopup({ isOpen, onClose }) {
   // Hooks
   // ------------------------------
   const { isRolling, resultItems, rollGacha } = useGachaGenerator();
-  const { coins, stargleams, addStargleams, spendStargleams, exchangeCoins } = useGame();
+  const { 
+      coins, 
+      stargleams, 
+      addStargleams, 
+      spendStargleams, 
+      exchangeCoins, 
+      setCustomizationItems, // <-- NEW: Imported for saving pulled items
+      customizationItems
+  } = useGame();
 
   // UI State
   const [category, setCategory] = useState("Accessory");
@@ -126,8 +134,49 @@ export default function GachaPopup({ isOpen, onClose }) {
     // Show result popup
     setShowResultPopup(true);
 
-     // Perform the actual gacha roll (async)
-    await rollGacha(category, numPulls);
+    // Perform the actual gacha roll (async) and wait for the results
+    const itemsPulled = await rollGacha(category, numPulls);
+
+    let finalItems;
+
+    // ===============================================
+    // NEW: Logic to add pulled items to customization inventory
+    // ===============================================
+    setCustomizationItems(prevItems => {
+        const newItemsMap = new Map();
+
+        // 1. Populate map with existing items
+        prevItems.forEach(item => {
+            // Ensure properties like 'isEquipped' and 'quantity' are preserved
+            newItemsMap.set(String(item.id), { ...item });
+        });
+
+        // 2. Process newly pulled items
+        itemsPulled.forEach(pulledItem => {
+            const itemId = String(pulledItem.id); 
+            const existing = newItemsMap.get(itemId);
+
+            if (existing) {
+                existing.quantity = (existing.quantity || 1) + 1;
+            } else if (pulledItem.id !== undefined) { 
+                newItemsMap.set(itemId, { 
+                    ...pulledItem, 
+                    quantity: 1, 
+                    isEquipped: false
+                });
+            }
+        });
+
+        // 3. Return the updated array
+        finalItems = Array.from(newItemsMap.values());
+
+        return finalItems;
+    });
+    
+    if (finalItems) {
+        localStorage.setItem("customizationItems", JSON.stringify(finalItems));
+    }
+
   };
 
 
@@ -203,9 +252,6 @@ export default function GachaPopup({ isOpen, onClose }) {
       
           </div> {/* gachaContainer end*/}
         </motion.div>
-
-        {/* Close Button */}
-        <button className={styles.closeButton} onClick={onClose}>Close</button>
 
         {/* Dialog Box */}
         {dialogMessage && (

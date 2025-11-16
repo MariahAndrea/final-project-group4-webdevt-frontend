@@ -62,7 +62,7 @@ function StarmuCreation() {
 
   const handleGreeting = () => {
     navigate("/starmu-page");
-
+    {/*
     // Reset creation for testing (does not allow backtracking)
     setStarmuPhase("cutscene");
     setStarmuData({ color: "", name: "" });
@@ -71,6 +71,7 @@ function StarmuCreation() {
     setBlockClicks(true);
 
     console.log("Starmu creation reset for testing.");
+    */}
   };
 
   if (loading) return <LoadingScreen show />;
