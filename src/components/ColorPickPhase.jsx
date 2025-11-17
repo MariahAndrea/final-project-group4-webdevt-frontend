@@ -22,27 +22,29 @@ export default function ColorPickPhase({ selectedColor, onColorSelect, onConfirm
           {lines.map((line, idx) => <p key={idx}>{line}</p>)}
         </div>
         <div className="starmu-placeholder"></div>
-      </div>
+        
+        <div className="color-container">
+          <div className="color-options">
+            {colors.map((color) => (
+              <div
+                key={color}
+                className={`color-option color-${color} ${tempColor === color ? "selected" : ""}`}
+                onClick={() => setTempColor(color)}
+              ></div>
+            ))}
+          </div>
 
-      <div className="color-container">
-        <div className="color-options">
-          {colors.map((color) => (
-            <div
-              key={color}
-              className={`color-option color-${color} ${tempColor === color ? "selected" : ""}`}
-              onClick={() => setTempColor(color)}
-            ></div>
-          ))}
+          <button
+            className="confirm-button"
+            onClick={handleConfirm}
+            disabled={!tempColor}
+          >
+            Confirm
+          </button>
         </div>
-
-        <button
-          className="confirm-button"
-          onClick={handleConfirm}
-          disabled={!tempColor}
-        >
-          Confirm
-        </button>
       </div>
+
+
     </div>
   );
 }

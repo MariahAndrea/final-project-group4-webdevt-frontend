@@ -1,5 +1,5 @@
 // /pages/StarmuCreation.jsx
-// /pages/StarmuCreation.jsx
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -25,6 +25,12 @@ function StarmuCreation() {
   const [blockClicks, setBlockClicks] = useState(true);
   const [showComet, setShowComet] = useState(false);
   const [showText, setShowText] = useState(false);
+  
+  const previousPhase = {
+    colorpick: "cutscene",
+    naming: "colorpick",
+    greeting: "naming"
+  };
 
   const assets = [
     "/images/bg_StarmuCreation.jpg",
@@ -49,6 +55,11 @@ function StarmuCreation() {
   // ==========================
   // Phase handlers
   // ==========================
+  const handleBack = () => {
+    const prev = previousPhase[starmuPhase];
+    if (prev) setStarmuPhase(prev);
+  };
+
   const handleColorSelect = (color) => {
     setStarmuData({ ...starmuData, color });
     setStarmuPhase("naming");
@@ -62,7 +73,7 @@ function StarmuCreation() {
 
   const handleGreeting = () => {
     navigate("/starmu-page");
-    {/*
+     
     // Reset creation for testing (does not allow backtracking)
     setStarmuPhase("cutscene");
     setStarmuData({ color: "", name: "" });
@@ -71,7 +82,7 @@ function StarmuCreation() {
     setBlockClicks(true);
 
     console.log("Starmu creation reset for testing.");
-    */}
+    
   };
 
   if (loading) return <LoadingScreen show />;
@@ -79,38 +90,54 @@ function StarmuCreation() {
   // ==========================
   // Phase components
   // ==========================
-  const phaseComponents = {
-    cutscene: (
-      <CutscenePhase
-        showComet={showComet}
-        showText={showText}
-        blockClicks={blockClicks}
-        onCutsceneClick={() => !blockClicks && setStarmuPhase("colorpick")}
-        onCometEnd={() => setBlockClicks(false)}
-      />
-    ),
-    colorpick: (
-      <ColorPickPhase
-        selectedColor={starmuData.color}
-        onColorSelect={handleColorSelect}
-        onConfirm={() => setStarmuPhase("naming")}
-      />
-    ),
-    naming: (
-      <NamingPhase
-        starmuName={starmuData.name}
-        onNameConfirm={handleNameConfirm}
-      />
-    ),
-    greeting: (
-      <GreetingPhase
-        starmuData={starmuData}
-        onTakeCare={handleGreeting}
-      />
-    ),
+  const renderPhase = () => {
+    switch (starmuPhase) {
+      case "cutscene":
+        return (
+          <CutscenePhase
+            showComet={showComet}
+            showText={showText}
+            blockClicks={blockClicks}
+            onCutsceneClick={() => !blockClicks && setStarmuPhase("colorpick")}
+            onCometEnd={() => setBlockClicks(false)}
+          />
+        );
+      case "colorpick":
+        return (
+          <ColorPickPhase
+            selectedColor={starmuData.color}
+            onColorSelect={handleColorSelect}
+            onConfirm={() => setStarmuPhase("naming")}
+          />
+        );
+      case "naming":
+        return (
+          <NamingPhase
+            starmuName={starmuData.name}
+            onNameConfirm={handleNameConfirm}
+            onBack={handleBack} 
+          />
+        );
+      case "greeting":
+        return (
+          <GreetingPhase
+            starmuData={starmuData}
+            onTakeCare={handleGreeting}
+            onBack={handleBack} 
+          />
+        );
+      default:
+        return null;
+    }
   };
 
-  return phaseComponents[starmuPhase];
+
+  return (
+    <div className="starmu-container">
+      {/* Phase content */}
+      {renderPhase()}
+    </div>
+  );
 }
 
 export default StarmuCreation;
