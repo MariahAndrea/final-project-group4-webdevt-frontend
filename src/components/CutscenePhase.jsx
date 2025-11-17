@@ -6,7 +6,7 @@ export default function CutscenePhase({ showComet, showText, blockClicks, onCuts
   const lines = cutsceneTexts.cutscene;
 
   return (
-    <div className={`starmu-container ${blockClicks ? "block-clicks" : ""}`} onClick={onCutsceneClick}>
+    <div className={`starmu-container phase-cutscene ${blockClicks ? "block-clicks" : ""}`} onClick={onCutsceneClick}>
       <div className="starmu-bg"></div>
 
       {showText && (

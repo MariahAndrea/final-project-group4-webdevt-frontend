@@ -1,9 +1,8 @@
-//GreetingPhase.jsx
-
+// GreetingPhase.jsx
 import React from "react";
 import cutsceneTexts from "../data/cutscenes.json";
 
-export default function GreetingPhase({ starmuData, onTakeCare }) {
+export default function GreetingPhase({ starmuData, onTakeCare, onBack }) {
   const lines = cutsceneTexts.greeting;
 
   return (
@@ -16,14 +15,20 @@ export default function GreetingPhase({ starmuData, onTakeCare }) {
               {line.replace("{name}", starmuData.name || "Starmu")}
             </p>
           ))}
-          <span className="starmu-name-display">{starmuData.name || "Starmu"}</span>
         </div>
         <div className="starmu-placeholder"></div>
-
+        
         <button className="takecare-button" onClick={onTakeCare}>
           Take care of {starmuData.name || "Starmu"}
         </button>
+
       </div>
+              {/* Back button */}
+        {onBack && (
+          <button className="back-button" onClick={onBack}>
+            Back
+          </button>
+        )}
     </div>
   );
 }

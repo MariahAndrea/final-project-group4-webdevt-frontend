@@ -1,4 +1,32 @@
 /* AuthPage.css */
+
+/* fixed responsiveness */
+*, *::before, *::after {
+ box-sizing: border-box;
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    min-height: 100vh; overflow-x: hidden; /* Prevents all horizontal scroll */
+    justify-content: center;
+    align-content: center;
+
+        background-image: 
+        url(../../svgs/bg_stars.svg),
+        linear-gradient(to right, #EDEFFF 1px, transparent 1px), /*grid*/
+        linear-gradient(to bottom, #EDEFFF 1px, transparent 1px), /*grid*/
+        linear-gradient(to bottom, #C3DFF4, #C4C2DF); /*gradient background*/
+        
+    background-size: 100% 100%, 40px 40px, 40px 40px, 100% auto;
+    background-repeat: repeat, repeat, repeat, no-repeat;
+    background-attachment: fixed; /*fills the background*/
+    padding: 1px;
+    animation: diagonal-pan 120s linear infinite;
+    
+}
+
 :root{
   --color1: #EDE2E0;
   --color2: #DEC2DB; /*Light Pink*/
@@ -8,20 +36,12 @@
 }
 
 .auth-screen{
-    width: 1495px; /*will fix to be responsive*/
-    height: 100vh;
+    width: 100vw; 
+    min-height: 100vh;
     align-items: center;
     justify-content: center;
     display: flex;
     flex-direction: column;
-    background-image: 
-        url(../../svgs/bg_stars.svg),
-        linear-gradient(to right, #EDEFFF 1px, transparent 1px), /*grid*/
-        linear-gradient(to bottom, #EDEFFF 1px, transparent 1px), /*grid*/
-        linear-gradient(to bottom, #C3DFF4, #C4C2DF); /*gradient background*/
-    background-size: 100% 100%, 40px 40px, 40px 40px, 100% 100%;
-    background-repeat: repeat, repeat, repeat, no-repeat;
-    animation: diagonal-pan 120s linear infinite;
 }
 
 /*background animation*/
@@ -51,7 +71,8 @@
     display: flex;
     border-radius: 5px;
     height: auto;
-    width: 320px;
+    width: 100vw;
+    max-width: 360px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -80,6 +101,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%; /* <-- ADD THIS LINE */
 }
 
 .form-group {
@@ -87,6 +109,7 @@
     flex-direction: column;
     margin-bottom: 10px;
     align-items: center;
+    width: 100%;
 }
 
 .auth-footer, .auth-footer a{
@@ -101,7 +124,7 @@
 }
 
 .form-input{
-    width: 20rem;
+    width: 100%;
     height: 2.6rem;
     padding: 2% 0px 2% 5%;
     margin: 5px 0;
