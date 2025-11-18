@@ -236,3 +236,38 @@
 .closeButton:hover {
     background-color: #4a4f8f;
 }
+
+/* --- 7. Equip/Remove Button for Item Cards --- */
+.equipButton {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 5px;
+    width: 90%;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid var(--color3);
+}
+
+/* Unequipped / can equip */
+.equipButton.remove {
+    background-color: var(--color5); 
+    color: #333;
+}
+
+.equipButton.remove:hover {
+    background-color: #888;
+}
+
+/* Currently equipped */
+.equipButton.equipped {
+    background-color: var(--color3); 
+    color: white;
+}
+
+.equipButton.equipped:hover {
+    background-color: #4a4f8f; 
+    transform: scale(1.05);
+}

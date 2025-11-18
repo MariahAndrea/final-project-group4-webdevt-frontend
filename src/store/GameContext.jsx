@@ -10,7 +10,7 @@ export const GameProvider = ({ children }) => {
   // ==========================
   // Pet stats
   // ==========================
-  const [hp, setHp] = useState(() => JSON.parse(localStorage.getItem("hp")) ?? 100);
+  const [hp, setHp] = useState(() => JSON.parse(localStorage.getItem("hp")) ?? 50);
   const [hunger, setHunger] = useState(() => JSON.parse(localStorage.getItem("hunger")) ?? 50);
   const [happiness, setHappiness] = useState(() => JSON.parse(localStorage.getItem("happiness")) ?? 50);
 
@@ -45,18 +45,12 @@ export const GameProvider = ({ children }) => {
     { id: 4, name: "Ball", type: "toys", effect: 15, price: 7 },
     { id: 5, name: "Plushie", type: "toys", effect: 20, price: 9 },
     { id: 6, name: "Toy Car", type: "toys", effect: 18, price: 8 },
-    { id: 10, name: "Plushie", type: "toys", effect: 20, price: 9 },
-    { id: 11, name: "Toy Car", type: "toys", effect: 18, price: 8 },
-    { id: 12, name: "Plushie", type: "toys", effect: 20, price: 9 },
-    { id: 13, name: "Toy Car", type: "toys", effect: 18, price: 8 },
 
     // Consumables (healing items)
-    { id: 7, name: "Small Health Potion", type: "consumables", effect: 10, price: 5 },
-    { id: 8, name: "Medium Health Potion", type: "consumables", effect: 25, price: 12 },
-    { id: 9, name: "Large Health Potion", type: "consumables", effect: 50, price: 20 },
-
+    { id: 7, name: "Health Potion (S)", type: "consumables", effect: 10, price: 160 },
+    { id: 8, name: "Health Potion (M)", type: "consumables", effect: 25, price: 250 },
+    { id: 9, name: "Health Potion (L)", type: "consumables", effect: 50, price: 500 },
   ];
-
 
   // ==========================
   // Buy item
@@ -99,25 +93,20 @@ export const GameProvider = ({ children }) => {
     const item = inventoryItems.find((i) => i.id === itemId);
     if (!item || item.quantity <= 0) return false;
 
-    // Apply effect based on type
     switch (item.type) {
       case "food":
         setHunger((v) => clamp(v + item.effect));
         break;
-
       case "toys":
         setHappiness((v) => clamp(v + item.effect));
         break;
-
-      case "consumables":   // <-- NEW: Health potions
+      case "consumables":
         setHp((v) => clamp(v + item.effect));
         break;
-
       default:
         break;
     }
 
-    // Reduce quantity
     setInventoryItems((prev) =>
       prev
         .map((i) =>
@@ -130,10 +119,34 @@ export const GameProvider = ({ children }) => {
   };
 
   // ==========================
+  // Customization items helpers
+  // ==========================
+  const addCustomizationItem = (item) => {
+    setCustomizationItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id);
+      if (existing) {
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      } else {
+        return [...prev, { ...item, quantity: 1 }];
+      }
+    });
+  };
+
+  const getCustomizationItemsWithOwnership = () => {
+    return customizationItems.map((item) => ({
+      ...item,
+      owned: item.quantity > 0
+    }));
+  };
+
+  // ==========================
   // Currency helpers
   // ==========================
   const addCoins = (amount) => setCoins((c) => c + amount);
   const addStargleams = (amount) => setStargleams((s) => s + amount);
+  const spendCoins = (amount) => setCoins((c) => Math.max(0, c - amount));
   const spendStargleams = (amount) => setStargleams((s) => Math.max(0, s - amount));
 
   // ==========================
@@ -156,35 +169,36 @@ export const GameProvider = ({ children }) => {
   };
 
   // ==========================
-  // Offline decay + initialize real-time decay
+  // Offline decay + Real-time decay
   // ==========================
   useEffect(() => {
-    // Offline decay
+    const MINS_PER_POINT = 0.6; 
+    const DECAY_PER_TICK = 1 / (MINS_PER_POINT * 60); 
+
     const last = localStorage.getItem("lastUpdated");
     if (last) {
       const elapsedMinutes = Math.floor((Date.now() - Number(last)) / 60000);
       if (elapsedMinutes > 0) {
-        const decay = elapsedMinutes;
-        setHp((v) => clamp(v - Math.floor(decay / 2)));
-        setHunger((v) => clamp(v - decay));
-        setHappiness((v) => clamp(v - decay));
+        const decayAmount = Math.floor(elapsedMinutes / MINS_PER_POINT);
+        if (decayAmount > 0) {
+          setHp((v) => clamp(v - Math.floor(decayAmount / 2)));
+          setHunger((v) => clamp(v - decayAmount));
+          setHappiness((v) => clamp(v - decayAmount));
+        }
       }
     }
 
-    // Real-time decay
     const interval = setInterval(() => {
-      setHp((v) => clamp(v - 0.1));
-      setHunger((v) => clamp(v - 0.2));
-      setHappiness((v) => clamp(v - 0.2));
+      setHp((v) => clamp(v - (DECAY_PER_TICK / 2)));
+      setHunger((v) => clamp(v - DECAY_PER_TICK));
+      setHappiness((v) => clamp(v - DECAY_PER_TICK));
 
-      // AUTO HP REGEN — updated
       if (hunger >= 80 && happiness >= 80) {
         setHp((v) => clamp(v + 1));
       }
 
       localStorage.setItem("lastUpdated", Date.now());
     }, 1000);
-
 
     return () => clearInterval(interval);
   }, [hunger, happiness]);
@@ -216,12 +230,13 @@ export const GameProvider = ({ children }) => {
     happiness, setHappiness,
     coins, stargleams,
     addCoins, addStargleams, spendStargleams,
+    spendCoins,
     shopItems, buyItem,
-
-    
     useItem,
     inventoryItems, setInventoryItems,
     customizationItems, setCustomizationItems,
+    addCustomizationItem, // new
+    getCustomizationItemsWithOwnership, // new
     starmuPhase, setStarmuPhase,
     starmuData, setStarmuData,
     setStarmuColor,

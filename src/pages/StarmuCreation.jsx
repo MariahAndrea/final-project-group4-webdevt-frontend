@@ -39,6 +39,15 @@ function StarmuCreation() {
   const loading = usePreloadAssets(assets);
 
   // ==========================
+  // Redirect if Starmu already created
+  // ==========================
+  useEffect(() => {
+    if (starmuData?.name && starmuData?.color) {
+      navigate("/starmu-page");
+    }
+  }, []);
+
+  // ==========================
   // Cutscene timers
   // ==========================
   useEffect(() => {
