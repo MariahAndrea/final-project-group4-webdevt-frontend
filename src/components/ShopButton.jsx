@@ -1,18 +1,51 @@
+// ShopPopup.jsx
 // TO FIX:
 // - REPLACE CURRENCY WITH ASSET
 // - REMOVE CLOSE BUTTON OUTSIDE OF POPUP
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react"; // Added useEffect
+import { motion, AnimatePresence } from "framer-motion"; // Added AnimatePresence
 import styles from "../css/ShopButton.module.css";
 import { useGame } from "../store/GameContext"; // Adjusted path as per your code
+
+// NEW: Success Notification Component
+const SuccessPopup = ({ itemName }) => {
+    return (
+        <motion.div
+            className={styles.successNotification}
+            initial={{ opacity: 0, y: 50, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
+            <span className={styles.successIcon}>🎉</span>
+            <p className={styles.successMessage}>
+                Successfully purchased {itemName}!
+            </p>
+            <span className={styles.successIcon}>🎉</span>
+        </motion.div>
+    );
+};
 
 export default function ShopPopup({ isOpen, onClose }) {
     // Destructure all items and the buyItem function from the context
     const { shopItems: allItems, buyItem, coins } = useGame();
     const [category, setCategory] = useState("Food");
+    // NEW: State for notification
+    const [notification, setNotification] = useState(null); // {name: '...', type: 'success'}
 
-    // Filtering Logic
+    // NEW: Effect to clear the notification after a delay
+    useEffect(() => {
+        if (notification) {
+            const timer = setTimeout(() => {
+                setNotification(null);
+            }, 3000); // Notification lasts for 3 seconds
+            return () => clearTimeout(timer); // Cleanup on unmount or state change
+        }
+    }, [notification]);
+
+
+    // Filtering Logic (No changes needed here)
     const filteredItems = allItems.filter(item => {
         let expectedType;
         switch (category) {
@@ -20,10 +53,10 @@ export default function ShopPopup({ isOpen, onClose }) {
                 expectedType = 'food';
                 break;
             case 'Toys':
-                expectedType = 'toys'; 
+                expectedType = 'toys';
                 break;
             case 'Consumables':
-                expectedType = 'clean,sleep'; 
+                expectedType = 'clean,sleep';
                 break;
             default:
                 return false;
@@ -31,8 +64,8 @@ export default function ShopPopup({ isOpen, onClose }) {
 
         if (expectedType.length < 10) {
             return item.type === expectedType;
-        } 
-        
+        }
+
         const types = expectedType.split(',');
         return types.includes(item.type);
     });
@@ -41,11 +74,13 @@ export default function ShopPopup({ isOpen, onClose }) {
     const handleBuy = (item) => {
         const success = buyItem(item);
         if (success) {
-            // Optional: Add some user feedback for a successful purchase
+            // Updated: Set success notification state
             console.log(`Successfully bought ${item.name}!`);
+            setNotification({ name: item.name, type: 'success' });
         } else {
             // Optional: Add some user feedback for insufficient coins
             console.log(`Not enough coins to buy ${item.name}.`);
+            // You could add a 'failure' notification here if needed
         }
     };
 
@@ -81,7 +116,7 @@ return (
                         {['Food', 'Toys', 'Consumables'].map(tab => (
                             <button
                                 key={tab}
-                                className={category === tab ? styles.tabActive : styles.tabInactive} 
+                                className={category === tab ? styles.tabActive : styles.tabInactive}
                                 onClick={() => setCategory(tab)}
                             >
                                 {tab}
@@ -98,9 +133,9 @@ return (
                                     <p className={styles.itemPrice}>
                                         ${item.price.toFixed(0)}
                                     </p>
-                                    <button 
+                                    <button
                                         className={styles.buyButton}
-                                        disabled={coins < item.price} 
+                                        disabled={coins < item.price}
                                         onClick={() => handleBuy(item)}
                                     >
                                         Buy
@@ -109,13 +144,13 @@ return (
                             </div>
                         ))}
                     </div>
-                    
+
                     {filteredItems.length === 0 && (
                         <p className={styles.noItemsMessage}>No items in this category yet.</p>
                     )}
 
                 </div> {/* End contentWrapper */}
-                
+
                 {/*Money Display*/}
                 <div className={styles.moneyDisplay}>
                     <div className={styles.currencyIcon}>$</div>
@@ -124,7 +159,18 @@ return (
 
                 </div>
             </motion.div>
-            
+
+            {/* 👇 NEW: Centering Container for the Notification 👇 */}
+        <div className={styles.notificationCenter}>
+            <AnimatePresence>
+                {notification && notification.type === 'success' && (
+                    // The success popup content itself will now use absolute positioning relative to its new parent
+                    <SuccessPopup itemName={notification.name} />
+                )}
+            </AnimatePresence>
+        </div>
+        {/* 👆 END NEW 👆 */}
+
         </motion.div>
     );
 }
