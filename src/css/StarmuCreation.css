@@ -50,7 +50,7 @@
 }
 
 .cutscene-text p {
-  margin-bottom: 16vh;
+  margin-bottom: 10vh;
 }
 
 .phase-cutscene .cutscene-text p{
@@ -58,7 +58,7 @@
 }
 
 .phase-cutscene .cutscene-text p:nth-child(2) {
-  margin-bottom: 13vh; /* adjust as needed */
+  margin-bottom: 7vh; /* adjust as needed */
 }
 
 .continue-text{
@@ -69,16 +69,18 @@
 
 /* ===== Placeholder Rectangle (Starmu area) ===== */
 .starmu-placeholder {
-  max-width: 287px;
-  max-height: 380px;
   width: 100%;
-  height: 100%;
-  background-color: #d9d9d9;
+  max-width: 400px;       /* maximum it can grow */
+  min-width: 287px;       /* minimum size you had */
+  margin-top: 12rem;
+  height: 18rem;
+  aspect-ratio: 287 / 380;
+  background: url("/images/starmu.png") center/contain no-repeat;
+  background-position: center bottom;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  position: relative;
-  margin: 0;
 }
+
+
 
 /* One-time animation only for cutscene phase */
 .starmu-placeholder.cutscene-animate {
@@ -317,3 +319,4 @@
   width: 5rem;
   z-index: 20;
 }
+

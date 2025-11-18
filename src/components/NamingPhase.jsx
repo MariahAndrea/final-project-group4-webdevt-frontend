@@ -1,10 +1,13 @@
 // NamingPhase.jsx
 import React, { useState } from "react";
 import cutsceneTexts from "../data/cutscenes.json";
+import { useGame } from "../store/GameContext";  // ✅ added
 
-export default function NamingPhase({ starmuName, onNameConfirm, onBack }) {
+export default function NamingPhase({ starmuName, selectedColor, onNameConfirm, onBack }) {  // ✅ added selectedColor
   const [name, setName] = useState(starmuName || "");
   const lines = cutsceneTexts.naming;
+
+  const { starmuImageMap } = useGame();  // ✅ added
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && name.trim() !== "") {
@@ -31,7 +34,17 @@ export default function NamingPhase({ starmuName, onNameConfirm, onBack }) {
           ))}
         </div>
 
-        <div className="starmu-placeholder"></div>
+        {/* ✅ Dynamic image from selected color */}
+        <div
+          className="starmu-placeholder"
+          style={{
+            backgroundImage: `url(${
+              selectedColor
+                ? starmuImageMap[selectedColor]
+                : "/images/starmu.png"
+            })`,
+          }}
+        ></div>
 
         {/* Name input */}
         <div className="name-container">
@@ -48,12 +61,13 @@ export default function NamingPhase({ starmuName, onNameConfirm, onBack }) {
           <button className ="confirm-name-input" onClick={handleConfirm}> confirm </button>
         </div>
       </div>
-              {/* Back button */}
-        {onBack && (
-          <button className="back-button" onClick={onBack}>
-            Back
-          </button>
-        )}
+
+      {/* Back button */}
+      {onBack && (
+        <button className="back-button" onClick={onBack}>
+          Back
+        </button>
+      )}
 
     </div>
   );

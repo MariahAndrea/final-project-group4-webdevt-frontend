@@ -68,21 +68,10 @@ function StarmuCreation() {
   const handleNameConfirm = (name) => {
     setStarmuData({ ...starmuData, name });
     setStarmuPhase("greeting");
-    // TODO: Save to DB here if needed
   };
 
   const handleGreeting = () => {
     navigate("/starmu-page");
-     
-    // Reset creation for testing (does not allow backtracking)
-    setStarmuPhase("cutscene");
-    setStarmuData({ color: "", name: "" });
-    setShowComet(false);
-    setShowText(false);
-    setBlockClicks(true);
-
-    console.log("Starmu creation reset for testing.");
-    
   };
 
   if (loading) return <LoadingScreen show />;
@@ -114,16 +103,18 @@ function StarmuCreation() {
         return (
           <NamingPhase
             starmuName={starmuData.name}
+            selectedColor={starmuData.color}   
             onNameConfirm={handleNameConfirm}
-            onBack={handleBack} 
+            onBack={handleBack}
           />
         );
       case "greeting":
         return (
           <GreetingPhase
             starmuData={starmuData}
+            selectedColor={starmuData.color}
             onTakeCare={handleGreeting}
-            onBack={handleBack} 
+            onBack={handleBack}
           />
         );
       default:
@@ -131,10 +122,8 @@ function StarmuCreation() {
     }
   };
 
-
   return (
     <div className="starmu-container">
-      {/* Phase content */}
       {renderPhase()}
     </div>
   );
