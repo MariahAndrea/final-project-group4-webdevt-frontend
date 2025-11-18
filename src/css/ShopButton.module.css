@@ -263,6 +263,45 @@
   cursor: not-allowed;
 }
 
+
+/* ShopButton.module.css */
+
+/* --- 7. Success Notification Popup (FIXED POSITION, CENTERED) --- */
+.successNotification {
+    background-color: var(--color4);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    min-width: 250px;
+}
+
+.notificationCenter {
+    position: fixed; /* Ensures it covers the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Allows clicks to pass through to the shop overlay */
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: flex-end; /* Vertically align to the bottom */
+    padding-bottom: 50px; /* Space the notification up from the bottom edge */
+    z-index: 2000; /* Must be highest to show over everything */
+}
+
+.successIcon {
+    font-size: 1.5em;
+}
+
+.successMessage {
+    margin: 0;
+}
+
 /* --- 6. Footer and Close Button --- */
 .closeButton {
   position: absolute; /* Relative to the full-screen .overlay */
