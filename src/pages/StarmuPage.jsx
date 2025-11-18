@@ -150,6 +150,7 @@ function StarmuPage() {
       <div className="starmu-top-panel">
         <div className="outside-border">
           <div className="panel-container">
+
             <div className="starmu-details">
               <div className="starmu-name">{starmuData?.name || "Starmu Name"}</div>
               <div className="starmu-currency-panel">
@@ -212,11 +213,15 @@ function StarmuPage() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
 
         <div className="outside-border-2">
-          <div className="starmu-profile">profile</div>
+          <div className="starmu-profile">
+            <div className="btn-icon profile"></div>
+            <div className="btn-label">Profile</div>
+          </div>
         </div>
       </div>
 

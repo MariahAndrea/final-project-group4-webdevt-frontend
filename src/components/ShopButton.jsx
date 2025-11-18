@@ -125,6 +125,11 @@ return (
                     </div>
 
                     <div className={styles.grid}>
+
+                        {filteredItems.length === 0 && (
+                            <p className={styles.noItemsMessage}>No items in this category yet.</p>
+                        )}
+
                         {filteredItems.map((item) => (
                             <div key={item.id} className={styles.card}>
                                 <div className={styles.cardContent}>
@@ -133,6 +138,7 @@ return (
                                     <p className={styles.itemPrice}>
                                         ${item.price.toFixed(0)}
                                     </p>
+
                                     <button
                                         className={styles.buyButton}
                                         disabled={coins < item.price}
@@ -144,23 +150,20 @@ return (
                             </div>
                         ))}
                     </div>
-
-                    {filteredItems.length === 0 && (
-                        <p className={styles.noItemsMessage}>No items in this category yet.</p>
-                    )}
+                    
 
                 </div> {/* End contentWrapper */}
 
                 {/*Money Display*/}
                 <div className={styles.moneyDisplay}>
-                    <div className={styles.currencyIcon}>$</div>
+                    <div className={styles.currencyIconCoin}></div>
                     <div className={styles.coinAmount}>{coins.toString().padStart(7, '0')}</div>
                 </div>
 
                 </div>
             </motion.div>
 
-            {/* 👇 NEW: Centering Container for the Notification 👇 */}
+        
         <div className={styles.notificationCenter}>
             <AnimatePresence>
                 {notification && notification.type === 'success' && (
@@ -169,7 +172,6 @@ return (
                 )}
             </AnimatePresence>
         </div>
-        {/* 👆 END NEW 👆 */}
 
         </motion.div>
     );

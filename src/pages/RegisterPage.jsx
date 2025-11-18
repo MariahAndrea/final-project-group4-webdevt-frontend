@@ -83,7 +83,7 @@ function Register() {
         <div className="auth-container">
           <div className="auth-header">
             Starmu Logo
-            <h1>Sign In</h1>
+            <h1>Sign Up</h1>
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
@@ -169,7 +169,7 @@ function Register() {
       </div>
 
       <p className="auth-footer">
-        Already have an account? <Link to="/">Sign In</Link>
+        Already have an account? <span className="auth-link"> <Link to="/">Sign In</Link> </span>
       </p>
     </div>
   );

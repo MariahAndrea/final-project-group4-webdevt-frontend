@@ -58,7 +58,7 @@ export default function NamingPhase({ starmuName, selectedColor, onNameConfirm, 
               onKeyDown={handleKeyDown}
             />
           </div>
-          <button className ="confirm-name-input" onClick={handleConfirm}> confirm </button>
+          <button className ="confirm-name-input" onClick={handleConfirm}> Confirm </button>
         </div>
       </div>
 

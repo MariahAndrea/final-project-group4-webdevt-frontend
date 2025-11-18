@@ -48,50 +48,56 @@ export default function InventoryPopup({ isOpen, onClose }) {
                         exit={{ y: "100%" }}
                         transition={{ type: "spring", stiffness: 70, damping: 12 }}
                     >
-                        {/* Tabs */}
-                        <div className={styles.tabRow}>
-                            {["All", "Food", "Toys", "Consumables"].map((tab) => (
-                                <button
-                                    key={tab}
-                                    className={
-                                        category === tab
-                                            ? styles.tabActive
-                                            : styles.tabInactive
-                                    }
-                                    onClick={() => setCategory(tab)}
-                                >
-                                    {tab}
-                                </button>
-                            ))}
-                        </div>
 
-                        {/* Items grid */}
-                        <div className={styles.inventoryGrid}>
-                            <div className={styles.horizontalScroll}>
-                                {filteredItems.length > 0 ? (
-                                    filteredItems.map((item) => (
-                                        <div
-                                            key={item.id}
-                                            className={styles.itemCard}
-                                            onClick={() => handleUseItem(item.id)} // NEW: usable
-                                        >
-                                            <div className={styles.imagePlaceholder} />
-                                            <p className={styles.itemName}>{item.name}</p>
-                                            <p className={styles.itemCount}>x{item.quantity}</p>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className={styles.noItemsMessage}>
-                                        No items yet.
-                                    </p>
-                                )}
+                        <div className={styles.inventoryContainer}>
+                            <div className={styles.titleContainer}>
+                                <div className={styles.title}>INVENTORY</div>
+                                <button className={styles.closeButtonTop} onClick={onClose}>
+                                    <span className={styles.closeIcon}>&times;</span>
+                                </button>
+                            </div>
+                            {/* Tabs */}
+                            <div className={styles.tabRow}>
+                                {["All", "Food", "Toys", "Consumables"].map((tab) => (
+                                    <button
+                                        key={tab}
+                                        className={
+                                            category === tab
+                                                ? styles.tabActive
+                                                : styles.tabInactive
+                                        }
+                                        onClick={() => setCategory(tab)}
+                                    >
+                                        {tab}
+                                    </button>
+                                ))}
                             </div>
 
-                            {/* Close button */}
-                            <button className={styles.closeButton} onClick={onClose}>
-                                Close
-                            </button>
+                            {/* Items grid */}
+                            <div className={styles.inventoryGrid}>
+                                <div className={styles.horizontalScroll}>
+                                    {filteredItems.length > 0 ? (
+                                        filteredItems.map((item) => (
+                                            <div
+                                                key={item.id}
+                                                className={styles.itemCard}
+                                                onClick={() => handleUseItem(item.id)} // NEW: usable
+                                            >
+                                                <div className={styles.imagePlaceholder} />
+                                                <p className={styles.itemName}>{item.name}</p>
+                                                <p className={styles.itemCount}>x{item.quantity}</p>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className={styles.noItemsMessage}>
+                                            No items yet.
+                                        </p>
+                                    )}
+                                </div>
+
                         </div>
+
+                    </div>
                     </motion.div>
                 </motion.div>
             )}

@@ -26,15 +26,6 @@ html, body {
     animation: diagonal-pan 120s linear infinite;
     
 }
-
-:root{
-  --color1: #EDE2E0;
-  --color2: #DEC2DB; /*Light Pink*/
-  --color3: #5B62B3; /*Dark purple*/
-  --color4: #2E80E4;
-  --color5: #6DA0E1;
-}
-
 .auth-screen{
     width: 100vw; 
     min-height: 100vh;
@@ -180,7 +171,7 @@ button:focus{
     outline: none;
 }
 
-.register-link a{
+.auth-link a{
     color: var(--color4);
     font-weight: bold;
 }

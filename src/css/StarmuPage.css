@@ -1,15 +1,7 @@
-/*
-  TO FIX:
-  - PROFILE DIMENSION
-  - MAKE SCALABLE 
-  - STATUS-PANEL SIZE
-*/
-
 .starmupage-container {
   width: 100%;
   height: 100%;
   position: relative;
-
 }
 
 .starmupage-container .starmu-bg {
@@ -54,24 +46,17 @@
   flex: 1;                  
   max-width: 100px;         
   aspect-ratio: 1 / 1;      
-
-  /* --- START: Button Styling Enhancement --- */
-  background-color: var(--color2); /* Outer Border Color */
-  border: var(--color3) solid 2px; /* Dark Primary Border */
-  padding: 5px; /* Padding creates the inner "border" effect */
-  border-radius: 10px; /* Matching the Top Panel's outside-border */
-
-  /* Inner Button Content Area */
+  background-color: var(--color2); 
+  border: var(--color3) solid 2px; 
+  padding: 5px; 
+  border-radius: 10px; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
-  /* Creating the inner container look */
-  box-shadow: 0 0 0 2px var(--color3) inset; /* Simulates the inner border */
-  background-clip: padding-box; /* Ensures background only covers the padding and content */
-  background-color: var(--color1); /* Inner content color */
-  /* --- END: Button Styling Enhancement --- */
+  box-shadow: 0 0 0 2px var(--color3) inset;
+  background-clip: padding-box; 
+  background-color: var(--color1); 
 }
 
 /* ---------- button icons ----------*/
@@ -156,15 +141,18 @@
   border: var(--color3) solid 2px;
   width: auto;
   border-radius: 10px;
+  aspect-ratio: 1/1;
 }
 
 .outside-border-2{
-  padding: 5px;
+  display: flex;
   background-color: var(--color2);
   border: var(--color3) solid 2px;
   width: 100px;
   border-radius: 10px;
+  padding: 5px;
 }
+
 
 /*container for starmu details and stats*/
 .panel-container{
@@ -189,6 +177,8 @@
   border-radius: 5px;
   padding: 8px 10px 10px 10px;
   width: 30%;
+  flex-wrap: wrap;
+  flex: 3;
 }
 
 .starmu-name {
@@ -201,14 +191,24 @@
 .starmu-status-panel {
   display: flex;
   flex-grow: 1;
+  flex-wrap: wrap;
 }
 
 .starmu-profile{
-  background-color: var(--color1);
-  width: auto;
-  height: 95%;
+  width: 100%;       
+  border: var(--color3) solid 2px; 
   border-radius: 5px;
-  border: var(--color3) solid 2px;
+  padding: 5px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-clip: padding-box; 
+  background-color: var(--color1);
+}
+
+.profile {
+  background-image: url(../../svgs/icon_profile.svg);
 }
 
 /* ================= Money / Stargleams Display ================= */
@@ -228,11 +228,12 @@
   background-color: var(--color2);
   padding: 5px 10px;
   border-radius: 8px;
-  flex-grow: 1;
+  flex: 1;
   flex-basis: 0;
   margin: 0;
   height: 3.5vh;
   justify-content: space-between;
+  width: 100%;
 }
 
 .coins .currency-icon {
@@ -243,7 +244,7 @@
   display: flex;
   flex-direction: column;
   background-size: contain;
-  width: 20%;
+  min-width: 20%;
   background-repeat: no-repeat;
   background-position: center;
   aspect-ratio: 1 / 1;
@@ -271,16 +272,20 @@
   background-color: var(--color1);
   width: 64.3%;
   padding: 10px;
-  border: var(--color3) solid 2px;
   border-radius: 5px;;
   gap: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  flex: 7;
 }
 
 .starmu-stat-container{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 10px;
+  gap: 1vh;
+  width: 100%;;
+  flex-wrap: wrap;
 }
 
 .starmu-status{
@@ -288,11 +293,14 @@
   flex-direction: column;
   justify-content: space-between;
   margin: 0;
+  flex: 1;
+  align-content: center;
 }
 
 .stat-detail{
   display: flex;
   flex-direction: row;
+  margin-bottom: 2px;
 }
 
 .status-icon{
@@ -325,7 +333,7 @@
 }
 
 .stat-bar{
-  width: 175px;
+  width: 100%;
   height: 50%;
   background-color: var(--color1);
   border: var(--color3) solid 2px;
