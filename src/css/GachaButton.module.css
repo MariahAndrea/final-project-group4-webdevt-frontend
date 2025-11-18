@@ -3,14 +3,6 @@
   - COLORS
 */
 
-:root{
-  --color1: #EDE2E0;
-  --color2: #DEC2DB;
-  --color3: #5B62B3;
-  --color4: #2E80E4;
-  --color5: #6DA0E1;
-}
-
 .overlay {
   position: fixed;
   top: 0; left: 0;

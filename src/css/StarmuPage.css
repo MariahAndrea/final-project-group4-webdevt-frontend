@@ -4,13 +4,6 @@
   - MAKE SCALABLE 
   - STATUS-PANEL SIZE
 */
-:root{
-  --color1: #EDE2E0;
-  --color2: #DEC2DB; /*Light Pink*/
-  --color3: #5B62B3; /*Dark purple*/
-  --color4: #2E80E4;
-  --color5: #6DA0E1;
-}
 
 .starmupage-container {
   width: 100%;
@@ -70,6 +63,7 @@
 
   /* Inner Button Content Area */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   
@@ -78,22 +72,53 @@
   background-clip: padding-box; /* Ensures background only covers the padding and content */
   background-color: var(--color1); /* Inner content color */
   /* --- END: Button Styling Enhancement --- */
+}
 
-  color: var(--color3); /* Dark text color */
-  font-size: 18px; /* Slightly larger text */
-  font-weight: bolder;
+/* ---------- button icons ----------*/
+.btn-icon{
+  display: flex;
+  flex-direction: column;
+  background-size: contain;
+  width: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  aspect-ratio: 1 / 1;
+}
+
+.btn-label{
+  font-size: clamp(10px, 18px, 18px);
+  color: var(--color3);
   cursor: pointer;
   white-space: nowrap;       
   overflow: hidden;          
-  text-overflow: ellipsis;   
+  text-overflow: ellipsis;
+}
+
+.help {
+  background-image: url(../../svgs/icon_help.svg);
+}
+
+.shop {
+  background-image: url(../../svgs/icon_shop.svg);
+}
+
+.inventory {
+  background-image: url(../../svgs/icon_inventory.svg);
+}
+
+.gacha {
+  background-image: url(../../svgs/icon_gacha.svg);
+}
+
+.customize {
+  background-image: url(../../svgs/icon_custom.svg);
 }
 
 /* Add a hover effect for better user experience */
 .starmu-btn:hover {
     background-color: var(--color2); /* Change inner background on hover */
-    box-shadow: 0 0 0 2px var(--color4) inset; /* Change inner border color on hover */
-    border-color: var(--color4); /* Change outer border color on hover */
-    color: var(--color4); /* Change text color on hover */
+    box-shadow: 0 0 0 2px var(--color5) inset; /* Change inner border color on hover */
+    border-color: var(--color5); /* Change outer border color on hover */
 }
 
 .starmupage-container .starmu-placeholder {
@@ -152,6 +177,7 @@
   border: var(--color3) solid 2px;
   padding: 5px;
   border-radius: 5px;
+  gap: 1vh;
 }
 
 /*container for name and currency*/
@@ -172,8 +198,9 @@
   font-size: 18px;
 }
 
-.status-panel {
+.starmu-status-panel {
   display: flex;
+  flex-grow: 1;
 }
 
 .starmu-profile{
@@ -204,7 +231,7 @@
   flex-grow: 1;
   flex-basis: 0;
   margin: 0;
-  height: 20px;
+  height: 3.5vh;
   justify-content: space-between;
 }
 
@@ -212,8 +239,22 @@
   color: gold;
 }
 
-.stargleams .currency-icon {
-  color: #5af;
+.currency-icon {
+  display: flex;
+  flex-direction: column;
+  background-size: contain;
+  width: 20%;
+  background-repeat: no-repeat;
+  background-position: center;
+  aspect-ratio: 1 / 1;
+}
+
+.coin {
+  background-image: url(../../svgs/currency_coin.svg);
+}
+
+.stargleam {
+  background-image: url(../../svgs/currency_stargleam.svg);
 }
 
 .currency-amount{
@@ -255,11 +296,25 @@
 }
 
 .status-icon{
-  width: 20px;
-  height: 20px;
-  background-color: white;
-  position: relative;
-  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background-size: contain;
+  width: 10%;
+  background-repeat: no-repeat;
+  background-position: center;
+  aspect-ratio: 1 / 1;
+}
+
+.health{
+  background-image: url(../../svgs/stat_hp.svg);
+}
+
+.hunger{
+  background-image: url(../../svgs/stat_hunger.svg);
+}
+
+.happiness{
+  background-image: url(../../svgs/stat_happiness.svg);
 }
 
 .status-name{

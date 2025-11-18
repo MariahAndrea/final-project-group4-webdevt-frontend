@@ -4,14 +4,6 @@
 /*how the starmu is placed on the background needs to be fixed*/
 /*will add animations*/
 
-:root{
-  --color1: #EDE2E0;
-  --color2: #DEC2DB; /*Light Pink*/
-  --color3: #5B62B3; /*Dark purple*/
-  --color4: #2E80E4;
-  --color5: #6DA0E1;
-}
-
 /* ===== Layout Containers ===== */
 .starmu-container {
   position: relative;

@@ -1,14 +1,4 @@
 /* InventoryButton.module.css */
-
-/* Adopted root colors from ShopButton.module.css */
-:root{
-  --color1: #EDE2E0; /* Light background */
-  --color2: #DEC2DB; /* Main container background / Grid background */
-  --color3: #5B62B3; /* Dark purple / Border color */
-  --color4: #2E80E4; /* Active button color */
-  --color5: #6DA0E1; /* Inactive button color */
-}
-
 /* --- 1. Base Layout and Overlay --- */
 .overlay {
   position: absolute;
