@@ -1,0 +1,13 @@
+<svg width="69" height="77" viewBox="0 0 69 77" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.15013 18.5892H64.4594L67.9204 66.763C68.2947 71.9741 64.168 76.4079 58.9435 76.4079H9.66916C4.44484 76.4079 0.318224 71.9745 0.692255 66.7635L4.15013 18.5892Z" fill="#5B62B3"/>
+<path d="M20.4441 2.5H46.3533C47.2997 2.5 48.1649 3.03457 48.5886 3.88086L52.2312 11.1553C53.0634 12.8176 51.8539 14.7744 49.9949 14.7744H17.7273C15.9834 14.7742 14.7755 13.0341 15.3855 11.4004L18.1023 4.125C18.4674 3.14782 19.4009 2.50004 20.4441 2.5Z" stroke="#5B62B3" stroke-width="5"/>
+<path d="M3.40497 19.1529C3.40497 13.6301 7.88212 9.15294 13.405 9.15294H55.2083C60.7312 9.15294 65.2083 13.6301 65.2083 19.1529V28.7772H3.40497V19.1529Z" fill="#5B62B3"/>
+<rect x="12.4308" y="41.2663" width="43.7516" height="24.8356" rx="4.5" stroke="#EDE2E0" stroke-width="3"/>
+<line x1="1.5" y1="-1.5" x2="5.54175" y2="-1.5" transform="matrix(-1 8.74228e-08 8.74228e-08 1 50.6922 27.1586)" stroke="#EDE2E0" stroke-width="3" stroke-linecap="round"/>
+<line x1="1.5" y1="-1.5" x2="3.17273" y2="-1.5" transform="matrix(-1 0 0 1 41.9704 27.1586)" stroke="#EDE2E0" stroke-width="3" stroke-linecap="round"/>
+<line x1="1.5" y1="-1.5" x2="16.0906" y2="-1.5" transform="matrix(-1 0 0 1 35.5117 27.1586)" stroke="#EDE2E0" stroke-width="3" stroke-linecap="round"/>
+<line x1="13.2286" y1="50.0815" x2="24.0875" y2="50.0815" stroke="#EDE2E0" stroke-width="3" stroke-linecap="round"/>
+<line x1="28.7267" y1="50.0815" x2="29.6324" y2="50.0815" stroke="#EDE2E0" stroke-width="3" stroke-linecap="round"/>
+<line x1="34.5723" y1="50.0815" x2="54.1271" y2="50.0815" stroke="#EDE2E0" stroke-width="3" stroke-linecap="round"/>
+<line x1="47.3989" y1="54.2832" x2="47.3989" y2="47.6991" stroke="#EDE2E0" stroke-width="3" stroke-linecap="round"/>
+</svg>

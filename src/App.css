@@ -1,52 +1,7 @@
-/*:root{
-  --outsideBorder: #DEC2DB;
-  --borderLine: #5B62B3;
-  --formColor: #EDE2E0;
-  --backgroundColor: #C3DFF4;
+:root{
+  --color1: #EDE2E0;
+  --color2: #DEC2DB; /*Light Pink*/
+  --color3: #5B62B3; /*Dark purple*/
+  --color4: #2E80E4;
+  --color5: #6DA0E1;
 }
-
-section{
-  background-color: var(--outsideBorder);
-  border: var(--borderLine) solid 2px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 490px;
-  width: 400px;
-  border-radius: 7px;
-}
-
-.auth-screen{
-  height: 100vh;
-  background-image: 
-    linear-gradient(to right, #EDEFFF 1px, transparent 1px), 
-    linear-gradient(to bottom, #EDEFFF 1px, transparent 1px), 
-    linear-gradient(to bottom, #C3DFF4, #C4C2DF); 
-  background-size: 40px 40px, 40px 40px, 100% 100%;
-  background-repeat: repeat, repeat, no-repeat;
-}
-
-.auth-container{
-  height: 410px;
-  width: 320px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--formColor);
-  border: var(--borderLine) solid 2px;
-}
-
-.auth-form{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.auth-header{
-  margin: auto;
-}
-
-.auth-header-2 h1{
-  margin: 0px;
-}
-*/

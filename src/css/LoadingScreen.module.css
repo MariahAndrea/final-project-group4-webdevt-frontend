@@ -1,22 +1,30 @@
 /* LoadingScreen.module */
-:root{
-  --color1: #EDE2E0;
-  --color2: #DEC2DB; /*Light Pink*/
-  --color3: #5B62B3; /*Dark purple*/
-  --color4: #2E80E4;
-  --color5: #6DA0E1;
+html, body {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari */
 }
 
 .loadingOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.193);
+  background-image: 
+      linear-gradient(to right, #EDEFFF 1px, transparent 1px), /*grid*/
+      linear-gradient(to bottom, #EDEFFF 1px, transparent 1px), /*grid*/
+      linear-gradient(to bottom, #C3DFF4, #C4C2DF); /*gradient background*/
+  background-size:  40px 40px, 40px 40px, 100% auto;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
   backdrop-filter: blur(6px);
   transition: opacity 0.5s ease; /* added fade transition */
+
+  overflow: hidden;
 }
 
 .fadeOut {

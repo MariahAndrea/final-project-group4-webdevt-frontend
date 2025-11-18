@@ -92,13 +92,28 @@ function StarmuPage() {
       {/* Home Buttons */}
       <div className="starmu-home-buttons">
         <div className="left-buttons">
-          <button className="starmu-btn" onClick={handleOpenHowToPlay}>?</button>
-          <button className="starmu-btn" onClick={handleOpenShop}>Store</button>
-          <button className="starmu-btn" onClick={handleOpenInventory}>Inventory</button>
+          <button className="starmu-btn" onClick={handleOpenHowToPlay}>
+            <div className="btn-icon help"></div>
+            <div className="btn-label">Help</div>
+          </button>
+          <button className="starmu-btn" onClick={handleOpenShop}>
+            <div className="btn-icon shop"></div>
+            <div className="btn-label">Shop</div>
+          </button>
+          <button className="starmu-btn" onClick={handleOpenInventory}>
+            <div className="btn-icon inventory"></div>
+            <div className="btn-label">Inventory</div>
+          </button>
         </div>
         <div className="right-buttons">
-          <button className="starmu-btn" onClick={handleOpenGacha}>Gacha</button>
-          <button className="starmu-btn" onClick={handleOpenCustomize}>Customize</button>
+          <button className="starmu-btn" onClick={handleOpenGacha}>
+            <div className="btn-icon gacha"></div>
+            <div className="btn-label">Gacha</div>
+          </button>
+          <button className="starmu-btn" onClick={handleOpenCustomize}>
+            <div className="btn-icon customize"></div>
+            <div className="btn-label">Customize</div>
+          </button>
         </div>
       </div>
 
@@ -107,15 +122,18 @@ function StarmuPage() {
 
         <div className="outside-border"> {/*Just the colored border outside*/}
           <div className="panel-container">
+
             <div className="starmu-details">
               <div className="starmu-name">{starmuData?.name || "Starmu Name"}</div>
                 <div className="starmu-currency-panel">
-                  <div className="currency-display coins">
-                    <span className="currency-icon">$</span>
+                 {/* ---------- COIN CURRENCY ---------- */}
+                  <div className="currency-display"> {/*Coin display*/}
+                    <span className="currency-icon coin"></span>
                     <span className="currency-amount">{coins.toString().padStart(7, "0")}</span>
                   </div>
-                  <div className="currency-display stargleams">
-                    <span className="currency-icon">✦</span>
+                  {/* ---------- STARGLEAM CURRENCY ---------- */}
+                  <div className="currency-display">
+                    <span className="currency-icon stargleam"></span>
                     <span className="currency-amount">{stargleams.toString().padStart(7, "0")}</span>
                   </div>
                 </div>
@@ -123,41 +141,40 @@ function StarmuPage() {
 
             
             <div className="starmu-status-panel">
-
               <div className="starmu-stat-container">
 
                 {/* ---------- HEALTH STATUS ---------- */}
-                <div className="starmu-status health">
-                  <div className="stat-detail health">
+                <div className="starmu-status">
+                  <div className="stat-detail">
                     <div className="status-icon health"></div>
-                    <div className="status-name health">HP</div>
+                    <div className="status-name">HP</div>
                   </div>
 
-                  <div className="stat-bar health">
+                  <div className="stat-bar">
                     <div className="bar-placeholder"></div>
                   </div>
                 </div>
 
                 {/* ---------- HUNGER STATUS ---------- */}
-                <div className="starmu-status hunger">
-                  <div className="stat-detail hunger">
+                <div className="starmu-status">
+                  <div className="stat-detail">
                     <div className="status-icon hunger"></div>
-                    <div className="status-name hunger">Hunger</div>
+                    <div className="status-name">Hunger</div>
                   </div>
 
-                  <div className="stat-bar hunger">
+                  <div className="stat-bar">
                     <div className="bar-placeholder"></div>
                   </div>
                 </div>
                 
                 {/* ---------- HAPPINESS STATUS ---------- */}
-                <div className="starmu-status happiness">
-                  <div className="stat-detail happiness">
+                <div className="starmu-status">
+                  <div className="stat-detail">
                     <div className="status-icon happiness"></div>
-                    <div className="status-name happiness">Happiness</div>
+                    <div className="status-name">Happiness</div>
                   </div>
 
-                  <div className="stat-bar happiness">
+                  <div className="stat-bar">
                     <div className="bar-placeholder"></div>
                   </div>
                 </div>
