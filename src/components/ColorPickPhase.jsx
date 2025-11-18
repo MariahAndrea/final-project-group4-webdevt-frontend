@@ -5,7 +5,7 @@ import { useGame } from "../store/GameContext";
 
 export default function ColorPickPhase({ selectedColor, onColorSelect, onConfirm }) {
   const colors = ["purple", "pink", "mintGreen", "babyBlue", "beige"];
-  const [tempColor, setTempColor] = useState(selectedColor || "");
+  const [tempColor, setTempColor] = useState(selectedColor || "purple");
   const lines = cutsceneTexts.colorpick;
 
   const { starmuImageMap, setStarmuColor } = useGame();  

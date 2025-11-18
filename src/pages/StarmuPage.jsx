@@ -33,6 +33,9 @@ function StarmuPage() {
     addStargleams,
     starmuData,      // { color, name }
     starmuImageMap,  // color → image URL
+    hunger,
+    hp,
+    happiness,
   } = useGame();
 
   const { getRandomReward } = useRewardGenerator();
@@ -104,6 +107,9 @@ function StarmuPage() {
     ? starmuImageMap[starmuData.color]  // Dynamic image from selected color
     : "/images/starmu.png";             // Default image
 
+    
+  console.log("HP:", hp, "Hunger:", hunger, "Happiness:", happiness);
+
   return (
     <div className="starmupage-container">
       <div className="starmu-bg"></div>
@@ -163,29 +169,46 @@ function StarmuPage() {
             {/* Status Bars */}
             <div className="starmu-status-panel">
               <div className="starmu-stat-container">
-                {/* Health */}
+                {/* HP */}
                 <div className="starmu-status">
                   <div className="stat-detail">
                     <div className="status-icon health"></div>
                     <div className="status-name">HP</div>
                   </div>
-                  <div className="stat-bar"><div className="bar-placeholder"></div></div>
+                  <div className="stat-bar">
+                    <div
+                      className="bar-placeholder"
+                      style={{ width: `${hp}%`, transition: "width 0.3s" }}
+                    ></div>
+                  </div>
                 </div>
+
                 {/* Hunger */}
                 <div className="starmu-status">
                   <div className="stat-detail">
                     <div className="status-icon hunger"></div>
                     <div className="status-name">Hunger</div>
                   </div>
-                  <div className="stat-bar"><div className="bar-placeholder"></div></div>
+                  <div className="stat-bar">
+                    <div
+                      className="bar-placeholder"
+                      style={{ width: `${hunger}%`, transition: "width 0.3s" }}
+                    ></div>
+                  </div>
                 </div>
+
                 {/* Happiness */}
                 <div className="starmu-status">
                   <div className="stat-detail">
                     <div className="status-icon happiness"></div>
                     <div className="status-name">Happiness</div>
                   </div>
-                  <div className="stat-bar"><div className="bar-placeholder"></div></div>
+                  <div className="stat-bar">
+                    <div
+                      className="bar-placeholder"
+                      style={{ width: `${happiness}%`, transition: "width 0.3s" }}
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
