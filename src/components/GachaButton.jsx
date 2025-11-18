@@ -226,7 +226,7 @@ export default function GachaPopup({ isOpen, onClose }) {
 
               <div className={styles.moneyPanel}>
                 <div className={styles.moneyDisplay}>
-                  <span className={styles.currencyIcon}>$</span>
+                  <span className={styles.currencyIconCoin}></span>
                   <span className={styles.coinAmount}>{coins.toString().padStart(7, "0")}</span>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export default function GachaPopup({ isOpen, onClose }) {
                 <div className={styles.moneyPanel}>
       
                   <div className={styles.moneyDisplayRight}>
-                    <span className={styles.currencyIcon}>✦</span>
+                    <span className={styles.currencyIconStargleam}></span>
                     <span className={styles.coinAmount}>{stargleams.toString().padStart(7, "0")}</span>
                   </div>
                 </div>

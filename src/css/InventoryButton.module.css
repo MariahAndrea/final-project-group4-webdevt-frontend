@@ -18,13 +18,9 @@
 .popup {
   background-color: var(--color2); 
   border: 2px solid var(--color3); 
-  /* CHANGE: Set width to 100% and remove max-width constraints */
   width: 100%;
-  /* Reverted height back to original flexible/capped size */
-  max-height: 60vh;
-  /* Removed min-height */
   border-radius: 10px 10px 0 0; 
-  padding: 10px; 
+  padding: 5px; 
   box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
@@ -32,10 +28,56 @@
   position: relative;
 }
 
-.title {
+.inventoryContainer{
+  padding: 10px;
+  width: 100%;
+  background-color: var(--color1);
+  border-radius: 5px;
+  border: var(--color3) solid 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.titleContainer {
+  background-color: var(--color3); 
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
+.closeButtonTop{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  padding: 0;
+  background-color: var(--color1);
+  border-radius: 3px;
+  color: var(--color3);
   font-size: 24px;
+}
+
+.closeIcon{
+  position: relative;
+  top: -2px;
+}
+
+.title {  
+  font-size: 20px;
   font-weight: bold;
-  text-align: center;
+  border-radius: 5px;
+  color: white;
+  text-align: left;
+  background-color: var(--color3); 
+  margin-left: 10px;
 }
 
 /* --- 3. Tabs (Food, Toys, Consumables) - Using Shop's tab styles --- */
@@ -44,7 +86,9 @@
   justify-content: space-around;
   gap: 5px;
   margin-bottom: 0px;
-  width: 100%; 
+  width: 90%;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 .tabActive,
@@ -86,26 +130,25 @@
   padding: 0;
   box-sizing: border-box;
   margin-top: -2px;
-  /* Use flex-grow to ensure the grid takes up available vertical space */
   flex-grow: 1; 
-  overflow: hidden; 
 }
 
 .horizontalScroll {
   display: flex;
-  gap: 15px;
-  overflow-x: auto;
+  gap: 10px;
+  overflow-x: scroll;
+  overflow-y: hidden;
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   scroll-behavior: smooth;
   flex: 1;
   background-color: var(--color2); 
-  border-right: var(--color3) solid 2px;
+  min-height: 170px;
 }
 
 /* Scrollbar styles to match ShopButton */
 .horizontalScroll::-webkit-scrollbar {
-  height: 20px; 
+  height: 15px; 
   background-color: white;
   border-top: var(--color3) solid 2px;
 }
@@ -128,7 +171,7 @@
 .itemCard {
   flex: 0 0 auto;
   width: 120px;
-  height: 150px;
+  height: 140px;
   background-color: var(--color1);
   border: 2px solid var(--color3);
   border-radius: 5px; 
@@ -167,29 +210,4 @@
   color: #555;
   padding: 20px;
   width: 100%;
-}
-
-/* --- 6. Close Button (Styled like a main interactive element) --- */
-.closeButton {
-  background-color: var(--color3); 
-  color: white;
-  border: none;
-  border-radius: 0 0 5px 0;
-  padding: 10px 20px;
-  width: auto;
-  min-width: 80px;
-  height: 100%;
-  font-weight: bold;
-  font-size: 1.1em;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.closeButton:hover {
-  background-color: #4a4f8f;
 }

@@ -85,7 +85,7 @@
     padding: 0 ; /* Internal padding */
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Space between sections */
+    gap: 10px; /* Space between sections */
     overflow-y: auto; /* Allow scrolling if content is too long */
     flex-grow: 1;
 }

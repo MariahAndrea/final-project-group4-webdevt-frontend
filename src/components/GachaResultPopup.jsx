@@ -10,6 +10,7 @@ export default function GachaResultPopup({ items, isRolling, onClose }) {
     <div className={styles.overlay}>
       <div className={styles.popup}>
 
+      <div className={styles.resultContainer}>
         {/* If rolling, show spinner */}
         {isRolling ? (
           <div className={styles.rollingContainer}>
@@ -37,6 +38,8 @@ export default function GachaResultPopup({ items, isRolling, onClose }) {
           Close
         </button>
 
+      </div>
+      
       </div>
     </div>
   );

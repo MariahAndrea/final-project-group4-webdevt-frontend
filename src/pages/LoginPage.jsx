@@ -109,7 +109,7 @@ function Login() {
             </div>
             
                 <p className= "auth-footer">
-                    Don't have an account? <span className="register-link"> <Link to="/register">Register</Link> </span>
+                    Don't have an account? <span className="auth-link"> <Link to="/register">Register</Link> </span>
                 </p>
         </div>
     );

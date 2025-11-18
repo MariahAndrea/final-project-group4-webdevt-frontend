@@ -13,10 +13,11 @@ body::-webkit-scrollbar {
   position: fixed;
   inset: 0;
   background-image: 
+      url(../../svgs/bg_stars.svg),
       linear-gradient(to right, #EDEFFF 1px, transparent 1px), /*grid*/
       linear-gradient(to bottom, #EDEFFF 1px, transparent 1px), /*grid*/
       linear-gradient(to bottom, #C3DFF4, #C4C2DF); /*gradient background*/
-  background-size:  40px 40px, 40px 40px, 100% auto;
+  background-size:  100% 100%,40px 40px, 40px 40px, 100% auto;
   display: flex;
   justify-content: center;
   align-items: center;

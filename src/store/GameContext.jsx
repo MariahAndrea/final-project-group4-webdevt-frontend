@@ -45,6 +45,10 @@ export const GameProvider = ({ children }) => {
     { id: 4, name: "Ball", type: "toys", effect: 15, price: 7 },
     { id: 5, name: "Plushie", type: "toys", effect: 20, price: 9 },
     { id: 6, name: "Toy Car", type: "toys", effect: 18, price: 8 },
+    { id: 10, name: "Plushie", type: "toys", effect: 20, price: 9 },
+    { id: 11, name: "Toy Car", type: "toys", effect: 18, price: 8 },
+    { id: 12, name: "Plushie", type: "toys", effect: 20, price: 9 },
+    { id: 13, name: "Toy Car", type: "toys", effect: 18, price: 8 },
 
     // Consumables (healing items)
     { id: 7, name: "Small Health Potion", type: "consumables", effect: 10, price: 5 },
