@@ -32,9 +32,9 @@ export const GameProvider = ({ children }) => {
   });
 
   const [customizationItems, setCustomizationItems] = useState(() => {
-        const saved = localStorage.getItem("customizationItems");
-        return saved ? JSON.parse(saved) : [];
-    });
+    const saved = localStorage.getItem("customizationItems");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   // ==========================
   // Shop items
@@ -117,9 +117,24 @@ export const GameProvider = ({ children }) => {
   const [starmuPhase, setStarmuPhase] = useState(
     () => JSON.parse(localStorage.getItem("starmuPhase")) ?? "cutscene"
   );
+
   const [starmuData, setStarmuData] = useState(
     () => JSON.parse(localStorage.getItem("starmuData")) ?? { color: "", name: "" }
   );
+
+  // Helper to update starmu color
+  const setStarmuColor = (color) => {
+    setStarmuData(prev => ({ ...prev, color }));
+  };
+
+  // Starmu image map 
+  const starmuImageMap = {
+    purple: "/images/starmu_purple.png",
+    pink: "/images/starmu_pink.png",
+    mintGreen: "/images/starmu_mintgreen.png",
+    babyBlue: "/images/starmu_blue.png",
+    beige: "/images/starmu_beige.png",
+  };
 
   // ==========================
   // Save to localStorage
@@ -139,37 +154,69 @@ export const GameProvider = ({ children }) => {
     // Save starmu creation
     localStorage.setItem("starmuPhase", JSON.stringify(starmuPhase));
     localStorage.setItem("starmuData", JSON.stringify(starmuData));
-  }, [hunger, energy, happiness, cleanliness, coins, level, stargleams, starmuPhase, starmuData]);
-
-  // ==========================
-  // Context values
-  // ==========================
-  const value = useMemo(() => ({
-    name,
+  }, [
     hunger,
     energy,
     happiness,
     cleanliness,
     coins,
     level,
-    isGameOver,
-    shopItems,
-    buyItem,
-    inventoryItems,
-    setInventoryItems,
-    customizationItems,
-    setCustomizationItems,
     stargleams,
-    addCoins,
-    addStargleams,
-    spendStargleams,
-    exchangeCoins,
-    // Starmu creation
     starmuPhase,
-    setStarmuPhase,
     starmuData,
-    setStarmuData,
-  }), [name, hunger, energy, happiness, cleanliness, coins, level, isGameOver, stargleams, starmuPhase, starmuData, customizationItems, inventoryItems]);
+    customizationItems,
+    inventoryItems,
+  ]);
+
+  // ==========================
+  // Context values
+  // ==========================
+  const value = useMemo(
+    () => ({
+      name,
+      hunger,
+      energy,
+      happiness,
+      cleanliness,
+      coins,
+      level,
+      isGameOver,
+      shopItems,
+      buyItem,
+      inventoryItems,
+      setInventoryItems,
+      customizationItems,
+      setCustomizationItems,
+      stargleams,
+      addCoins,
+      addStargleams,
+      spendStargleams,
+      exchangeCoins,
+
+      // Starmu creation
+      starmuPhase,
+      setStarmuPhase,
+      starmuData,
+      setStarmuData,
+      setStarmuColor, 
+      starmuImageMap,
+    }),
+    [
+      name,
+      hunger,
+      energy,
+      happiness,
+      cleanliness,
+      coins,
+      level,
+      isGameOver,
+      stargleams,
+      starmuPhase,
+      starmuData,
+      customizationItems,
+      inventoryItems,
+    ]
+  );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

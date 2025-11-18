@@ -1,28 +1,45 @@
-//ColorPickPhase.jsx
+// ColorPickPhase.jsx
 import React, { useState } from "react";
 import cutsceneTexts from "../data/cutscenes.json";
+import { useGame } from "../store/GameContext";
 
 export default function ColorPickPhase({ selectedColor, onColorSelect, onConfirm }) {
   const colors = ["purple", "pink", "mintGreen", "babyBlue", "beige"];
   const [tempColor, setTempColor] = useState(selectedColor || "");
   const lines = cutsceneTexts.colorpick;
 
+  const { starmuImageMap, setStarmuColor } = useGame();  
+
   const handleConfirm = () => {
     if (!tempColor) return;
+    setStarmuColor(tempColor);
+
     console.log(`User picked color: ${tempColor}`);
-    onColorSelect(tempColor);
-    if (onConfirm) onConfirm(); // optional callback to move next
+    if (onColorSelect) onColorSelect(tempColor);
+    if (onConfirm) onConfirm();
   };
 
   return (
     <div className="starmu-container phase-colorpick">
       <div className="starmu-bg"></div>
+
       <div className="cutscene-content">
         <div className="cutscene-text">
           {lines.map((line, idx) => <p key={idx}>{line}</p>)}
         </div>
-        <div className="starmu-placeholder"></div>
-        
+
+        {/* ✅ ONLY CHANGE HERE → dynamic background image */}
+        <div
+          className="starmu-placeholder"
+          style={{
+            backgroundImage: `url(${
+              tempColor 
+                ? starmuImageMap[tempColor] 
+                : "/images/starmu.png"
+            })`,
+          }}
+        ></div>
+
         <div className="color-container">
           <div className="color-options">
             {colors.map((color) => (
@@ -43,8 +60,6 @@ export default function ColorPickPhase({ selectedColor, onColorSelect, onConfirm
           </button>
         </div>
       </div>
-
-
     </div>
   );
 }
