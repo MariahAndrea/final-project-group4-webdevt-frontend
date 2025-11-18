@@ -1,51 +1,63 @@
 // InventoryButton.jsx
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Import AnimatePresence
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "../css/InventoryButton.module.css";
 import { useGame } from "../store/GameContext";
 
 export default function InventoryPopup({ isOpen, onClose }) {
-    const { inventoryItems } = useGame();
+    const { inventoryItems, useItem } = useGame();
     const [category, setCategory] = useState("All");
 
-    const filteredItems = category === "All"
-        ? inventoryItems
-        : inventoryItems.filter(item => item.type === category.toLowerCase());
+    // Fix: match types exactly ("food", "toys", "consumables")
+    const filteredItems =
+        category === "All"
+            ? inventoryItems
+            : inventoryItems.filter(
+                  (item) => item.type === category.toLowerCase()
+              );
 
-    // closing inventory when clicking outside the popup
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
     };
 
-    console.log(filteredItems);
+    // NEW: Handle clicking item
+    const handleUseItem = (itemId) => {
+        const result = useItem(itemId); // apply effect + remove 1 quantity
+        if (result) {
+            console.log("Item used:", itemId);
+        }
+    };
+
     return (
-        <AnimatePresence> {/* Wrap with AnimatePresence */}
-            {isOpen && ( // Conditionally render the popup based on isOpen
+        <AnimatePresence>
+            {isOpen && (
                 <motion.div
                     className={styles.overlay}
                     onClick={handleOverlayClick}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }} // Exit animation for the overlay
+                    exit={{ opacity: 0 }}
                 >
-                    {/* Sliding container from bottom */}
                     <motion.div
                         className={styles.popup}
                         initial={{ y: "100%" }}
                         animate={{ y: 0 }}
-                        exit={{ y: "100%" }} // Exit animation for the popup
+                        exit={{ y: "100%" }}
                         transition={{ type: "spring", stiffness: 70, damping: 12 }}
                     >
-
                         {/* Tabs */}
                         <div className={styles.tabRow}>
-                            {["All", "Food", "Toys", "Consumables"].map(tab => (
+                            {["All", "Food", "Toys", "Consumables"].map((tab) => (
                                 <button
                                     key={tab}
-                                    className={category === tab ? styles.tabActive : styles.tabInactive}
+                                    className={
+                                        category === tab
+                                            ? styles.tabActive
+                                            : styles.tabInactive
+                                    }
                                     onClick={() => setCategory(tab)}
                                 >
                                     {tab}
@@ -53,19 +65,25 @@ export default function InventoryPopup({ isOpen, onClose }) {
                             ))}
                         </div>
 
-                        {/* Horizontal scrollable grid */}
+                        {/* Items grid */}
                         <div className={styles.inventoryGrid}>
                             <div className={styles.horizontalScroll}>
                                 {filteredItems.length > 0 ? (
-                                    filteredItems.map(item => (
-                                        <div key={item.id} className={styles.itemCard}>
+                                    filteredItems.map((item) => (
+                                        <div
+                                            key={item.id}
+                                            className={styles.itemCard}
+                                            onClick={() => handleUseItem(item.id)} // NEW: usable
+                                        >
                                             <div className={styles.imagePlaceholder} />
                                             <p className={styles.itemName}>{item.name}</p>
                                             <p className={styles.itemCount}>x{item.quantity}</p>
                                         </div>
                                     ))
                                 ) : (
-                                    <p className={styles.noItemsMessage}>No items yet.</p>
+                                    <p className={styles.noItemsMessage}>
+                                        No items yet.
+                                    </p>
                                 )}
                             </div>
 
@@ -73,7 +91,6 @@ export default function InventoryPopup({ isOpen, onClose }) {
                             <button className={styles.closeButton} onClick={onClose}>
                                 Close
                             </button>
-
                         </div>
                     </motion.div>
                 </motion.div>
