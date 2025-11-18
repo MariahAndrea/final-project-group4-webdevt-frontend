@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import ShopPopup from "../components/ShopButton";
 import InventoryPopup from "../components/InventoryButton";
-import GachaPopup from "../components/GachaButton"; 
+import GachaPopup from "../components/GachaButton";
 import LoadingScreen from "../components/LoadingScreen";
 import HowToPlay from "../components/HowToPlay.jsx";
 import CustomizePopup from "../components/CustomizeButton.jsx";
@@ -11,6 +11,8 @@ import useRewardGenerator from "../hooks/useRewardGenerator";
 import usePreloadAssets from "../hooks/usePreloadAssets";
 import "../css/StarmuPage.css";
 import { useGame } from "../store/GameContext";
+import DialogBox from "../components/DialogBox";      // ➜ Added
+import { useNavigate } from "react-router-dom";       // ➜ Added
 
 function StarmuPage() {
   // --------------------------
@@ -22,6 +24,9 @@ function StarmuPage() {
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
   const [clickRewards, setClickRewards] = useState([]); // Track reward pop-ups
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false); // ➜ Added
+
+  const navigate = useNavigate(); // ➜ Added
 
   // --------------------------
   // Game state from context
@@ -65,6 +70,8 @@ function StarmuPage() {
   const handleOpenHowToPlay = () => setIsHowToPlayOpen(true);
   const handleCloseHowToPlay = () => setIsHowToPlayOpen(false);
 
+  const handleOpenLogoutDialog = () => setIsLogoutDialogOpen(true); // ➜ Added
+
   // --------------------------
   // Placeholder click → generate rewards
   // --------------------------
@@ -107,7 +114,6 @@ function StarmuPage() {
     ? starmuImageMap[starmuData.color]  // Dynamic image from selected color
     : "/images/starmu.png";             // Default image
 
-    
   console.log("HP:", hp, "Hunger:", hunger, "Happiness:", happiness);
 
   return (
@@ -218,9 +224,12 @@ function StarmuPage() {
         </div>
 
         <div className="outside-border-2">
-          <div className="starmu-profile">
+          <div 
+            className="starmu-profile"
+            onClick={handleOpenLogoutDialog}  // ➜ Modified
+          >
             <div className="btn-icon profile"></div>
-            <div className="btn-label">Profile</div>
+            <div className="btn-label">Logout</div>
           </div>
         </div>
       </div>
@@ -258,6 +267,18 @@ function StarmuPage() {
       <GachaPopup isOpen={isGachaOpen} onClose={handleCloseGacha} />
       <CustomizePopup isOpen={isCustomizeOpen} onClose={handleCloseCustomize} />
       <HowToPlay isOpen={isHowToPlayOpen} onClose={handleCloseHowToPlay} />
+
+      {/* --------------------------
+          Logout Dialog
+      -------------------------- */}
+      {isLogoutDialogOpen && (
+        <DialogBox
+          message="Are you sure you want to logout?"
+          onClose={() => {
+            navigate("/");     // ➜ Redirect to login
+          }}
+        />
+      )}
     </div>
   );
 }

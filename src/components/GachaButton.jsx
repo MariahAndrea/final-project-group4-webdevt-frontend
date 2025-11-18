@@ -1,10 +1,7 @@
-// ==============================
 // GachaButton.jsx (Optimized)
-// ==============================
 
 //TO FIX
 //Outside border
-
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -84,8 +81,8 @@ export default function GachaPopup({ isOpen, onClose }) {
       stargleams, 
       addStargleams, 
       spendStargleams, 
-      exchangeCoins, 
-      setCustomizationItems, // <-- NEW: Imported for saving pulled items
+      spendCoins,
+      setCustomizationItems, 
       customizationItems
   } = useGame();
 
@@ -113,7 +110,7 @@ export default function GachaPopup({ isOpen, onClose }) {
 
     // Apply currency changes
     addStargleams(amount);
-    exchangeCoins(totalCost);
+    spendCoins(totalCost);
 
     // Success message
     setDialogMessage(`Exchanged ${totalCost} Coins for ${amount} Stargleam(s)!`);

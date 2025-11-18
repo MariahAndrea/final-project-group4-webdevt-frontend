@@ -1,19 +1,35 @@
+// CustomizeButton.jsx
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import styles from "../css/CustomizeButton.module.css"; // Corrected path to step up two levels
-import { useGame } from "../store/GameContext"; // Corrected path to step up two levels
+import styles from "../css/CustomizeButton.module.css";
+import { useGame } from "../store/GameContext";
 
 export default function CustomizePopup({ isOpen, onClose }) {
     // Destructure customization items from the context
-    // Assuming 'customizationItems' and item structure similar to inventory
     const { customizationItems } = useGame();
     const [category, setCategory] = useState("All");
 
+    // Track equipped items separately by type
+    const [equippedItems, setEquippedItems] = useState({
+        accessory: null,
+        furniture: null
+    });
+
+    // Filter items based on selected category
     const filteredItems = category === "All"
         ? customizationItems
         : customizationItems.filter(item => item.type === category.toLowerCase());
 
-    // Closing popup when clicking outside the container
+    // Toggle equip/remove for one per type
+    const toggleEquip = (item) => {
+        const type = item.type; // 'accessory' or 'furniture'
+        setEquippedItems(prev => ({
+            ...prev,
+            [type]: prev[type] === item.id ? null : item.id
+        }));
+    };
+
+    // Close popup when clicking outside the container
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
@@ -30,23 +46,23 @@ export default function CustomizePopup({ isOpen, onClose }) {
                     onClick={handleOverlayClick}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }} // Overlay fade out
+                    exit={{ opacity: 0 }}
                 >
                     {/* Sliding container from bottom */}
                     <motion.div
                         className={styles.popup}
                         initial={{ y: "100%" }}
                         animate={{ y: 0 }}
-                        exit={{ y: "100%" }} // Slide down exit animation
+                        exit={{ y: "100%" }}
                         transition={{ type: "spring", stiffness: 70, damping: 12 }}
                     >
                         <div className={styles.customizeContainer}>
                             <div className={styles.titleContainer}>
                                 <div className={styles.title}>CUSTOMIZE</div>
-                                    <button className={styles.closeButtonTop} onClick={onClose}>
-                                        <span className={styles.closeIcon}>&times;</span>
-                                    </button>
-                             </div>
+                                <button className={styles.closeButtonTop} onClick={onClose}>
+                                    <span className={styles.closeIcon}>&times;</span>
+                                </button>
+                            </div>
 
                             {/* Tabs */}
                             <div className={styles.tabRow}>
@@ -65,13 +81,23 @@ export default function CustomizePopup({ isOpen, onClose }) {
                             <div className={styles.customizeGrid}>
                                 <div className={styles.horizontalScroll}>
                                     {filteredItems.length > 0 ? (
-                                        filteredItems.map(item => (
-                                            <div key={item.id} className={styles.itemCard}>
-                                                <div className={styles.imagePlaceholder} />
-                                                <p className={styles.itemName}>{item.name}</p>
-                                                <p className={styles.itemCount}>x{item.quantity}</p>
-                                            </div>
-                                        ))
+                                        filteredItems.map(item => {
+                                            const isEquipped = equippedItems[item.type] === item.id;
+                                            return (
+                                                <div key={item.id} className={styles.itemCard}>
+                                                    <div className={styles.imagePlaceholder} />
+                                                    <p className={styles.itemName}>{item.name}</p>
+
+                                                    {/* Equip/Remove button */}
+                                                    <button
+                                                        className={`${styles.equipButton} ${isEquipped ? styles.equipped : styles.remove}`}
+                                                        onClick={() => toggleEquip(item)}
+                                                    >
+                                                        {isEquipped ? "Equipped" : "Equip"}
+                                                    </button>
+                                                </div>
+                                            );
+                                        })
                                     ) : (
                                         <p className={styles.noItemsMessage}>No customization items yet.</p>
                                     )}

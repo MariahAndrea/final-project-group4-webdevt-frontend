@@ -56,7 +56,7 @@ export default function ShopPopup({ isOpen, onClose }) {
                 expectedType = 'toys';
                 break;
             case 'Consumables':
-                expectedType = 'clean,sleep';
+                expectedType = 'consumables';
                 break;
             default:
                 return false;
