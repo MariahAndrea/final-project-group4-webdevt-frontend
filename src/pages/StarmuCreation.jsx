@@ -45,7 +45,10 @@ function StarmuCreation() {
   // Redirect if Starmu already created
   // ==========================
   useEffect(() => {
-    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    // Normalize the API base so it always includes `/api` and has no trailing slash.
+    const rawBase = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    const normalized = rawBase.replace(/\/+$/g, '');
+    const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
 
     // If starmuData already present in context, go straight to page
     if (starmuData?.name && starmuData?.color) {
@@ -123,7 +126,10 @@ function StarmuCreation() {
 
   const handleGreeting = () => {
     // create pet on the backend then navigate to starmu page
-    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    // Normalize API base here as well
+    const rawBase = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    const normalized = rawBase.replace(/\/+$/g, '');
+    const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
     const ownerID = localStorage.getItem('userId');
     if (!ownerID) {
       // if not logged in, send user back to login
