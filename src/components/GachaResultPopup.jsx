@@ -1,20 +1,12 @@
-// ==============================
-// GachaResultPopup.jsx
-// ==============================
-
 import React, { useMemo } from "react";
 import styles from "../css/GachaResultPopup.module.css";
 import { useGame } from "../store/GameContext";
 
 export default function GachaResultPopup({ items, isRolling, onClose }) {
 
-  const { customizationItems } = useGame();
+  const { ownedCustomizationItems } = useGame();
 
-  // Memoized list with ownership info
-  const customizationItemsWithOwnership = useMemo(
-    () => customizationItems.map(item => ({ ...item, owned: item.quantity > 0, quantity: item.quantity })),
-    [customizationItems]
-  );
+  const safeOwnedItems = ownedCustomizationItems || []; 
 
   return (
     <div className={styles.overlay}>
@@ -33,10 +25,10 @@ export default function GachaResultPopup({ items, isRolling, onClose }) {
 
               {/* Results appear after rolling finishes */}
               <div className={styles.resultGrid}>
-                {items.map((item, index) => {
+                {items.filter(Boolean).map((item, index) => {
 
                   // How many copies player already owns before this roll
-                  const ownedBefore = customizationItemsWithOwnership.find(ci => ci.id === item.id)?.quantity ?? 0;
+                  const ownedBefore = safeOwnedItems.find(ci => ci.id === item.id)?.quantity ?? 0;
 
                   // Count how many times this item has already appeared in the current roll BEFORE this index
                   const duplicatesInRollBefore = items
@@ -47,7 +39,7 @@ export default function GachaResultPopup({ items, isRolling, onClose }) {
                   const totalBeforeThis = ownedBefore + duplicatesInRollBefore;
 
                   // Show "Already Owned" if this is not the first copy (total > 1)
-                  const showOwnedTag = totalBeforeThis > 1;
+                  const showOwnedTag = totalBeforeThis >= 1;
 
                   return (
                     <div className={styles.resultCard} key={index}>

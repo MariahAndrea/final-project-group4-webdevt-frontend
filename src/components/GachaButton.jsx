@@ -1,8 +1,3 @@
-// GachaButton.jsx (Optimized)
-
-//TO FIX
-//Outside border
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "../css/GachaButton.module.css";
@@ -82,8 +77,7 @@ export default function GachaPopup({ isOpen, onClose }) {
       addStargleams, 
       spendStargleams, 
       spendCoins,
-      setCustomizationItems, 
-      customizationItems
+      addCustomizationItem,
   } = useGame();
 
   // UI State
@@ -139,40 +133,10 @@ export default function GachaPopup({ isOpen, onClose }) {
     // ===============================================
     // NEW: Logic to add pulled items to customization inventory
     // ===============================================
-    setCustomizationItems(prevItems => {
-        const newItemsMap = new Map();
-
-        // 1. Populate map with existing items
-        prevItems.forEach(item => {
-            // Ensure properties like 'isEquipped' and 'quantity' are preserved
-            newItemsMap.set(String(item.id), { ...item });
-        });
-
-        // 2. Process newly pulled items
-        itemsPulled.forEach(pulledItem => {
-            const itemId = String(pulledItem.id); 
-            const existing = newItemsMap.get(itemId);
-
-            if (existing) {
-                existing.quantity = (existing.quantity || 1) + 1;
-            } else if (pulledItem.id !== undefined) { 
-                newItemsMap.set(itemId, { 
-                    ...pulledItem, 
-                    quantity: 1, 
-                    isEquipped: false
-                });
-            }
-        });
-
-        // 3. Return the updated array
-        finalItems = Array.from(newItemsMap.values());
-
-        return finalItems;
-    });
     
-    if (finalItems) {
-        localStorage.setItem("customizationItems", JSON.stringify(finalItems));
-    }
+    itemsPulled.forEach(item => {
+      addCustomizationItem(item);
+    });
 
   };
 
@@ -224,7 +188,7 @@ export default function GachaPopup({ isOpen, onClose }) {
               <div className={styles.moneyPanel}>
                 <div className={styles.moneyDisplay}>
                   <span className={styles.currencyIconCoin}></span>
-                  <span className={styles.coinAmount}>{coins.toString().padStart(7, "0")}</span>
+                  <span className={styles.coinAmountCoin}>{coins.toString().padStart(7, "0")}</span>
                 </div>
               </div>
 
@@ -240,7 +204,7 @@ export default function GachaPopup({ isOpen, onClose }) {
       
                   <div className={styles.moneyDisplayRight}>
                     <span className={styles.currencyIconStargleam}></span>
-                    <span className={styles.coinAmount}>{stargleams.toString().padStart(7, "0")}</span>
+                    <span className={styles.coinAmountStargleam}>{stargleams.toString().padStart(7, "0")}</span>
                   </div>
                 </div>
 

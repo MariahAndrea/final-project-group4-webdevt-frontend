@@ -6,27 +6,28 @@ import { useGame } from "../store/GameContext";
 
 export default function CustomizePopup({ isOpen, onClose }) {
     // Destructure customization items from the context
-    const { customizationItems } = useGame();
+    const { ownedCustomizationItems, toggleEquipStatus } = useGame();
     const [category, setCategory] = useState("All");
 
+    const inventory = ownedCustomizationItems || [];
+
     // Track equipped items separately by type
-    const [equippedItems, setEquippedItems] = useState({
-        accessory: null,
-        furniture: null
-    });
+    //const [equippedItems, setEquippedItems] = useState({
+    //    accessory: null,
+    //    furniture: null
+    //});
 
     // Filter items based on selected category
     const filteredItems = category === "All"
-        ? customizationItems
-        : customizationItems.filter(item => item.type === category.toLowerCase());
+        ? inventory
+        : inventory.filter(item => item.type === category.toLowerCase());
+
+    const itemsToShow = filteredItems.filter(item => item.quantity > 0);
+    const ownedAndFilteredItems = itemsToShow;
 
     // Toggle equip/remove for one per type
     const toggleEquip = (item) => {
-        const type = item.type; // 'accessory' or 'furniture'
-        setEquippedItems(prev => ({
-            ...prev,
-            [type]: prev[type] === item.id ? null : item.id
-        }));
+        toggleEquipStatus(item.id);
     };
 
     // Close popup when clicking outside the container
@@ -80,12 +81,12 @@ export default function CustomizePopup({ isOpen, onClose }) {
                             {/* Horizontal scrollable grid */}
                             <div className={styles.customizeGrid}>
                                 <div className={styles.horizontalScroll}>
-                                    {filteredItems.length > 0 ? (
-                                        filteredItems.map(item => {
-                                            const isEquipped = equippedItems[item.type] === item.id;
+                                    {ownedAndFilteredItems.length > 0 ? (
+                                        ownedAndFilteredItems.map(item => {
+                                            const isEquipped = item.isEquipped;
                                             return (
                                                 <div key={item.id} className={styles.itemCard}>
-                                                    <div className={styles.imagePlaceholder} />
+                                                    <img className={styles.itemImage} src={item.image} alt={item.name} />
                                                     <p className={styles.itemName}>{item.name}</p>
 
                                                     {/* Equip/Remove button */}

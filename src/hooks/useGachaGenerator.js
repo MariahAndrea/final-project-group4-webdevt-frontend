@@ -1,9 +1,12 @@
 // useGachaGenerator.jsx
 import { useState } from "react";
+import { useGame } from "../store/GameContext";
 
 export default function useGachaGenerator(fetchReward) {
+  
   const [isRolling, setIsRolling] = useState(false);
   const [resultItems, setResultItems] = useState([]);
+  const { gachaPoolData } = useGame();
 
   const rollGacha = async (category = "Accessory", numPulls = 1) => {
     setIsRolling(true);
@@ -11,33 +14,14 @@ export default function useGachaGenerator(fetchReward) {
 
     const results = [];
 
-    const pools = {
+    const pool = gachaPoolData && gachaPoolData[category] || gachaPoolData && gachaPoolData["Accessory"] || [];
 
-      Accessory: [
-        { id: 100, name: "Bow", type: "accessories", rarity: "Common" },
-        { id: 101, name: "Leaf", type: "accessories", rarity: "Common" },
-        { id: 102, name: "Earrings", type: "accessories", rarity: "Common" },
-        { id: 103, name: "Flower Crown", type: "accessories", rarity: "Rare" },
-        { id: 104, name: "Hat", type: "accessories", rarity: "Rare" },
-        { id: 105, name: "Glasses", type: "accessories", rarity: "Rare" },
-        { id: 107, name: "Crown", type: "accessories", rarity: "Epic" },
-        { id: 108, name: "Planets", type: "accessories", rarity: "Epic" },
-      ],
-
-      Furniture: [
-        { id: 200, name: "Chair", type: "furniture", rarity: "Common" },
-        { id: 201, name: "Stool", type: "furniture", rarity: "Common" },
-        { id: 202, name: "Shelf", type: "furniture", rarity: "Common" },
-        { id: 203, name: "Table", type: "furniture", rarity: "Rare" },
-        { id: 204, name: "Lamp", type: "furniture", rarity: "Rare" },
-        { id: 205, name: "Cabinet", type: "furniture", rarity: "Rare" },
-        { id: 206, name: "Throne", type: "furniture", rarity: "Epic" },
-        { id: 207, name: "Chandelier", type: "furniture", rarity: "Epic" },
-        { id: 208, name: "Wardrobe", type: "furniture", rarity: "Epic" },
-      ],
-    };
-
-    const pool = pools[category] || pools.Accessory;
+    if (pool.length === 0) {
+      setIsRolling(false);
+      return results;
+      console.error("Gacha pool is empty for category:", category);
+      return [];
+    }
 
     const rarityWeights = {
       Common: 80,
@@ -60,9 +44,21 @@ export default function useGachaGenerator(fetchReward) {
       } else {
         // weighted random
         const rarity = pickRarity();
-        const itemsOfRarity = pool.filter(item => item.rarity === rarity);
-        const randomIndex = Math.floor(Math.random() * itemsOfRarity.length);
-        results.push(itemsOfRarity[randomIndex]);
+        let itemsOfRarity = pool.filter(item => item.rarity === rarity);
+
+        if (itemsOfRarity.length === 0) {
+          // Fallback if no items of this rarity
+          itemsOfRarity = pool.filter(item => item.rarity === "Common");
+        }
+
+        if (itemsOfRarity.length === 0) {
+          console.error("No items available in gacha pool for category:", category);
+          results.push(null);
+        } else {
+          const randomIndex = Math.floor(Math.random() * itemsOfRarity.length);
+          results.push(itemsOfRarity[randomIndex]);
+        }
+        
       }
     }
 

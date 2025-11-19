@@ -124,7 +124,7 @@
   left: 50%;
   transform: translate(-50%); /* Centers horizontally & vertically */
   width: 95%;
-  height: 13%;
+  height: 12%;
   z-index: 1; /* ensures it's above the background */
   margin-top: 2.1%;
   display: flex;
