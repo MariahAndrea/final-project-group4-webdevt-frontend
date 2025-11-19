@@ -13,6 +13,7 @@ import "../css/StarmuPage.css";
 import { useGame } from "../store/GameContext";
 import DialogBox from "../components/DialogBox";      // ➜ Added
 import { useNavigate } from "react-router-dom";       // ➜ Added
+import { useEffect } from "react";
 
 function StarmuPage() {
   // --------------------------
@@ -42,6 +43,54 @@ function StarmuPage() {
     hp,
     happiness,
   } = useGame();
+
+  const { setStarmuData, setHp, setHunger, setHappiness } = useGame();
+
+  useEffect(() => {
+    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    const petId = localStorage.getItem('petId');
+    // If context already has name and color, no need to fetch
+    if (starmuData?.name && starmuData?.color) return;
+
+    (async () => {
+      try {
+        let pet = null;
+
+        if (petId) {
+          const resp = await fetch(`${API_BASE}/pets/${petId}`);
+          if (resp.ok) pet = await resp.json();
+        } else {
+          // fallback: if no petId, try fetching by ownerID
+          const ownerID = localStorage.getItem('userId');
+          if (!ownerID) return;
+          const resp = await fetch(`${API_BASE}/pets/owner/${ownerID}`);
+          if (!resp.ok) return;
+          const body = await resp.json();
+          const pets = body?.pets || [];
+          if (pets.length > 0) pet = pets[0];
+        }
+
+        if (!pet) return;
+
+        // map backend enum to frontend key
+        const backendToFrontend = {
+          Purple: 'purple',
+          Pink: 'pink',
+          MintGreen: 'mintGreen',
+          BabyBlue: 'babyBlue',
+          Beige: 'beige'
+        };
+        const frontColor = backendToFrontend[pet.color] || pet.color;
+        setStarmuData({ ...starmuData, name: pet.name, color: frontColor });
+        if (typeof pet.hp !== 'undefined') setHp(pet.hp);
+        if (typeof pet.hunger !== 'undefined') setHunger(pet.hunger);
+        if (typeof pet.happiness !== 'undefined') setHappiness(pet.happiness);
+        localStorage.setItem('petId', pet._id || pet.id);
+      } catch (err) {
+        console.error('Failed to fetch pet on StarmuPage:', err);
+      }
+    })();
+  }, []);
 
   const { getRandomReward } = useRewardGenerator();
 
@@ -113,8 +162,6 @@ function StarmuPage() {
   const starmuImg = starmuData.color 
     ? starmuImageMap[starmuData.color]  // Dynamic image from selected color
     : "/images/starmu.png";             // Default image
-
-  console.log("HP:", hp, "Hunger:", hunger, "Happiness:", happiness);
 
   return (
     <div className="starmupage-container">

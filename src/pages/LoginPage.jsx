@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; 
+import { useGame } from "../store/GameContext";
 import "../css/AuthPage.css";
 
 function Login() {
@@ -11,6 +12,7 @@ function Login() {
    
 
     const navigate = useNavigate();
+    const { setStarmuData, setHp, setHunger, setHappiness, setCoins, setStargleams, setInventoryItems, setCustomizationItems } = useGame();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -35,14 +37,76 @@ function Login() {
 
         const isEmail = emailOrUsername.includes("@");
 
-        console.log(
-            isEmail
-                ? "Logging in with email: " + emailOrUsername
-                : "Logging in with username: " + emailOrUsername
-        );
+        const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
 
-        console.log("Password: ", password);
-        navigate("/starmu-creation", { replace: true })
+        (async () => {
+            try {
+                const resp = await fetch(`${API_BASE}/users/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emailOrUsername, password })
+                });
+                const data = await resp.json();
+                if (!resp.ok) {
+                    setErrorMessage(prev => ({ ...prev, password: data.error || 'Login failed' }));
+                    return;
+                }
+                // store user id for later use
+                const userId = data.user?.id;
+                if (userId) localStorage.setItem('userId', userId);
+
+                // populate GameContext with user values (coins, stargleams, inventory)
+                if (data.user) {
+                    if (typeof data.user.coins !== 'undefined') setCoins(data.user.coins);
+                    if (typeof data.user.stargleams !== 'undefined') setStargleams(data.user.stargleams);
+                    if (Array.isArray(data.user.inventoryItems)) setInventoryItems(data.user.inventoryItems);
+                    if (Array.isArray(data.user.customizationItems)) setCustomizationItems(data.user.customizationItems);
+                }
+                // Debug: log returned user and current localStorage
+                console.log('Login response user:', data.user);
+                console.log('After login localStorage:', {
+                    userId: localStorage.getItem('userId'),
+                    petId: localStorage.getItem('petId'),
+                    coins: localStorage.getItem('coins'),
+                    stargleams: localStorage.getItem('stargleams')
+                });
+
+                // Check if user already has a pet
+                try {
+                    const petResp = await fetch(`${API_BASE}/pets/owner/${userId}`);
+                    if (petResp.ok) {
+                        const body = await petResp.json();
+                        const pets = body?.pets || [];
+                        if (pets.length > 0) {
+                            const pet = pets[0];
+                            // map backend enum to frontend key
+                            const backendToFrontend = {
+                                Purple: 'purple',
+                                Pink: 'pink',
+                                MintGreen: 'mintGreen',
+                                BabyBlue: 'babyBlue',
+                                Beige: 'beige'
+                            };
+                            const frontColor = backendToFrontend[pet.color] || pet.color;
+                            setStarmuData({ name: pet.name, color: frontColor });
+                            if (typeof pet.hp !== 'undefined') setHp(pet.hp);
+                            if (typeof pet.hunger !== 'undefined') setHunger(pet.hunger);
+                            if (typeof pet.happiness !== 'undefined') setHappiness(pet.happiness);
+                            localStorage.setItem('petId', pet._id || pet.id);
+                            navigate('/starmu-page', { replace: true });
+                            return;
+                        }
+                    }
+                } catch (err) {
+                    console.error('Failed to check existing pet after login', err);
+                }
+
+                // no pet: go to creation
+                navigate("/starmu-creation", { replace: true });
+            } catch (err) {
+                setErrorMessage(prev => ({ ...prev, password: 'Network error' }));
+            }
+        })();
     };
 
     return (
