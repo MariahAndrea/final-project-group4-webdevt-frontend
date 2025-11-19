@@ -222,13 +222,64 @@ export const GameProvider = ({ children }) => {
   ]);
 
   // ==========================
+  // Persist user changes to backend (debounced)
+  // ==========================
+  useEffect(() => {
+    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    const timeout = setTimeout(async () => {
+      try {
+        await fetch(`${API_BASE}/users/${userId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            coins,
+            stargleams,
+            inventoryItems,
+            customizationItems
+          })
+        });
+      } catch (err) {
+        console.error('Failed to persist user data:', err);
+      }
+    }, 800);
+
+    return () => clearTimeout(timeout);
+  }, [coins, stargleams, inventoryItems, customizationItems]);
+
+  // ==========================
+  // Persist pet stats to backend (debounced)
+  // ==========================
+  useEffect(() => {
+    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    const petId = localStorage.getItem('petId');
+    if (!petId) return;
+
+    const timeout = setTimeout(async () => {
+      try {
+        await fetch(`${API_BASE}/pets/${petId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hp, hunger, happiness })
+        });
+      } catch (err) {
+        console.error('Failed to persist pet stats:', err);
+      }
+    }, 800);
+
+    return () => clearTimeout(timeout);
+  }, [hp, hunger, happiness]);
+
+  // ==========================
   // Context values
   // ==========================
   const value = useMemo(() => ({
     hp, setHp,
     hunger, setHunger,
     happiness, setHappiness,
-    coins, stargleams,
+    coins, setCoins, stargleams, setStargleams,
     addCoins, addStargleams, spendStargleams,
     spendCoins,
     shopItems, buyItem,
