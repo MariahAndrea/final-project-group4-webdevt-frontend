@@ -73,26 +73,8 @@ function Register() {
 
     if (!valid) return;
 
-    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
-
-    (async () => {
-      try {
-        const resp = await fetch(`${API_BASE}/users/auth/register`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, email, password })
-        });
-        const data = await resp.json();
-        if (!resp.ok) {
-          setErrorMessage(prev => ({ ...prev, email: data.message || 'Registration failed' }));
-          return;
-        }
-        // Do not auto-login on registration; redirect user to login page
-        navigate("/", { replace: true });
-      } catch (err) {
-        setErrorMessage(prev => ({ ...prev, email: 'Network error' }));
-      }
-    })();
+    console.log("Registering user:", { username, email, password });
+    navigate("/", { replace: true });
   };
 
   return (

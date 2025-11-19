@@ -28,12 +28,11 @@ export default function useGachaGenerator(fetchReward) {
         { id: 200, name: "Chair", type: "furniture", rarity: "Common" },
         { id: 201, name: "Stool", type: "furniture", rarity: "Common" },
         { id: 202, name: "Shelf", type: "furniture", rarity: "Common" },
-        { id: 203, name: "Table", type: "furniture", rarity: "Rare" },
-        { id: 204, name: "Lamp", type: "furniture", rarity: "Rare" },
-        { id: 205, name: "Cabinet", type: "furniture", rarity: "Rare" },
+        { id: 203, name: "Hanging Stars", type: "furniture", rarity: "Rare" },
+        { id: 204, name: "Garden Plant", type: "furniture", rarity: "Rare" },
+        { id: 205, name: "Wind Chime", type: "furniture", rarity: "Rare" },
         { id: 206, name: "Throne", type: "furniture", rarity: "Epic" },
-        { id: 207, name: "Chandelier", type: "furniture", rarity: "Epic" },
-        { id: 208, name: "Wardrobe", type: "furniture", rarity: "Epic" },
+        { id: 208, name: "Window", type: "furniture", rarity: "Epic" },
       ],
     };
 

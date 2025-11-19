@@ -115,6 +115,7 @@
 }
 
 .starmu-placeholder {
+  position: relative;
   z-index: 1000; /* ensures it’s above other elements */
   cursor: pointer; 
 }
@@ -131,6 +132,36 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
+}
+
+.equipped-accessory {
+  position: absolute;
+  /* Center the accessory over the Starmu. Adjust top/left/transform for actual position */
+  transform: translateX(100%);
+  width: 100%; /* Adjust size as needed */
+  height: auto;
+  pointer-events: none; /* Prevents accessory from blocking the Starmu click handler */
+  z-index: 10;
+
+  user-select: none;
+  -webkit-user-select: none; /* For WebKit browsers like Chrome/Safari */
+  -moz-user-select: none; /* For Firefox */
+  -ms-user-select: none; /* For Internet Explorer/Edge (older) */
+  -webkit-user-drag: none; /* Prevents the image from being drag-selected in WebKit */
+}
+
+.equipped-furniture {
+    position: absolute;
+    top: 0; /* Position relative to starmupage-container */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensures the image scales properly within the container */
+    pointer-events: none; /* Make it unclickable */
+    z-index: 1; /* IMPORTANT: Behind the starmu-placeholder (1000) but above the background (0) */
+    user-select: none; /* Prevents light blue highlight on double-click */
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
 }
 
 .outside-border {
