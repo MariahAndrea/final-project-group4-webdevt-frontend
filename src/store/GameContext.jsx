@@ -225,7 +225,10 @@ export const GameProvider = ({ children }) => {
   // Persist user changes to backend (debounced)
   // ==========================
   useEffect(() => {
-    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    // Normalize the API base so it always includes `/api` and has no trailing slash.
+    const rawBase = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    const normalized = rawBase.replace(/\/+$/g, '');
+    const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
     const userId = localStorage.getItem('userId');
     if (!userId) return;
 
@@ -253,7 +256,10 @@ export const GameProvider = ({ children }) => {
   // Persist pet stats to backend (debounced)
   // ==========================
   useEffect(() => {
-    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    // Normalize the API base so it always includes `/api` and has no trailing slash.
+    const rawBase = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    const normalized = rawBase.replace(/\/+$/g, '');
+    const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
     const petId = localStorage.getItem('petId');
     if (!petId) return;
 
