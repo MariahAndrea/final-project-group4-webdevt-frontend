@@ -1,10 +1,17 @@
 //GameContext.jsx
-
-import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
+import React, { createContext, useContext, useState, useMemo, useEffect, useCallback } from "react";
+import gachaPoolData from "../../public/json/gachaPool.json";
 
 const GameContext = createContext(null);
-
 const clamp = (value) => Math.max(0, Math.min(100, value));
+
+const saveCustomizationItemsToLocalStorage = (items) => {
+  try{
+    localStorage.setItem("customizationItems", JSON.stringify(items));
+  } catch (error) {
+    console.error("Failed to save customization items to localStorage:", error);
+  }
+}
 
 export const GameProvider = ({ children }) => {
   // ==========================
@@ -24,12 +31,24 @@ export const GameProvider = ({ children }) => {
   // Inventory
   // ==========================
   const [inventoryItems, setInventoryItems] = useState(() => {
-    const saved = localStorage.getItem("inventoryItems");
-    return saved ? JSON.parse(saved) : [];
+    try{
+      const saved = localStorage.getItem("inventoryItems");
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("Failed to load inventory items:", error);
+      return [];
+    }
   });
+
   const [customizationItems, setCustomizationItems] = useState(() => {
-    const saved = localStorage.getItem("customizationItems");
-    return saved ? JSON.parse(saved) : [];
+    try{
+      const saved = localStorage.getItem("customizationItems");
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("Failed to load customization items from localStorage:", error);
+      return [];
+    }
+    
   });
 
   // ==========================
@@ -74,13 +93,14 @@ export const GameProvider = ({ children }) => {
     }
 
     setInventoryItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
+      const safePrev = prev || [];
+      const existing = safePrev.find((i) => i.id === item.id);
       if (existing) {
-        return prev.map((i) =>
+        return safePrev.map((i) =>
           i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...safePrev, { ...item, quantity: 1 }];
     });
 
     return true;
@@ -90,7 +110,7 @@ export const GameProvider = ({ children }) => {
   // Use item
   // ==========================
   const useItem = (itemId) => {
-    const item = inventoryItems.find((i) => i.id === itemId);
+    const item = (inventoryItems || []).find((i) => i.id === itemId);
     if (!item || item.quantity <= 0) return false;
 
     switch (item.type) {
@@ -108,7 +128,7 @@ export const GameProvider = ({ children }) => {
     }
 
     setInventoryItems((prev) =>
-      prev
+      (prev || [])
         .map((i) =>
           i.id === itemId ? { ...i, quantity: i.quantity - 1 } : i
         )
@@ -121,24 +141,54 @@ export const GameProvider = ({ children }) => {
   // ==========================
   // Customization items helpers
   // ==========================
-  const addCustomizationItem = (item) => {
+  const addCustomizationItem = useCallback((item) => {
+    if (!item || !item.id) {
+      console.error("Invalid item provided to addCustomizationItem:", item);
+      return;
+    }
     setCustomizationItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
+
+      // check to avoid TypeError: Cannot read properties of undefined (reading 'find')
+      const safePrev = prev || [];
+      const existing = safePrev.find((i) => i.id === item.id);
+      let newItems;
+
       if (existing) {
-        return prev.map((i) =>
+        newItems = safePrev.map((i) =>
           i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
         );
       } else {
-        return [...prev, { ...item, quantity: 1 }];
+        newItems = [...safePrev, { ...item, quantity: 1, isEquipped: false }];
       }
+
+      saveCustomizationItemsToLocalStorage(newItems); 
+      return newItems;
     });
-  };
+  }, []);
+
+  const toggleEquipStatus = useCallback((itemId) => {
+    setCustomizationItems((prev) => {
+      const safePrev = prev || [];
+      const itemToToggle = safePrev.find((item) => item.id === itemId);
+
+      if (!itemToToggle || itemToToggle.quantity < 1) return safePrev; 
+
+      const newItems = safePrev.map((item) => {
+        if (item.id === itemId) {
+          return { ...item, isEquipped: !item.isEquipped };
+        } else if (item.type === itemToToggle.type && item.isEquipped) {
+          return { ...item, isEquipped: false };
+        }
+        return item;
+    });
+
+    saveCustomizationItemsToLocalStorage(newItems);
+    return newItems;
+    });
+  }, []);
 
   const getCustomizationItemsWithOwnership = () => {
-    return customizationItems.map((item) => ({
-      ...item,
-      owned: item.quantity > 0
-    }));
+    return customizationItems;
   };
 
   // ==========================
@@ -234,16 +284,18 @@ export const GameProvider = ({ children }) => {
     shopItems, buyItem,
     useItem,
     inventoryItems, setInventoryItems,
-    customizationItems, setCustomizationItems,
-    addCustomizationItem, // new
-    getCustomizationItemsWithOwnership, // new
+    ownedCustomizationItems: customizationItems, 
+    setCustomizationItems,
+    addCustomizationItem, 
+    toggleEquipStatus,
+    getCustomizationItemsWithOwnership, 
     starmuPhase, setStarmuPhase,
     starmuData, setStarmuData,
     setStarmuColor,
-    starmuImageMap
+    starmuImageMap,
+    gachaPoolData,
   }), [
-    hp, hunger, happiness, coins, stargleams,
-    inventoryItems, customizationItems, starmuPhase, starmuData
+    hp, hunger, happiness, coins, stargleams, inventoryItems, customizationItems, starmuPhase, starmuData, gachaPoolData
   ]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

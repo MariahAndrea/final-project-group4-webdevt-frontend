@@ -193,10 +193,12 @@
 }
 
 .itemName {
-  font-size: 1em;
+  font-size: clamp(0.6em, 1vw, 1em);
   font-weight: bold;
   color: #333;
   margin: 0;
+  text-wrap: pretty;
+  text-align: center;
 }
 
 .itemCount {

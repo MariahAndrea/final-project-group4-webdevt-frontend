@@ -1,0 +1,34 @@
+{
+    "Accessory":[
+        {
+            "id": 100,
+            "name": "Bow",
+            "type": "accessories",
+            "rarity": "Common", 
+            "image": "/images/accessories/accessory_bow.png"
+        },
+        {
+            "id": 101,
+            "name": "Earrings",
+            "type": "accessories",
+            "rarity": "Common", 
+            "image": "/images/accessories/accessory_earrings.png"
+        },
+        {
+            "id": 102,
+            "name": "Leaf",
+            "type": "accessories",
+            "rarity": "Common", 
+            "image": "/images/accessories/accessory_leaf.png"
+        }
+    ],
+    "Furniture":[
+        {
+            "id": 200,
+            "name": "Stool",
+            "type": "furniture",
+            "rarity": "Common", 
+            "image": "/images/furniture/furniture_stool.png"
+        }
+    ]
+}
