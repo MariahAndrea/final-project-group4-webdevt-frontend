@@ -50,8 +50,8 @@ function StarmuPage() {
   const furnitureImageMap = {
     // IDs aligned with `public/json/gachaPool.json` Furniture array
     200: "/images/furniture/stool.png",
-    201: "/images/furniture/stool.png", // Cushion image not available; using stool as placeholder
-    202: "/images/furniture/stool.png", // Poster image not available; using stool as placeholder
+    201: "/images/furniture/cushion.png",
+    202: "/images/furniture/poster.png",
     203: "/images/furniture/hangingstars.png",
     204: "/images/furniture/gardenplant.png",
     205: "/images/furniture/windchime.png",

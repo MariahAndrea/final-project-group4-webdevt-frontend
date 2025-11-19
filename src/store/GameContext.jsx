@@ -56,19 +56,19 @@ export const GameProvider = ({ children }) => {
   // ==========================
   const shopItems = [
     // Food items (increase hunger)
-    { id: 1, name: "Apple", type: "food", effect: 10, price: 3 },
-    { id: 2, name: "Cookie", type: "food", effect: 15, price: 4 },
-    { id: 3, name: "Sandwich", type: "food", effect: 20, price: 6 },
+    { id: 1, name: "Apple", type: "food", effect: 10, price: 3, image: "/images/store/food_apple.png" },
+    { id: 2, name: "Cookie", type: "food", effect: 15, price: 4, image: "/images/store/food_cookie.png" },
+    { id: 3, name: "Fish", type: "food", effect: 20, price: 6, image: "/images/store/food_fish.png" },
 
     // Toys (increase happiness)
-    { id: 4, name: "Ball", type: "toys", effect: 15, price: 7 },
-    { id: 5, name: "Plushie", type: "toys", effect: 20, price: 9 },
-    { id: 6, name: "Toy Car", type: "toys", effect: 18, price: 8 },
+    { id: 4, name: "Ball", type: "toys", effect: 15, price: 7, image: "/images/store/toy_ball.png" },
+    { id: 5, name: "Plushie", type: "toys", effect: 20, price: 9, image: "/images/store/toy_plushie.png" },
+    { id: 6, name: "Yarn", type: "toys", effect: 18, price: 8, image: "/images/store/toy_yarn.png" },
 
     // Consumables (healing items)
-    { id: 7, name: "Health Potion (S)", type: "consumables", effect: 10, price: 160 },
-    { id: 8, name: "Health Potion (M)", type: "consumables", effect: 25, price: 250 },
-    { id: 9, name: "Health Potion (L)", type: "consumables", effect: 50, price: 500 },
+    { id: 7, name: "Health Potion (S)", type: "consumables", effect: 10, price: 160, image: "/images/store/consummable_small.png" },
+    { id: 8, name: "Health Potion (M)", type: "consumables", effect: 25, price: 250, image: "/images/store/consummable_medium.png" },
+    { id: 9, name: "Health Potion (L)", type: "consumables", effect: 50, price: 500, image: "/images/store/consummable_large.png" },
   ];
 
   // ==========================
@@ -323,6 +323,7 @@ export const GameProvider = ({ children }) => {
           // If user endpoint isn't accessible, clear cached customization items to be safe
           setCustomizationItems([]);
           try { localStorage.removeItem('customizationItems'); } catch (e) {}
+          try { localStorage.removeItem('equippedItems'); } catch (e) {}
           return;
         }
         const body = await resp.json();
@@ -331,12 +332,15 @@ export const GameProvider = ({ children }) => {
         if (Array.isArray(serverUser.customizationItems)) {
           setCustomizationItems(serverUser.customizationItems);
           try { localStorage.setItem('customizationItems', JSON.stringify(serverUser.customizationItems)); } catch (e) {}
+          try { localStorage.removeItem('equippedItems'); } catch (e) {}
         } else {
           setCustomizationItems([]);
           try { localStorage.removeItem('customizationItems'); } catch (e) {}
+          try { localStorage.removeItem('equippedItems'); } catch (e) {}
         }
       } catch (err) {
         console.error('Failed to sync customization items on startup:', err);
+        try { localStorage.removeItem('equippedItems'); } catch (e) {}
       }
     })();
 

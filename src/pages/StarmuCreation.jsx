@@ -22,8 +22,11 @@ function StarmuCreation() {
     setStarmuData,
     setHp,
     setHunger,
-    setHappiness
+    setHappiness,
+    setCustomizationItems
   } = useGame();
+
+  const [didResetCache, setDidResetCache] = useState(false);
 
   const [blockClicks, setBlockClicks] = useState(true);
   const [showComet, setShowComet] = useState(false);
@@ -50,7 +53,16 @@ function StarmuCreation() {
     const normalized = rawBase.replace(/\/+$/g, '');
     const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
 
-    // If starmuData already present in context, go straight to page
+    // Ensure creation flow starts fresh: default to cutscene and clear any transient starmu data.
+    // We'll populate from the server if a pet exists below.
+    try {
+      setStarmuPhase('cutscene');
+      setStarmuData({ name: '', color: '' });
+    } catch (err) {
+      console.error('Failed to reset starmu creation state on mount:', err);
+    }
+
+    // If starmuData already present in context (server returned a pet earlier), go straight to page
     if (starmuData?.name && starmuData?.color) {
       navigate("/starmu-page");
       return;
@@ -105,6 +117,25 @@ function StarmuCreation() {
       };
     }
   }, [starmuPhase]);
+
+  // When the creation page finishes its intro animation (showText true),
+  // reset cached customization and equipped state to avoid stale items.
+  useEffect(() => {
+    if (!loading && starmuPhase === 'cutscene' && showText && !didResetCache) {
+      try {
+        // Clear customization items in context and localStorage
+        setCustomizationItems([]);
+        localStorage.removeItem('customizationItems');
+        // Clear equipped items persistence
+        localStorage.removeItem('equippedItems');
+        // Also clear any stale petId to ensure fresh flow
+        localStorage.removeItem('petId');
+      } catch (err) {
+        console.error('Failed to reset creation caches:', err);
+      }
+      setDidResetCache(true);
+    }
+  }, [loading, starmuPhase, showText, didResetCache, setCustomizationItems]);
 
   // ==========================
   // Phase handlers
@@ -219,7 +250,7 @@ function StarmuCreation() {
   };
 
   return (
-    <div className="starmu-container">
+    <div className="starmu-container starmu-creation">
       {renderPhase()}
     </div>
   );

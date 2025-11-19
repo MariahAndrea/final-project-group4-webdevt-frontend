@@ -30,7 +30,7 @@ export default function ColorPickPhase({ selectedColor, onColorSelect, onConfirm
 
         {/* ✅ ONLY CHANGE HERE → dynamic background image */}
         <div
-          className="starmu-placeholder"
+          className="starmu-placeholder1"
           style={{
             backgroundImage: `url(${
               tempColor 

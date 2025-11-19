@@ -121,7 +121,15 @@
   z-index: 1000; /* ensures it’s above other elements */
   cursor: pointer; 
   transform: translate(-50%, -20%);
-  width: clamp(150px, 25vw, 300px);
+  width: clamp(150px, 25vw, 400px);
+  max-width: 400px;       /* maximum it can grow */
+  min-width: 287px;       /* minimum size you had */
+  margin-top: 12rem;
+  height: 18rem;
+  aspect-ratio: 287 / 380;
+  background: url("/images/starmu.png") center/contain no-repeat;
+  background-position: center bottom;
+  border-radius: 0.5rem;
 }
 
 .starmu-top-panel {

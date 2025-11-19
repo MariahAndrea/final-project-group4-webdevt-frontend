@@ -236,6 +236,16 @@
   gap: 5px; 
 }
 
+/* Image used for shop items */
+.itemImage {
+  width: 100%;
+  max-width: 90px;
+  height: 80px;
+  object-fit: contain;
+  background-color: transparent;
+  display: block;
+}
+
 .imagePlaceholder {
   width: 100%; 
   aspect-ratio: 1 / 1;

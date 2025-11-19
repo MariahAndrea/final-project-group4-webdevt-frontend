@@ -133,7 +133,12 @@ return (
                         {filteredItems.map((item) => (
                             <div key={item.id} className={styles.card}>
                                 <div className={styles.cardContent}>
-                                    <div className={styles.imagePlaceholder} />
+                                    <img
+                                        src={item.image || '/images/starmu.png'}
+                                        alt={item.name}
+                                        className={styles.itemImage}
+                                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/starmu.png'; }}
+                                    />
                                     <p className={styles.itemName}>{item.name}</p>
                                     <p className={styles.itemPrice}>
                                         ${item.price.toFixed(0)}

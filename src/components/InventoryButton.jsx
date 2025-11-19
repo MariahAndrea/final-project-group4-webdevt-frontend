@@ -83,7 +83,12 @@ export default function InventoryPopup({ isOpen, onClose }) {
                                                 className={styles.itemCard}
                                                 onClick={() => handleUseItem(item.id)} // NEW: usable
                                             >
-                                                <div className={styles.imagePlaceholder} />
+                                                <img
+                                                    src={item.image || '/images/starmu.png'}
+                                                    alt={item.name}
+                                                    className={styles.itemImage}
+                                                    onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/starmu.png'; }}
+                                                />
                                                 <p className={styles.itemName}>{item.name}</p>
                                                 <p className={styles.itemCount}>x{item.quantity}</p>
                                             </div>

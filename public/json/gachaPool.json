@@ -5,57 +5,57 @@
             "name": "Bow",
             "type": "accessories",
             "rarity": "Common", 
-            "image": "/images/accessories/bow.png"
+            "image": "/images/accessory/bow.png"
         },
         {
             "id": 101,
             "name": "Earrings",
             "type": "accessories",
             "rarity": "Common", 
-            "image": "/images/accessories/earrings.png"
+            "image": "/images/accessory/earrings.png"
         },
         {
             "id": 102,
             "name": "Leaf",
             "type": "accessories",
             "rarity": "Common", 
-            "image": "/images/accessories/leaf.png"
+            "image": "/images/accessory/leaf.png"
         }
         ,
         {
             "id": 103,
-            "name": "Flower Crown",
+            "name": "Wreath",
             "type": "accessories",
             "rarity": "Rare",
-            "image": "/images/accessories/flowercrown.png"
+            "image": "/images/accessory/flowercrown.png"
         },
         {
             "id": 104,
             "name": "Hat",
             "type": "accessories",
-            "rarity": "Common",
-            "image": "/images/accessories/hat.png"
+            "rarity": "Rare",
+            "image": "/images/accessory/hat.png"
         },
         {
             "id": 105,
             "name": "Glasses",
             "type": "accessories",
-            "rarity": "Common",
-            "image": "/images/accessories/glasses.png"
+            "rarity": "Rare",
+            "image": "/images/accessory/glasses.png"
         },
         {
             "id": 107,
             "name": "Crown",
             "type": "accessories",
             "rarity": "Epic",
-            "image": "/images/accessories/crown.png"
+            "image": "/images/accessory/crown.png"
         },
         {
             "id": 108,
-            "name": "Planets Headpiece",
+            "name": "Planets",
             "type": "accessories",
-            "rarity": "Rare",
-            "image": "/images/accessories/planets.png"
+            "rarity": "Epic",
+            "image": "/images/accessory/planets.png"
         }
     ],
     "Furniture":[
@@ -71,25 +71,25 @@
                 "name": "Cushion",
                 "type": "furniture",
                 "rarity": "Common",
-                "image": "/images/furniture/furniture_cushion.png"
+                "image": "/images/furniture/cushion.png"
             },
             {
                 "id": 202,
                 "name": "Poster",
                 "type": "furniture",
-                "rarity": "Rare",
-                "image": "/images/furniture/furniture_poster.png"
+                "rarity": "Common",
+                "image": "/images/furniture/poster.png"
             },
             {
                 "id": 203,
-                "name": "Hanging Stars",
+                "name": "Stars",
                 "type": "furniture",
                 "rarity": "Rare",
                 "image": "/images/furniture/hangingstars.png"
             },
             {
                 "id": 204,
-                "name": "Garden Plant",
+                "name": "Plant",
                 "type": "furniture",
                 "rarity": "Rare",
                 "image": "/images/furniture/gardenplant.png"

@@ -93,7 +93,12 @@ export default function CustomizePopup({ isOpen, onClose, equippedItems, setEqui
                                             const isEquipped = equippedId !== null && Number(equippedId) === Number(item.id);
                                             return (
                                                 <div key={item.id} className={styles.itemCard}>
-                                                    <img className={styles.itemImage} src={item.image} alt={item.name} />
+                                                    <img
+                                                        className={styles.itemImage}
+                                                        src={item.image || '/images/starmu.png'}
+                                                        alt={item.name}
+                                                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/starmu.png'; }}
+                                                    />
                                                     <p className={styles.itemName}>{item.name}</p>
 
                                                     {/* Equip/Remove button */}

@@ -46,10 +46,6 @@ export default function GachaResultPopup({ items, isRolling, onClose }) {
                       <p><b>{item.name}</b></p>
                       <p>{item.rarity}</p>
 
-                      {/* Owned indicator */}
-                      {showOwnedTag && (
-                        <p className={styles.ownedTag}>Already Owned ✔</p>
-                      )}
                     </div>
                   );
                 })}
