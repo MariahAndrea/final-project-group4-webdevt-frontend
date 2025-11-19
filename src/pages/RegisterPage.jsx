@@ -73,7 +73,11 @@ function Register() {
 
     if (!valid) return;
 
-    const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api';
+    // Normalize the API base so it always includes `/api` and has no trailing slash.
+    // This handles cases where the deploy env sets VITE_API_BASE without `/api`.
+    const rawBase = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    const normalized = rawBase.replace(/\/+$/g, '');
+    const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
 
     (async () => {
       try {
