@@ -12,9 +12,10 @@
 }
 
 .starmu-home-buttons {
-  display: grid;
-  grid-template-columns: 1.3fr 2fr 1fr; /* Three flexible columns */
+  display: flex;
+  flex-direction: row;
   gap: 3px;
+  flex-wrap: wrap;
 
   align-items: end;
   position: absolute;
@@ -23,32 +24,34 @@
   transform: translate(-50%); /* Centers horizontally & vertically */
 
   width: 95%;
-  height: 30%;
+  height: 15%;
   z-index: 1; /* ensures it's above the background */
 }
 
 .left-buttons {
+  flex: 3;
   display: flex;
-  gap: 10px;
-  align-items: center;
-  grid-column: 1;
+  justify-content: flex-start;
+  gap: 5px;
 }
 
 .right-buttons {
+  flex: 2;
   display: flex;
-  gap: 10px;
-  align-items: center;
-  grid-column: 3;
-  justify-content: flex-end; /* push buttons to the right end */
+  justify-content: flex-end;
+  gap: 5px;
 }
 
-.starmu-btn { 
-  flex: 1;                  
-  max-width: 100px;         
-  aspect-ratio: 1 / 1;      
+.left-buttons .starmu-btn, .right-buttons .starmu-btn{
+  flex: 1;
+  aspect-ratio: 1/1;
+  max-width: 120px;
+}
+
+.starmu-btn {                             
   background-color: var(--color2); 
   border: var(--color3) solid 2px; 
-  padding: 5px; 
+  padding: clamp(3px, 0.6vw, 8px); 
   border-radius: 10px; 
   display: flex;
   flex-direction: column;
@@ -64,14 +67,14 @@
   display: flex;
   flex-direction: column;
   background-size: contain;
-  width: 50%;
+  width: clamp(30%, 45%, 55%);
   background-repeat: no-repeat;
   background-position: center;
   aspect-ratio: 1 / 1;
 }
 
 .btn-label{
-  font-size: clamp(10px, 18px, 18px);
+  font-size: clamp(8px, 2vw, 18px);
   color: var(--color3);
   cursor: pointer;
   white-space: nowrap;       
@@ -109,14 +112,24 @@
 .starmupage-container .starmu-placeholder {
   position: absolute;
   left: 50%;
-  top: 35%;
-  transform: translateX(-50%);
+  bottom: 10vh;
   z-index: 2;
 }
 
 .starmu-placeholder {
+  position: relative;
   z-index: 1000; /* ensures it’s above other elements */
   cursor: pointer; 
+  transform: translate(-50%, -20%);
+  width: clamp(150px, 25vw, 400px);
+  max-width: 400px;       /* maximum it can grow */
+  min-width: 287px;       /* minimum size you had */
+  margin-top: 12rem;
+  height: 18rem;
+  aspect-ratio: 287 / 380;
+  background: url("/images/starmu.png") center/contain no-repeat;
+  background-position: center bottom;
+  border-radius: 0.5rem;
 }
 
 .starmu-top-panel {
@@ -124,31 +137,59 @@
   left: 50%;
   transform: translate(-50%); /* Centers horizontally & vertically */
   width: 95%;
-  height: 13%;
-  z-index: 1; /* ensures it's above the background */
+  z-index: 2; /* ensures it's above the background */
   margin-top: 2.1%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   gap: 10px;
+  align-items: stretch;
+}
+
+.equipped-accessory {
+  position: absolute;
+  /* Center the accessory over the Starmu. Adjust top/left/transform for actual position */
+  transform: translateX(100%);
+  width: 100%; /* Adjust size as needed */
+  height: auto;
+  pointer-events: none; /* Prevents accessory from blocking the Starmu click handler */
+  z-index: 10;
+
+  user-select: none;
+  -webkit-user-select: none; /* For WebKit browsers like Chrome/Safari */
+  -moz-user-select: none; /* For Firefox */
+  -ms-user-select: none; /* For Internet Explorer/Edge (older) */
+  -webkit-user-drag: none; /* Prevents the image from being drag-selected in WebKit */
+}
+
+.equipped-furniture {
+    position: absolute;
+    top: 0; /* Position relative to starmupage-container */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensures the image scales properly within the container */
+    pointer-events: none; /* Make it unclickable */
+    z-index: 1; /* IMPORTANT: Behind the starmu-placeholder (1000) but above the background (0) */
+    user-select: none; /* Prevents light blue highlight on double-click */
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
 }
 
 .outside-border {
   padding: 5px;
   background-color: var(--color2);
   display: flex;
-  flex-grow: 1;
+  flex: 1;
   border: var(--color3) solid 2px;
   width: auto;
   border-radius: 10px;
-  aspect-ratio: 1/1;
 }
 
 .outside-border-2{
   display: flex;
   background-color: var(--color2);
   border: var(--color3) solid 2px;
-  width: 100px;
+  width: clamp(70px, 12vw, 100px);
   border-radius: 10px;
   padding: 5px;
 }
@@ -166,16 +207,16 @@
   padding: 5px;
   border-radius: 5px;
   gap: 1vh;
+  flex: 1;
 }
 
 /*container for name and currency*/
 .starmu-details{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   background-color: var(--color3);
   border-radius: 5px;
-  padding: 8px 10px 10px 10px;
+  padding: 10px;
   width: 30%;
   flex-wrap: wrap;
   flex: 3;
@@ -189,12 +230,17 @@
 }
 
 .starmu-status-panel {
+  flex: 7;
   display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
+  flex-direction: column;
+  background-color: var(--color1);
+  padding: 10px;
+  border-radius: 5px;
+  gap: 10px;
 }
 
 .starmu-profile{
+  flex: 1;
   width: 100%;       
   border: var(--color3) solid 2px; 
   border-radius: 5px;
@@ -232,7 +278,7 @@
   flex-basis: 0;
   margin: 0;
   height: 3.5vh;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
 }
 
@@ -248,6 +294,7 @@
   background-repeat: no-repeat;
   background-position: center;
   aspect-ratio: 1 / 1;
+  margin-right: clamp(10px, 1.5vw, 15px);;
 }
 
 .coin {
@@ -261,6 +308,7 @@
 .currency-amount{
   color: var(--color3);
   font-weight: bold;
+  font-size: clamp(12px, 1.4vw, 22px);
 }
 
 /* ================= Status Display ================= */
@@ -335,6 +383,7 @@
 .stat-bar{
   width: 100%;
   height: 50%;
+  min-height: 20px;
   background-color: var(--color1);
   border: var(--color3) solid 2px;
   border-radius: 5px;

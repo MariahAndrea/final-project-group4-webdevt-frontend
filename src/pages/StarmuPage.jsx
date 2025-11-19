@@ -14,6 +14,7 @@ import { useGame } from "../store/GameContext";
 import DialogBox from "../components/DialogBox";      // ➜ Added
 import { useNavigate } from "react-router-dom";       // ➜ Added
 import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 function StarmuPage() {
   // --------------------------
@@ -26,6 +27,43 @@ function StarmuPage() {
   const [clickRewards, setClickRewards] = useState([]); // Track reward pop-ups
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false); // ➜ Added
+
+  const [equippedItems, setEquippedItems] = useState(() => {
+    const savedItems = localStorage.getItem('equippedItems');
+    return savedItems ? JSON.parse(savedItems) : {
+      accessory: null, // item ID of the equipped accessory
+      furniture: null, // item ID of the equipped furniture
+    };
+  });
+
+  const accessoryImageMap = {
+    100: "/images/accessory/bow.png",
+    101: "/images/accessory/earrings.png",
+    102: "/images/accessory/leaf.png",
+    103: "/images/accessory/flowercrown.png",
+    104: "/images/accessory/hat.png",
+    105: "/images/accessory/glasses.png",
+    107: "/images/accessory/crown.png",
+    108: "/images/accessory/planets.png",
+  };
+
+  const furnitureImageMap = {
+    // IDs aligned with `public/json/gachaPool.json` Furniture array
+    200: "/images/furniture/stool.png",
+    201: "/images/furniture/cushion.png",
+    202: "/images/furniture/poster.png",
+    203: "/images/furniture/hangingstars.png",
+    204: "/images/furniture/gardenplant.png",
+    205: "/images/furniture/windchime.png",
+    206: "/images/furniture/fishtank.png",
+    207: "/images/furniture/window.png",
+  };
+
+  const equippedAccessoryId = equippedItems.accessory;
+  const equippedAccessoryImg = accessoryImageMap[equippedAccessoryId];
+
+  const equippedFurnitureId = equippedItems.furniture;
+  const equippedFurnitureImg = furnitureImageMap[equippedFurnitureId];
 
   const navigate = useNavigate(); // ➜ Added
 
@@ -101,7 +139,10 @@ function StarmuPage() {
   // Preload background images
   // --------------------------
   const loading = usePreloadAssets([
-    "/images/bg_StarmuHome.png"
+    "/images/bg_StarmuHome.png",
+    // ➜ ADDED: Preload accessory images
+    ...Object.values(accessoryImageMap),
+    ...Object.values(furnitureImageMap)
   ]);
 
   // --------------------------
@@ -123,6 +164,8 @@ function StarmuPage() {
   const handleCloseHowToPlay = () => setIsHowToPlayOpen(false);
 
   const handleOpenLogoutDialog = () => setIsLogoutDialogOpen(true); // ➜ Added
+
+
 
   // --------------------------
   // Placeholder click → generate rewards
@@ -169,6 +212,24 @@ function StarmuPage() {
   return (
     <div className="starmupage-container">
       <div className="starmu-bg"></div>
+
+      {/* --------------------------
+          Equipped Furniture (Background Items) ➜ ADDED SECTION
+      -------------------------- */}
+      {equippedFurnitureImg && (
+        <AnimatePresence>
+          <motion.img
+            key={equippedFurnitureId}
+            src={equippedFurnitureImg}
+            alt="Equipped Furniture"
+            className="equipped-furniture" 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+          />
+        </AnimatePresence>
+      )}
 
       {/* --------------------------
           Home Buttons
@@ -291,7 +352,23 @@ function StarmuPage() {
         className="starmu-placeholder"
         onClick={handlePlaceholderClick}
         style={{ backgroundImage: `url(${starmuImg})` }}
-      ></div>
+      >
+        {/* ➜ ADDED: Equipped Accessory Image */}
+        {equippedAccessoryImg && (
+          <AnimatePresence>
+            <motion.img
+              key={equippedAccessoryId} // Use key to re-trigger animation on change
+              src={equippedAccessoryImg}
+              alt="Equipped Accessory"
+              className="equipped-accessory" // You'll need to define this in CSS
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+            />
+          </AnimatePresence>
+        )}
+      </div>
 
       {/* --------------------------
           Reward Popups
@@ -315,7 +392,12 @@ function StarmuPage() {
       <ShopPopup isOpen={isShopOpen} onClose={handleCloseShop} />
       <InventoryPopup isOpen={isInventoryOpen} onClose={handleCloseInventory} />
       <GachaPopup isOpen={isGachaOpen} onClose={handleCloseGacha} />
-      <CustomizePopup isOpen={isCustomizeOpen} onClose={handleCloseCustomize} />
+      <CustomizePopup 
+            isOpen={isCustomizeOpen} 
+            onClose={handleCloseCustomize} 
+            equippedItems={equippedItems} // <-- MUST BE PASSED
+            setEquippedItems={setEquippedItems} // <-- And this one
+        />
       <HowToPlay isOpen={isHowToPlayOpen} onClose={handleCloseHowToPlay} />
 
       {/* --------------------------
@@ -325,7 +407,11 @@ function StarmuPage() {
         <DialogBox
           message="Are you sure you want to logout?"
           onClose={() => {
-            navigate("/");     // ➜ Redirect to login
+            // Unequip items and clear persisted equipped state
+            setEquippedItems({ accessory: null, furniture: null });
+            try { localStorage.removeItem('equippedItems'); } catch (e) {}
+            setIsLogoutDialogOpen(false);
+            navigate("/", { replace: true });
           }}
         />
       )}

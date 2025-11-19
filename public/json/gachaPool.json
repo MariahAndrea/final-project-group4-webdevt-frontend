@@ -1,0 +1,119 @@
+{
+    "Accessory":[
+        {
+            "id": 100,
+            "name": "Bow",
+            "type": "accessories",
+            "rarity": "Common", 
+            "image": "/images/accessory/bow.png"
+        },
+        {
+            "id": 101,
+            "name": "Earrings",
+            "type": "accessories",
+            "rarity": "Common", 
+            "image": "/images/accessory/earrings.png"
+        },
+        {
+            "id": 102,
+            "name": "Leaf",
+            "type": "accessories",
+            "rarity": "Common", 
+            "image": "/images/accessory/leaf.png"
+        }
+        ,
+        {
+            "id": 103,
+            "name": "Wreath",
+            "type": "accessories",
+            "rarity": "Rare",
+            "image": "/images/accessory/flowercrown.png"
+        },
+        {
+            "id": 104,
+            "name": "Hat",
+            "type": "accessories",
+            "rarity": "Rare",
+            "image": "/images/accessory/hat.png"
+        },
+        {
+            "id": 105,
+            "name": "Glasses",
+            "type": "accessories",
+            "rarity": "Rare",
+            "image": "/images/accessory/glasses.png"
+        },
+        {
+            "id": 107,
+            "name": "Crown",
+            "type": "accessories",
+            "rarity": "Epic",
+            "image": "/images/accessory/crown.png"
+        },
+        {
+            "id": 108,
+            "name": "Planets",
+            "type": "accessories",
+            "rarity": "Epic",
+            "image": "/images/accessory/planets.png"
+        }
+    ],
+    "Furniture":[
+            {
+                "id": 200,
+                "name": "Stool",
+                "type": "furniture",
+                "rarity": "Common",
+                "image": "/images/furniture/stool.png"
+            },
+            {
+                "id": 201,
+                "name": "Cushion",
+                "type": "furniture",
+                "rarity": "Common",
+                "image": "/images/furniture/cushion.png"
+            },
+            {
+                "id": 202,
+                "name": "Poster",
+                "type": "furniture",
+                "rarity": "Common",
+                "image": "/images/furniture/poster.png"
+            },
+            {
+                "id": 203,
+                "name": "Stars",
+                "type": "furniture",
+                "rarity": "Rare",
+                "image": "/images/furniture/hangingstars.png"
+            },
+            {
+                "id": 204,
+                "name": "Plant",
+                "type": "furniture",
+                "rarity": "Rare",
+                "image": "/images/furniture/gardenplant.png"
+            },
+            {
+                "id": 205,
+                "name": "Wind Chime",
+                "type": "furniture",
+                "rarity": "Rare",
+                "image": "/images/furniture/windchime.png"
+            },
+            {
+                "id": 206,
+                "name": "Fish Tank",
+                "type": "furniture",
+                "rarity": "Epic",
+                "image": "/images/furniture/fishtank.png"
+            },
+            {
+                "id": 207,
+                "name": "Window",
+                "type": "furniture",
+                "rarity": "Epic",
+                "image": "/images/furniture/window.png"
+            }
+    ]
+}

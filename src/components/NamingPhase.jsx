@@ -36,7 +36,7 @@ export default function NamingPhase({ starmuName, selectedColor, onNameConfirm, 
 
         {/* ✅ Dynamic image from selected color */}
         <div
-          className="starmu-placeholder"
+          className="starmu-placeholder1"
           style={{
             backgroundImage: `url(${
               selectedColor

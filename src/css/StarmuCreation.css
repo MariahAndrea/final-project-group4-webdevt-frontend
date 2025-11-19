@@ -67,8 +67,8 @@
   text-shadow: 1px 1px 4px #08080851;
 }
 
-/* ===== Placeholder Rectangle (Starmu area) ===== */
-.starmu-placeholder {
+/* ===== Placeholder Rectangle (Starmu area) - scoped to creation page ===== */
+.starmu-creation .starmu-placeholder1 {
   width: 100%;
   max-width: 400px;       /* maximum it can grow */
   min-width: 287px;       /* minimum size you had */
@@ -79,11 +79,8 @@
   background-position: center bottom;
   border-radius: 0.5rem;
 }
-
-
-
-/* One-time animation only for cutscene phase */
-.starmu-placeholder.cutscene-animate {
+/* One-time animation only for cutscene phase (scoped) */
+.starmu-creation .starmu-placeholder.cutscene-animate {
   animation: starmuAppear 1.2s ease-out forwards; /* runs only once */
 }
 
@@ -142,8 +139,8 @@
 
 /* ===== Color Selection Layout ===== */
 
-/* Adjust only in the colorpick phase */
-.phase-colorpick .starmu-placeholder {
+/* Adjust only in the colorpick phase (scoped) */
+.starmu-creation .phase-colorpick .starmu-placeholder1 {
   animation: none; /* no animation in colorpick */
 }
 
@@ -248,7 +245,7 @@
   transition: box-shadow 0.3s ease;
 }
 
-.phase-naming .starmu-placeholder {
+.starmu-creation .phase-naming .starmu-placeholder1 {
   animation: none; /* no animation in naming phase */
 }
 

@@ -64,7 +64,27 @@ function Login() {
                     if (typeof data.user.coins !== 'undefined') setCoins(data.user.coins);
                     if (typeof data.user.stargleams !== 'undefined') setStargleams(data.user.stargleams);
                     if (Array.isArray(data.user.inventoryItems)) setInventoryItems(data.user.inventoryItems);
-                    if (Array.isArray(data.user.customizationItems)) setCustomizationItems(data.user.customizationItems);
+
+                    // Always clear any cached customization items from localStorage on login
+                    // to avoid stale items persisting after deletion on the server.
+                    try {
+                        localStorage.removeItem('customizationItems');
+                    } catch (err) {
+                        console.error('Failed to remove customizationItems from localStorage:', err);
+                    }
+
+                    // If server returned customization items, use them; otherwise ensure context is cleared
+                    if (Array.isArray(data.user.customizationItems)) {
+                        setCustomizationItems(data.user.customizationItems);
+                    } else {
+                        setCustomizationItems([]);
+                    }
+                    // Ensure any previously equipped items are cleared on login
+                    try {
+                        localStorage.removeItem('equippedItems');
+                    } catch (err) {
+                        console.error('Failed to remove equippedItems from localStorage on login:', err);
+                    }
                 }
                 // Debug: log returned user and current localStorage
                 console.log('Login response user:', data.user);
@@ -74,6 +94,17 @@ function Login() {
                     coins: localStorage.getItem('coins'),
                     stargleams: localStorage.getItem('stargleams')
                 });
+
+                // Clear any previous Starmu state so we always load fresh values
+                try {
+                    setStarmuData({ name: "", color: "" });
+                    setHp(100);
+                    setHunger(100);
+                    setHappiness(100);
+                    localStorage.removeItem('petId');
+                } catch (err) {
+                    console.error('Failed to reset starmu state on login:', err);
+                }
 
                 // Check if user already has a pet
                 try {

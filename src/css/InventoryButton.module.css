@@ -192,11 +192,24 @@
   margin-bottom: 5px;
 }
 
+/* Image element for inventory items */
+.itemImage {
+  width: 100%;
+  max-width: 70px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  display: block;
+}
+
 .itemName {
-  font-size: 1em;
+  font-size: clamp(0.6em, 1vw, 1em);
   font-weight: bold;
   color: #333;
   margin: 0;
+  text-wrap: pretty;
+  text-align: center;
 }
 
 .itemCount {

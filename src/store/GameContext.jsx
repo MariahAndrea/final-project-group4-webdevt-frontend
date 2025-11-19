@@ -1,10 +1,17 @@
 //GameContext.jsx
-
-import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
+import React, { createContext, useContext, useState, useMemo, useEffect, useCallback } from "react";
+import gachaPoolData from "../../public/json/gachaPool.json";
 
 const GameContext = createContext(null);
-
 const clamp = (value) => Math.max(0, Math.min(100, value));
+
+const saveCustomizationItemsToLocalStorage = (items) => {
+  try{
+    localStorage.setItem("customizationItems", JSON.stringify(items));
+  } catch (error) {
+    console.error("Failed to save customization items to localStorage:", error);
+  }
+}
 
 export const GameProvider = ({ children }) => {
   // ==========================
@@ -24,12 +31,24 @@ export const GameProvider = ({ children }) => {
   // Inventory
   // ==========================
   const [inventoryItems, setInventoryItems] = useState(() => {
-    const saved = localStorage.getItem("inventoryItems");
-    return saved ? JSON.parse(saved) : [];
+    try{
+      const saved = localStorage.getItem("inventoryItems");
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("Failed to load inventory items:", error);
+      return [];
+    }
   });
+
   const [customizationItems, setCustomizationItems] = useState(() => {
-    const saved = localStorage.getItem("customizationItems");
-    return saved ? JSON.parse(saved) : [];
+    try{
+      const saved = localStorage.getItem("customizationItems");
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.error("Failed to load customization items from localStorage:", error);
+      return [];
+    }
+    
   });
 
   // ==========================
@@ -37,19 +56,19 @@ export const GameProvider = ({ children }) => {
   // ==========================
   const shopItems = [
     // Food items (increase hunger)
-    { id: 1, name: "Apple", type: "food", effect: 10, price: 3 },
-    { id: 2, name: "Cookie", type: "food", effect: 15, price: 4 },
-    { id: 3, name: "Sandwich", type: "food", effect: 20, price: 6 },
+    { id: 1, name: "Apple", type: "food", effect: 10, price: 3, image: "/images/store/food_apple.png" },
+    { id: 2, name: "Cookie", type: "food", effect: 15, price: 4, image: "/images/store/food_cookie.png" },
+    { id: 3, name: "Fish", type: "food", effect: 20, price: 6, image: "/images/store/food_fish.png" },
 
     // Toys (increase happiness)
-    { id: 4, name: "Ball", type: "toys", effect: 15, price: 7 },
-    { id: 5, name: "Plushie", type: "toys", effect: 20, price: 9 },
-    { id: 6, name: "Toy Car", type: "toys", effect: 18, price: 8 },
+    { id: 4, name: "Ball", type: "toys", effect: 15, price: 7, image: "/images/store/toy_ball.png" },
+    { id: 5, name: "Plushie", type: "toys", effect: 20, price: 9, image: "/images/store/toy_plushie.png" },
+    { id: 6, name: "Yarn", type: "toys", effect: 18, price: 8, image: "/images/store/toy_yarn.png" },
 
     // Consumables (healing items)
-    { id: 7, name: "Health Potion (S)", type: "consumables", effect: 10, price: 160 },
-    { id: 8, name: "Health Potion (M)", type: "consumables", effect: 25, price: 250 },
-    { id: 9, name: "Health Potion (L)", type: "consumables", effect: 50, price: 500 },
+    { id: 7, name: "Health Potion (S)", type: "consumables", effect: 10, price: 160, image: "/images/store/consummable_small.png" },
+    { id: 8, name: "Health Potion (M)", type: "consumables", effect: 25, price: 250, image: "/images/store/consummable_medium.png" },
+    { id: 9, name: "Health Potion (L)", type: "consumables", effect: 50, price: 500, image: "/images/store/consummable_large.png" },
   ];
 
   // ==========================
@@ -74,13 +93,14 @@ export const GameProvider = ({ children }) => {
     }
 
     setInventoryItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
+      const safePrev = prev || [];
+      const existing = safePrev.find((i) => i.id === item.id);
       if (existing) {
-        return prev.map((i) =>
+        return safePrev.map((i) =>
           i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...safePrev, { ...item, quantity: 1 }];
     });
 
     return true;
@@ -90,7 +110,7 @@ export const GameProvider = ({ children }) => {
   // Use item
   // ==========================
   const useItem = (itemId) => {
-    const item = inventoryItems.find((i) => i.id === itemId);
+    const item = (inventoryItems || []).find((i) => i.id === itemId);
     if (!item || item.quantity <= 0) return false;
 
     switch (item.type) {
@@ -108,7 +128,7 @@ export const GameProvider = ({ children }) => {
     }
 
     setInventoryItems((prev) =>
-      prev
+      (prev || [])
         .map((i) =>
           i.id === itemId ? { ...i, quantity: i.quantity - 1 } : i
         )
@@ -121,24 +141,54 @@ export const GameProvider = ({ children }) => {
   // ==========================
   // Customization items helpers
   // ==========================
-  const addCustomizationItem = (item) => {
+  const addCustomizationItem = useCallback((item) => {
+    if (!item || !item.id) {
+      console.error("Invalid item provided to addCustomizationItem:", item);
+      return;
+    }
     setCustomizationItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
+
+      // check to avoid TypeError: Cannot read properties of undefined (reading 'find')
+      const safePrev = prev || [];
+      const existing = safePrev.find((i) => i.id === item.id);
+      let newItems;
+
       if (existing) {
-        return prev.map((i) =>
+        newItems = safePrev.map((i) =>
           i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
         );
       } else {
-        return [...prev, { ...item, quantity: 1 }];
+        newItems = [...safePrev, { ...item, quantity: 1, isEquipped: false }];
       }
+
+      saveCustomizationItemsToLocalStorage(newItems); 
+      return newItems;
     });
-  };
+  }, []);
+
+  const toggleEquipStatus = useCallback((itemId) => {
+    setCustomizationItems((prev) => {
+      const safePrev = prev || [];
+      const itemToToggle = safePrev.find((item) => item.id === itemId);
+
+      if (!itemToToggle || itemToToggle.quantity < 1) return safePrev; 
+
+      const newItems = safePrev.map((item) => {
+        if (item.id === itemId) {
+          return { ...item, isEquipped: !item.isEquipped };
+        } else if (item.type === itemToToggle.type && item.isEquipped) {
+          return { ...item, isEquipped: false };
+        }
+        return item;
+    });
+
+    saveCustomizationItemsToLocalStorage(newItems);
+    return newItems;
+    });
+  }, []);
 
   const getCustomizationItemsWithOwnership = () => {
-    return customizationItems.map((item) => ({
-      ...item,
-      owned: item.quantity > 0
-    }));
+    return customizationItems;
   };
 
   // ==========================
@@ -253,6 +303,51 @@ export const GameProvider = ({ children }) => {
   }, [coins, stargleams, inventoryItems, customizationItems]);
 
   // ==========================
+  // On startup: sync customization items from server when a user is logged in
+  // This prevents stale localStorage `customizationItems` from surviving deletions
+  // that happened on the backend while the client had cached data.
+  // ==========================
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    const rawBase = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    const normalized = rawBase.replace(/\/+$|\s+/g, '');
+    const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const resp = await fetch(`${API_BASE}/users/${userId}`);
+        if (!resp.ok) {
+          // If user endpoint isn't accessible, clear cached customization items to be safe
+          setCustomizationItems([]);
+          try { localStorage.removeItem('customizationItems'); } catch (e) {}
+          try { localStorage.removeItem('equippedItems'); } catch (e) {}
+          return;
+        }
+        const body = await resp.json();
+        const serverUser = body.user || body;
+        if (cancelled) return;
+        if (Array.isArray(serverUser.customizationItems)) {
+          setCustomizationItems(serverUser.customizationItems);
+          try { localStorage.setItem('customizationItems', JSON.stringify(serverUser.customizationItems)); } catch (e) {}
+          try { localStorage.removeItem('equippedItems'); } catch (e) {}
+        } else {
+          setCustomizationItems([]);
+          try { localStorage.removeItem('customizationItems'); } catch (e) {}
+          try { localStorage.removeItem('equippedItems'); } catch (e) {}
+        }
+      } catch (err) {
+        console.error('Failed to sync customization items on startup:', err);
+        try { localStorage.removeItem('equippedItems'); } catch (e) {}
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [setCustomizationItems]);
+
+  // ==========================
   // Persist pet stats to backend (debounced)
   // ==========================
   useEffect(() => {
@@ -291,16 +386,18 @@ export const GameProvider = ({ children }) => {
     shopItems, buyItem,
     useItem,
     inventoryItems, setInventoryItems,
-    customizationItems, setCustomizationItems,
-    addCustomizationItem, // new
-    getCustomizationItemsWithOwnership, // new
+    ownedCustomizationItems: customizationItems, 
+    setCustomizationItems,
+    addCustomizationItem, 
+    toggleEquipStatus,
+    getCustomizationItemsWithOwnership, 
     starmuPhase, setStarmuPhase,
     starmuData, setStarmuData,
     setStarmuColor,
-    starmuImageMap
+    starmuImageMap,
+    gachaPoolData,
   }), [
-    hp, hunger, happiness, coins, stargleams,
-    inventoryItems, customizationItems, starmuPhase, starmuData
+    hp, hunger, happiness, coins, stargleams, inventoryItems, customizationItems, starmuPhase, starmuData, gachaPoolData
   ]);
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

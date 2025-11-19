@@ -4,29 +4,35 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "../css/CustomizeButton.module.css";
 import { useGame } from "../store/GameContext";
 
-export default function CustomizePopup({ isOpen, onClose }) {
+export default function CustomizePopup({ isOpen, onClose, equippedItems, setEquippedItems }) {
     // Destructure customization items from the context
-    const { customizationItems } = useGame();
+    const { ownedCustomizationItems, toggleEquipStatus } = useGame();
     const [category, setCategory] = useState("All");
 
-    // Track equipped items separately by type
-    const [equippedItems, setEquippedItems] = useState({
-        accessory: null,
-        furniture: null
-    });
+    // Use ownedCustomizationItems as the source (guard with empty array)
+    const itemsSource = ownedCustomizationItems || [];
 
     // Filter items based on selected category
     const filteredItems = category === "All"
-        ? customizationItems
-        : customizationItems.filter(item => item.type === category.toLowerCase());
+        ? itemsSource
+        : itemsSource.filter(item => item.type === category.toLowerCase());
+
+    const itemsToShow = filteredItems.filter(item => item.quantity > 0);
+    const ownedAndFilteredItems = itemsToShow;
 
     // Toggle equip/remove for one per type
     const toggleEquip = (item) => {
-        const type = item.type; // 'accessory' or 'furniture'
-        setEquippedItems(prev => ({
-            ...prev,
-            [type]: prev[type] === item.id ? null : item.id
-        }));
+        const type = item.type === 'accessories' ? 'accessory' : item.type;
+        
+        setEquippedItems(prev => {
+            const newState = {
+                ...prev,
+                [type]: prev[type] === item.id ? null : item.id
+            };
+            // Save the entire equipped state to local storage
+            localStorage.setItem('equippedItems', JSON.stringify(newState));
+            return newState;
+        });
     };
 
     // Close popup when clicking outside the container
@@ -80,12 +86,19 @@ export default function CustomizePopup({ isOpen, onClose }) {
                             {/* Horizontal scrollable grid */}
                             <div className={styles.customizeGrid}>
                                 <div className={styles.horizontalScroll}>
-                                    {filteredItems.length > 0 ? (
-                                        filteredItems.map(item => {
-                                            const isEquipped = equippedItems[item.type] === item.id;
+                                    {ownedAndFilteredItems.length > 0 ? (
+                                        ownedAndFilteredItems.map(item => {
+                                            const typeKey = item.type === 'accessories' ? 'accessory' : item.type;
+                                            const equippedId = equippedItems[typeKey];
+                                            const isEquipped = equippedId !== null && Number(equippedId) === Number(item.id);
                                             return (
                                                 <div key={item.id} className={styles.itemCard}>
-                                                    <div className={styles.imagePlaceholder} />
+                                                    <img
+                                                        className={styles.itemImage}
+                                                        src={item.image || '/images/starmu.png'}
+                                                        alt={item.name}
+                                                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/images/starmu.png'; }}
+                                                    />
                                                     <p className={styles.itemName}>{item.name}</p>
 
                                                     {/* Equip/Remove button */}

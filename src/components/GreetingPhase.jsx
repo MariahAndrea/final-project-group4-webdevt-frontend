@@ -25,7 +25,7 @@ export default function GreetingPhase({ starmuData, onTakeCare, onBack }) {
 
         {/* Starmu placeholder with correct color image */}
         <div
-          className="starmu-placeholder"
+          className="starmu-placeholder1"
           style={{ backgroundImage: `url(${starmuImg})` }}
         ></div>
         
