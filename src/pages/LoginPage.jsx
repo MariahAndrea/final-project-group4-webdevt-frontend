@@ -151,8 +151,7 @@ function Login() {
             <div className="auth-container"> 
 
                 <div className="auth-header">
-                    Starmu Logo
-                    <h1>Sign In</h1>
+                    <img src="/images/logo.png" alt="Starmu Logo" className="auth-logo" />
                 </div>      
 
                 <form onSubmit={handleSubmit} className="auth-form"> 
