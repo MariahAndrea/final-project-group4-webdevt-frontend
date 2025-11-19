@@ -64,7 +64,21 @@ function Login() {
                     if (typeof data.user.coins !== 'undefined') setCoins(data.user.coins);
                     if (typeof data.user.stargleams !== 'undefined') setStargleams(data.user.stargleams);
                     if (Array.isArray(data.user.inventoryItems)) setInventoryItems(data.user.inventoryItems);
-                    if (Array.isArray(data.user.customizationItems)) setCustomizationItems(data.user.customizationItems);
+
+                    // Always clear any cached customization items from localStorage on login
+                    // to avoid stale items persisting after deletion on the server.
+                    try {
+                        localStorage.removeItem('customizationItems');
+                    } catch (err) {
+                        console.error('Failed to remove customizationItems from localStorage:', err);
+                    }
+
+                    // If server returned customization items, use them; otherwise ensure context is cleared
+                    if (Array.isArray(data.user.customizationItems)) {
+                        setCustomizationItems(data.user.customizationItems);
+                    } else {
+                        setCustomizationItems([]);
+                    }
                 }
                 // Debug: log returned user and current localStorage
                 console.log('Login response user:', data.user);

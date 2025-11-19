@@ -38,8 +38,8 @@ function StarmuPage() {
 
   const accessoryImageMap = {
     100: "/images/accessory/bow.png",
-    101: "/images/accessory/leaf.png",
-    102: "/images/accessory/earrings.png",
+    101: "/images/accessory/earrings.png",
+    102: "/images/accessory/leaf.png",
     103: "/images/accessory/flowercrown.png",
     104: "/images/accessory/hat.png",
     105: "/images/accessory/glasses.png",
@@ -48,14 +48,15 @@ function StarmuPage() {
   };
 
   const furnitureImageMap = {
-    200: "/images/furniture/chair.png",
-    201: "/images/furniture/stool.png",
-    202: "/images/furniture/shelf.png",
+    // IDs aligned with `public/json/gachaPool.json` Furniture array
+    200: "/images/furniture/stool.png",
+    201: "/images/furniture/stool.png", // Cushion image not available; using stool as placeholder
+    202: "/images/furniture/stool.png", // Poster image not available; using stool as placeholder
     203: "/images/furniture/hangingstars.png",
     204: "/images/furniture/gardenplant.png",
     205: "/images/furniture/windchime.png",
     206: "/images/furniture/fishtank.png",
-    208: "/images/furniture/window.png",
+    207: "/images/furniture/window.png",
   };
 
   const equippedAccessoryId = equippedItems.accessory;
@@ -406,7 +407,11 @@ function StarmuPage() {
         <DialogBox
           message="Are you sure you want to logout?"
           onClose={() => {
-            navigate("/");     // ➜ Redirect to login
+            // Unequip items and clear persisted equipped state
+            setEquippedItems({ accessory: null, furniture: null });
+            try { localStorage.removeItem('equippedItems'); } catch (e) {}
+            setIsLogoutDialogOpen(false);
+            navigate("/", { replace: true });
           }}
         />
       )}

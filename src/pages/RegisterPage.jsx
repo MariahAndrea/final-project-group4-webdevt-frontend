@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom"; // import useNavigate
 import "../css/AuthPage.css";
+import { useGame } from "../store/GameContext";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -16,6 +17,7 @@ function Register() {
   });
 
   const navigate = useNavigate(); // initialize navigate
+  const { setCustomizationItems } = useGame();
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const validateEmail = () => {
@@ -91,6 +93,21 @@ function Register() {
           setErrorMessage(prev => ({ ...prev, email: data.message || 'Registration failed' }));
           return;
         }
+
+        // Clear any cached customization items to avoid stale data
+        try {
+          localStorage.removeItem('customizationItems');
+        } catch (err) {
+          console.error('Failed to remove customizationItems from localStorage:', err);
+        }
+
+        // Ensure GameContext is cleared as well
+        try {
+          setCustomizationItems([]);
+        } catch (err) {
+          // ignore if GameContext isn't available for some reason
+        }
+
         // Do not auto-login on registration; redirect user to login page
         navigate("/", { replace: true });
       } catch (err) {

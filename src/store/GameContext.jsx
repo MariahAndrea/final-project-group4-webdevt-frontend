@@ -303,6 +303,47 @@ export const GameProvider = ({ children }) => {
   }, [coins, stargleams, inventoryItems, customizationItems]);
 
   // ==========================
+  // On startup: sync customization items from server when a user is logged in
+  // This prevents stale localStorage `customizationItems` from surviving deletions
+  // that happened on the backend while the client had cached data.
+  // ==========================
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    const rawBase = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
+    const normalized = rawBase.replace(/\/+$|\s+/g, '');
+    const API_BASE = normalized.endsWith('/api') ? normalized : `${normalized}/api`;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const resp = await fetch(`${API_BASE}/users/${userId}`);
+        if (!resp.ok) {
+          // If user endpoint isn't accessible, clear cached customization items to be safe
+          setCustomizationItems([]);
+          try { localStorage.removeItem('customizationItems'); } catch (e) {}
+          return;
+        }
+        const body = await resp.json();
+        const serverUser = body.user || body;
+        if (cancelled) return;
+        if (Array.isArray(serverUser.customizationItems)) {
+          setCustomizationItems(serverUser.customizationItems);
+          try { localStorage.setItem('customizationItems', JSON.stringify(serverUser.customizationItems)); } catch (e) {}
+        } else {
+          setCustomizationItems([]);
+          try { localStorage.removeItem('customizationItems'); } catch (e) {}
+        }
+      } catch (err) {
+        console.error('Failed to sync customization items on startup:', err);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [setCustomizationItems]);
+
+  // ==========================
   // Persist pet stats to backend (debounced)
   // ==========================
   useEffect(() => {

@@ -9,10 +9,13 @@ export default function CustomizePopup({ isOpen, onClose, equippedItems, setEqui
     const { ownedCustomizationItems, toggleEquipStatus } = useGame();
     const [category, setCategory] = useState("All");
 
+    // Use ownedCustomizationItems as the source (guard with empty array)
+    const itemsSource = ownedCustomizationItems || [];
+
     // Filter items based on selected category
     const filteredItems = category === "All"
-        ? inventory
-        : inventory.filter(item => item.type === category.toLowerCase());
+        ? itemsSource
+        : itemsSource.filter(item => item.type === category.toLowerCase());
 
     const itemsToShow = filteredItems.filter(item => item.quantity > 0);
     const ownedAndFilteredItems = itemsToShow;
@@ -83,8 +86,8 @@ export default function CustomizePopup({ isOpen, onClose, equippedItems, setEqui
                             {/* Horizontal scrollable grid */}
                             <div className={styles.customizeGrid}>
                                 <div className={styles.horizontalScroll}>
-                                    {filteredItems.length > 0 ? (
-                                        filteredItems.map(item => {
+                                    {ownedAndFilteredItems.length > 0 ? (
+                                        ownedAndFilteredItems.map(item => {
                                             const typeKey = item.type === 'accessories' ? 'accessory' : item.type;
                                             const equippedId = equippedItems[typeKey];
                                             const isEquipped = equippedId !== null && Number(equippedId) === Number(item.id);
